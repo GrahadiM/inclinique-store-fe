@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tentang Inclinique Store - Brand skincare Indonesia dengan formula inovatif dan bahan berkualitas tinggi untuk kulit sehat bercahaya.">
+    <title>Tentang Kami - Inclinique Store | Skincare Berkualitas dengan Formula Inovatif</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #FEF3E2 0%, #FA812F 100%);
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        .sidebar-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .sidebar-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Search Popup Styles */
+        .search-popup {
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        .search-popup.open {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .search-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .search-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Custom colors */
+        .bg-primary-light {
+            background-color: #FFECC0;
+        }
+        .bg-primary-yellow {
+            background-color: #FAB12F;
+        }
+        .bg-primary-orange {
+            background-color: #FA812F;
+        }
+        .bg-primary-red {
+            background-color: #DD0303;
+        }
+        .text-primary-yellow {
+            color: #FAB12F;
+        }
+        .text-primary-orange {
+            color: #FA812F;
+        }
+        .text-primary-red {
+            color: #DD0303;
+        }
+        .border-primary-orange {
+            border-color: #FA812F;
+        }
+        .hover\:bg-primary-orange:hover {
+            background-color: #FA812F;
+        }
+        .hover\:text-primary-orange:hover {
+            color: #FA812F;
+        }
+
+        /* Mission Section */
+        .mission-card {
+            transition: all 0.3s ease;
+        }
+        .mission-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        /* Values Section */
+        .value-icon {
+            transition: all 0.3s ease;
+        }
+        .value-icon:hover {
+            transform: scale(1.1);
+        }
+
+        /* Team Section */
+        .team-card {
+            transition: all 0.3s ease;
+        }
+        .team-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Stats Counter */
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FA812F, #DD0303);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Testimonial */
+        .testimonial-card {
+            transition: all 0.3s ease;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Loading animation */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .loading-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+<body class="font-sans">
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="w-full lg:max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="index.html" class="text-2xl font-bold text-primary-orange hover:opacity-80 transition-opacity" aria-label="Inclinique Store Home">
+                    Inclinique<span class="text-primary-red"> Store</span>
+                </a>
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden lg:flex space-x-8" aria-label="Main Navigation">
+                <a href="index.html" class="text-gray-700 hover:text-primary-orange font-medium transition-colors">HOME</a>
+                <a href="product.html" class="text-gray-700 hover:text-primary-orange font-medium transition-colors">SHOP ALL</a>
+                <a href="news.html" class="text-gray-700 hover:text-primary-orange font-medium transition-colors">BEAUTY INSIDER</a>
+                <a href="about.html" class="text-primary-orange font-medium border-b-2 border-primary-orange" aria-current="page">ABOUT US</a>
+                <a href="career.html" class="text-gray-700 hover:text-primary-orange font-medium transition-colors">CAREER</a>
+            </nav>
+            
+            <!-- Mobile & Tablet Header Icons -->
+            <div class="flex items-center space-x-4 lg:hidden">
+                <button id="search-toggle-mobile" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="Open Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="cart.html" class="text-gray-700 hover:text-primary-orange relative transition-colors" aria-label="Shopping Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-primary-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                </a>
+                <button id="menu-toggle" class="text-gray-700" aria-label="Open Menu">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Desktop Header Icons -->
+            <div class="hidden lg:flex items-center space-x-4">
+                <button id="search-toggle-desktop" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="Open Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="cart.html" class="text-gray-700 hover:text-primary-orange relative transition-colors" aria-label="Shopping Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-primary-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                </a>
+                <a href="account.html" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="User Account">
+                    <i class="fas fa-user"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Popup -->
+    <div id="search-overlay" class="search-overlay fixed inset-0 bg-black bg-opacity-50 z-50" aria-hidden="true"></div>
+    <div id="search-popup" class="search-popup fixed top-0 left-0 right-0 bg-white z-50 p-6 shadow-lg" role="dialog" aria-modal="true" aria-labelledby="search-title">
+        <div class="w-full lg:max-w-7xl mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 id="search-title" class="text-xl font-bold text-primary-orange">Cari Produk</h2>
+                <button id="close-search" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="Close Search">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="relative mb-6">
+                <input 
+                    type="text" 
+                    id="search-input"
+                    placeholder="Ketik nama produk yang dicari..."
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange focus:ring-opacity-20 transition-colors"
+                    aria-describedby="search-help"
+                >
+                <button id="search-button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-primary-orange transition-colors" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div id="search-help" class="text-sm text-gray-500 mb-4">Masukkan kata kunci produk untuk mencari</div>
+            
+            <div id="search-results" class="max-h-96 overflow-y-auto">
+                <div id="search-empty" class="text-center py-8 text-gray-500">
+                    <i class="fas fa-search text-4xl mb-4 opacity-50"></i>
+                    <p>Ketik nama produk untuk memulai pencarian</p>
+                </div>
+                
+                <div id="search-loading" class="hidden text-center py-8">
+                    <i class="fas fa-spinner fa-spin text-2xl text-primary-orange mb-4"></i>
+                    <p>Mencari produk...</p>
+                </div>
+                
+                <div id="search-no-results" class="hidden text-center py-8 text-gray-500">
+                    <i class="fas fa-times-circle text-4xl mb-4 opacity-50"></i>
+                    <p>Produk tidak ditemukan</p>
+                    <p class="text-sm">Coba gunakan kata kunci yang berbeda</p>
+                </div>
+                
+                <div id="search-results-container" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Search results will be populated here by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Menu for Mobile & Tablet -->
+    <div id="sidebar-overlay" class="sidebar-overlay fixed inset-0 bg-black bg-opacity-50 z-50" aria-hidden="true"></div>
+    <div id="sidebar" class="sidebar fixed top-0 left-0 h-full w-64 bg-white z-50 p-6" role="dialog" aria-modal="true" aria-labelledby="sidebar-title">
+        <div class="flex justify-between items-center mb-8">
+            <h2 id="sidebar-title" class="text-xl font-bold text-primary-orange">Inclinique<span class="text-primary-red"> Store</span></h2>
+            <button id="close-sidebar" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="Close Menu">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <nav class="space-y-6" aria-label="Mobile Navigation">
+            <a href="index.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-home mr-3" aria-hidden="true"></i>HOME
+            </a>
+            <a href="product.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-shopping-bag mr-3" aria-hidden="true"></i>SHOP ALL
+            </a>
+            <a href="news.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-blog mr-3" aria-hidden="true"></i>BEAUTY INSIDER
+            </a>
+            <a href="about.html" class="block text-primary-orange font-medium py-2 border-b border-gray-100" aria-current="page">
+                <i class="fas fa-info-circle mr-3" aria-hidden="true"></i>ABOUT US
+            </a>
+            <a href="career.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-envelope mr-3" aria-hidden="true"></i>CAREER
+            </a>
+            <button id="mobile-search-toggle" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors w-full text-left">
+                <i class="fas fa-search mr-3" aria-hidden="true"></i>Pencarian
+            </button>
+            <a href="account.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-user mr-3" aria-hidden="true"></i>Akun Saya
+            </a>
+        </nav>
+        
+        <div class="mt-8 pt-6 border-t border-gray-200">
+            <h3 class="font-semibold text-gray-700 mb-4">Kategori Produk</h3>
+            <div class="space-y-3">
+                <a href="product.html#cleansers" class="block text-gray-600 hover:text-primary-orange transition-colors">Pembersih</a>
+                <a href="product.html#moisturizers" class="block text-gray-600 hover:text-primary-orange transition-colors">Pelembap</a>
+                <a href="product.html#serums" class="block text-gray-600 hover:text-primary-orange transition-colors">Serum</a>
+                <a href="product.html#sunscreens" class="block text-gray-600 hover:text-primary-orange transition-colors">Tabir Surya</a>
+                <a href="product.html#special-care" class="block text-gray-600 hover:text-primary-orange transition-colors">Perawatan Khusus</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="py-16 lg:py-24 hero-gradient">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-4xl lg:text-5xl font-bold text-gray-800 mb-6">Merayakan Keindahan Alami Kulit Indonesia</h1>
+                    <p class="text-lg text-gray-700 mb-8">Inclinique Store hadir dengan misi menghadirkan perawatan kulit berkualitas tinggi yang diformulasikan khusus untuk kebutuhan kulit tropis Indonesia. Kami percaya setiap individu berhak memiliki kulit sehat dan percaya diri.</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="product.html" class="bg-primary-orange text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors text-center">
+                            Jelajahi Produk Kami
+                        </a>
+                        <a href="#story" class="border-2 border-primary-orange text-primary-orange px-8 py-3 rounded-lg font-semibold hover:bg-primary-orange hover:text-white transition-colors text-center">
+                            Cerita Kami
+                        </a>
+                    </div>
+                </div>
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1556228578-9f6ac5e4d0d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                         alt="Produk Skincare Inclinique" 
+                         class="rounded-2xl shadow-2xl">
+                    <div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-lg">
+                        <div class="flex items-center">
+                            <div class="bg-primary-orange text-white p-3 rounded-full mr-4">
+                                <i class="fas fa-award text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-800">Brand Skincare Terpercaya</p>
+                                <p class="text-sm text-gray-600">Sejak 2018</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-white">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="stat-number">50K+</div>
+                    <p class="text-gray-600 font-medium">Pelanggan Puas</p>
+                </div>
+                <div>
+                    <div class="stat-number">150+</div>
+                    <p class="text-gray-600 font-medium">Produk Inovatif</p>
+                </div>
+                <div>
+                    <div class="stat-number">98%</div>
+                    <p class="text-gray-600 font-medium">Kepuasan Pelanggan</p>
+                </div>
+                <div>
+                    <div class="stat-number">5</div>
+                    <p class="text-gray-600 font-medium">Tahun Pengalaman</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Story -->
+    <section id="story" class="py-16 bg-gray-50">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">Perjalanan Inovasi Kami</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Dari visi sederhana hingga menjadi pemimpin dalam industri skincare Indonesia</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                         alt="Proses Research and Development Inclinique" 
+                         class="rounded-2xl shadow-lg">
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Visi yang Mengubah Industri Skincare</h3>
+                    <p class="text-gray-600 mb-4">Didirikan pada tahun 2018, Inclinique Store lahir dari pengamatan mendalam terhadap kebutuhan skincare Indonesia yang belum terpenuhi. Kami melihat betapa pentingnya formula yang khusus dirancang untuk iklim tropis dan karakteristik kulit Indonesia.</p>
+                    <p class="text-gray-600 mb-6">Dengan tim research and development yang terdiri dari dermatologis, ahli farmasi, dan beauty expert, kami menghadirkan solusi perawatan kulit yang efektif, aman, dan terjangkau. Setiap produk melalui proses pengujian ketat selama minimal 12 bulan sebelum diluncurkan ke pasar.</p>
+                    <div class="bg-primary-orange text-white p-6 rounded-2xl">
+                        <p class="font-semibold italic">"Kami tidak hanya menjual produk skincare, kami menghadirkan solusi untuk meningkatkan kepercayaan diri melalui kulit yang lebih sehat dan bercahaya."</p>
+                        <p class="mt-4 font-medium">- Founder Inclinique Store</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Mission & Vision -->
+    <section class="py-16 bg-white">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="mission-card bg-primary-light p-8 rounded-2xl">
+                    <div class="bg-primary-orange text-white w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-bullseye text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Misi Kami</h3>
+                    <p class="text-gray-700 mb-4">Menghadirkan produk skincare inovatif dengan formula yang diformulasikan khusus untuk kulit Indonesia, menggabungkan kekayaan alam nusantara dengan teknologi terkini.</p>
+                    <ul class="text-gray-700 space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-primary-orange mr-2 mt-1"></i>
+                            <span>Mengembangkan formula efektif untuk iklim tropis</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-primary-orange mr-2 mt-1"></i>
+                            <span>Menjaga standar kualitas dan keamanan tertinggi</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-primary-orange mr-2 mt-1"></i>
+                            <span>Memberikan edukasi perawatan kulit yang tepat</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="mission-card bg-primary-light p-8 rounded-2xl">
+                    <div class="bg-primary-red text-white w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-eye text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Visi Kami</h3>
+                    <p class="text-gray-700 mb-4">Menjadi brand skincare Indonesia terdepan yang diakui secara global, dengan komitmen pada inovasi, kualitas, dan keberlanjutan.</p>
+                    <ul class="text-gray-700 space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-star text-primary-red mr-2 mt-1"></i>
+                            <span>Memimpin inovasi skincare di Asia Tenggara</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-star text-primary-red mr-2 mt-1"></i>
+                            <span>Memperluas jangkauan ke pasar internasional</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-star text-primary-red mr-2 mt-1"></i>
+                            <span>Berkontribusi pada industri kecantikan berkelanjutan</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Values -->
+    <section class="py-16 bg-gray-50">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">Nilai-Nilai Kami</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Prinsip yang mendasari setiap keputusan dan inovasi kami</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center p-6">
+                    <div class="value-icon bg-primary-orange text-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-flask text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Inovasi Berkelanjutan</h3>
+                    <p class="text-gray-600">Terus mengembangkan formula terbaru dengan penelitian mendalam untuk hasil yang optimal.</p>
+                </div>
+                
+                <div class="text-center p-6">
+                    <div class="value-icon bg-primary-red text-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-shield-alt text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Kualitas Terjamin</h3>
+                    <p class="text-gray-600">Setiap produk melalui uji ketat dan standar kualitas tertinggi sebelum sampai ke tangan Anda.</p>
+                </div>
+                
+                <div class="text-center p-6">
+                    <div class="value-icon bg-primary-yellow text-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-leaf text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Ramah Lingkungan</h3>
+                    <p class="text-gray-600">Komitmen pada keberlanjutan dengan kemasan ramah lingkungan dan bahan yang bertanggung jawab.</p>
+                </div>
+                
+                <div class="text-center p-6">
+                    <div class="value-icon bg-green-500 text-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-heart text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Kepuasan Pelanggan</h3>
+                    <p class="text-gray-600">Prioritas utama kami adalah memberikan pengalaman terbaik dan hasil yang memuaskan.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Products -->
+    <section class="py-16 bg-white">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">Keunggulan Produk Inclinique</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Formulasi canggih yang membedakan kami dari yang lain</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="bg-primary-orange text-white w-14 h-14 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-seedling text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Bahan Aktif Berkualitas Tinggi</h3>
+                    <p class="text-gray-600">Kami menggunakan bahan aktif dengan konsentrasi optimal yang terbukti klinis efektif untuk berbagai masalah kulit.</p>
+                </div>
+                
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="bg-primary-red text-white w-14 h-14 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-wind text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Formulasi Ringan & Cepat Meresap</h3>
+                    <p class="text-gray-600">Tekstur ringan yang cepat meresap tanpa meninggalkan rasa lengket, cocok untuk iklim tropis Indonesia.</p>
+                </div>
+                
+                <div class="bg-gray-50 p-8 rounded-2xl">
+                    <div class="bg-primary-yellow text-white w-14 h-14 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-allergies text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Dermatologis Teruji</h3>
+                    <p class="text-gray-600">Semua produk telah diuji secara dermatologis, hypoallergenic, dan aman untuk kulit sensitif.</p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="product.html" class="bg-primary-orange text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors inline-flex items-center">
+                    Temukan Produk Perfect Match Anda
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-16 bg-primary-light">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">Apa Kata Pelanggan Kami</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Ribuan pelanggan telah merasakan transformasi kulit mereka dengan Inclinique</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="testimonial-card bg-white p-6 rounded-2xl shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" 
+                             alt="Sarah" 
+                             class="w-12 h-12 rounded-full object-cover mr-4">
+                        <div>
+                            <p class="font-bold text-gray-800">Sarah, 28</p>
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic">"Skin texture saya jauh membaik setelah 2 bulan menggunakan rangkaian Inclinique. Kulit terasa lebih lembut dan glowing!"</p>
+                </div>
+                
+                <div class="testimonial-card bg-white p-6 rounded-2xl shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" 
+                             alt="Andi" 
+                             class="w-12 h-12 rounded-full object-cover mr-4">
+                        <div>
+                            <p class="font-bold text-gray-800">Andi, 32</p>
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic">"Sebagai pria dengan kulit berminyak, akhirnya menemukan produk yang tidak membuat kulit semakin berminyak. Recommended!"</p>
+                </div>
+                
+                <div class="testimonial-card bg-white p-6 rounded-2xl shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" 
+                             alt="Maya" 
+                             class="w-12 h-12 rounded-full object-cover mr-4">
+                        <div>
+                            <p class="font-bold text-gray-800">Maya, 25</p>
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic">"Kulit sensitif saya tidak iritasi dengan produk Inclinique. Teksturnya ringan dan harganya sangat worth it!"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-primary-orange text-white">
+        <div class="w-full lg:max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-3xl lg:text-4xl font-bold mb-6">Siap Memulai Perjalanan Kulit Sehat Anda?</h2>
+            <p class="text-xl mb-8 max-w-3xl mx-auto">Bergabunglah dengan ribuan pelanggan puas yang telah mempercayakan perawatan kulit mereka pada Inclinique Store</p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="product.html" class="bg-white text-primary-orange px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                    Belanja Sekarang
+                </a>
+                <a href="consultation.html" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary-orange transition-colors">
+                    Konsultasi Gratis
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12 lg:pb-12 pb-[120px]">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Inclinique<span class="text-primary-red"> Store</span></h3>
+                    <p class="text-gray-400 mb-4">Rangkaian skincare terbaik dengan formula yang aman dan efektif untuk semua jenis kulit.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Produk</h4>
+                    <ul class="space-y-2">
+                        <li><a href="product.html#cleansers" class="text-gray-400 hover:text-white transition-colors">Pembersih</a></li>
+                        <li><a href="product.html#moisturizers" class="text-gray-400 hover:text-white transition-colors">Pelembap</a></li>
+                        <li><a href="product.html#serums" class="text-gray-400 hover:text-white transition-colors">Serum</a></li>
+                        <li><a href="product.html#sunscreens" class="text-gray-400 hover:text-white transition-colors">Tabir Surya</a></li>
+                        <li><a href="product.html#special-care" class="text-gray-400 hover:text-white transition-colors">Perawatan Khusus</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Bantuan</h4>
+                    <ul class="space-y-2">
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition-colors">Kontak Kami</a></li>
+                        <li><a href="shipping.html" class="text-gray-400 hover:text-white transition-colors">Pengiriman</a></li>
+                        <li><a href="returns.html" class="text-gray-400 hover:text-white transition-colors">Pengembalian</a></li>
+                        <li><a href="faq.html" class="text-gray-400 hover:text-white transition-colors">FAQ</a></li>
+                        <li><a href="privacy.html" class="text-gray-400 hover:text-white transition-colors">Kebijakan Privasi</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Kontak</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-3" aria-hidden="true"></i>
+                            <span>Jl. Skincare No. 123, Jakarta</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-3" aria-hidden="true"></i>
+                            <span>+62 857 6711 3554</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3" aria-hidden="true"></i>
+                            <span>info@incliniquestore.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; <span id="current-year">2024</span> Inclinique Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bottom Navigation for Mobile & Tablet -->
+    <nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white py-3 px-6 flex justify-between items-center lg:hidden z-40" aria-label="Mobile Navigation">
+        <a href="index.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-home text-2xl mb-1" aria-hidden="true"></i>
+            <span class="text-xs font-medium">Beranda</span>
+        </a>
+        <a href="product.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-shopping-bag text-2xl mb-1" aria-hidden="true"></i>
+            <span class="text-xs font-medium">Belanja</span>
+        </a>
+        <a href="news.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-blog text-2xl mb-1" aria-hidden="true"></i>
+            <span class="text-xs font-medium">Artikel</span>
+        </a>
+        <a href="account.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-user text-2xl mb-1" aria-hidden="true"></i>
+            <span class="text-xs font-medium">Masuk</span>
+        </a>
+    </nav>
+
+    <script>
+        // JavaScript untuk interaktivitas halaman about us
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // Search functionality
+            const searchToggleMobile = document.getElementById('search-toggle-mobile');
+            const searchToggleDesktop = document.getElementById('search-toggle-desktop');
+            const mobileSearchToggle = document.getElementById('mobile-search-toggle');
+            const closeSearch = document.getElementById('close-search');
+            const searchPopup = document.getElementById('search-popup');
+            const searchOverlay = document.getElementById('search-overlay');
+            const searchInput = document.getElementById('search-input');
+            const searchButton = document.getElementById('search-button');
+
+            function openSearch() {
+                searchPopup.classList.add('open');
+                searchOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                // Focus on search input when opened
+                setTimeout(() => {
+                    searchInput.focus();
+                }, 300);
+            }
+
+            function closeSearchFunc() {
+                searchPopup.classList.remove('open');
+                searchOverlay.classList.remove('open');
+                document.body.style.overflow = 'auto';
+            }
+
+            // Event listeners untuk search
+            if (searchToggleMobile) {
+                searchToggleMobile.addEventListener('click', openSearch);
+            }
+            if (searchToggleDesktop) {
+                searchToggleDesktop.addEventListener('click', openSearch);
+            }
+            if (mobileSearchToggle) {
+                mobileSearchToggle.addEventListener('click', function() {
+                    closeSidebarFunc();
+                    setTimeout(openSearch, 300);
+                });
+            }
+            if (closeSearch) {
+                closeSearch.addEventListener('click', closeSearchFunc);
+            }
+            if (searchOverlay) {
+                searchOverlay.addEventListener('click', closeSearchFunc);
+            }
+
+            // Sidebar toggle functionality
+            const menuToggle = document.getElementById('menu-toggle');
+            const closeSidebar = document.getElementById('close-sidebar');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            
+            function openSidebar() {
+                sidebar.classList.add('open');
+                sidebarOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeSidebarFunc() {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('open');
+                document.body.style.overflow = 'auto';
+            }
+            
+            if (menuToggle) {
+                menuToggle.addEventListener('click', openSidebar);
+            }
+            if (closeSidebar) {
+                closeSidebar.addEventListener('click', closeSidebarFunc);
+            }
+            if (sidebarOverlay) {
+                sidebarOverlay.addEventListener('click', closeSidebarFunc);
+            }
+
+            // Animate stats counter
+            function animateStats() {
+                const statElements = document.querySelectorAll('.stat-number');
+                const finalValues = [50000, 150, 98, 5];
+                const durations = [2000, 1500, 1000, 800];
+                
+                statElements.forEach((element, index) => {
+                    const finalValue = finalValues[index];
+                    const duration = durations[index];
+                    let startValue = 0;
+                    const increment = finalValue / (duration / 50);
+                    
+                    const timer = setInterval(() => {
+                        startValue += increment;
+                        if (startValue >= finalValue) {
+                            element.textContent = finalValue.toLocaleString() + (index === 2 ? '%' : (index === 3 ? '' : '+'));
+                            clearInterval(timer);
+                        } else {
+                            element.textContent = Math.floor(startValue).toLocaleString() + (index === 2 ? '%' : (index === 3 ? '' : '+'));
+                        }
+                    }, 50);
+                });
+            }
+            
+            // Trigger stats animation when section is in view
+            const statsSection = document.querySelector('.bg-white');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateStats();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            if (statsSection) {
+                observer.observe(statsSection);
+            }
+
+            // Close search on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeSearchFunc();
+                    closeSidebarFunc();
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

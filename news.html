@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Beauty Insider - Tips & Berita Skincare terbaru dari Inclinique Store. Temukan artikel tentang perawatan kulit, product review, dan trend terkini.">
+    <title>Beauty Insider - Tips & Berita Skincare | Inclinique Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #FEF3E2 0%, #FA812F 100%);
+        }
+        .article-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        .sidebar-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .sidebar-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Search Popup Styles */
+        .search-popup {
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        .search-popup.open {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .search-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .search-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Custom colors */
+        .bg-primary-light {
+            background-color: #FFECC0;
+        }
+        .bg-primary-yellow {
+            background-color: #FAB12F;
+        }
+        .bg-primary-orange {
+            background-color: #FA812F;
+        }
+        .bg-primary-red {
+            background-color: #DD0303;
+        }
+        .bg-primary-purple {
+            background-color: #8B5CF6;
+        }
+        .bg-primary-blue {
+            background-color: #3B82F6;
+        }
+        .bg-primary-green {
+            background-color: #10B981;
+        }
+        .bg-primary-pink {
+            background-color: #EC4899;
+        }
+        .text-primary-yellow {
+            color: #FAB12F;
+        }
+        .text-primary-orange {
+            color: #FA812F;
+        }
+        .text-primary-red {
+            color: #DD0303;
+        }
+        .border-primary-orange {
+            border-color: #FA812F;
+        }
+        .hover\:bg-primary-orange:hover {
+            background-color: #FA812F;
+        }
+        .hover\:text-primary-orange:hover {
+            color: #FA812F;
+        }
+
+        /* Custom button styles */
+        .btn-block {
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Article styles */
+        .article-category {
+            transition: all 0.3s ease;
+        }
+        .article-category.active {
+            background-color: #FA812F;
+            color: white;
+        }
+        .read-time {
+            font-size: 0.875rem;
+            color: #6B7280;
+        }
+
+        /* Loading animation */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .loading-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+<body class="font-sans">
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="w-full lg:max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="index.html" class="text-2xl font-bold text-primary-orange hover:opacity-80 transition-opacity" aria-label="Inclinique Store Home">
+                    Inclinique<span class="text-primary-red"> Store</span>
+                </a>
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden lg:flex space-x-8" aria-label="Main Navigation">
+                <a href="index.html" class="text-gray-700 hover:text-primary-orange font-medium transition-colors">HOME</a>
+                <a href="product.html" class="text-gray-700 hover:text-primary-orange font-medium transition-colors">SHOP ALL</a>
+                <a href="news.html" class="text-primary-orange font-medium border-b-2 border-primary-orange" aria-current="page">BEAUTY INSIDER</a>
+                <a href="about.html" class="text-gray-700 hover:text-primary-orange font-medium transition-colors">ABOUT US</a>
+                <a href="career.html" class="text-gray-700 hover:text-primary-orange font-medium transition-colors">CAREER</a>
+            </nav>
+            
+            <!-- Mobile & Tablet Header Icons -->
+            <div class="flex items-center space-x-4 lg:hidden">
+                <button id="search-toggle-mobile" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="Open Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="cart.html" class="text-gray-700 hover:text-primary-orange relative transition-colors" aria-label="Shopping Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-primary-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                </a>
+                <button id="menu-toggle" class="text-gray-700" aria-label="Open Menu">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Desktop Header Icons -->
+            <div class="hidden lg:flex items-center space-x-4">
+                <button id="search-toggle-desktop" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="Open Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="cart.html" class="text-gray-700 hover:text-primary-orange relative transition-colors" aria-label="Shopping Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-primary-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                </a>
+                <a href="account.html" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="User Account">
+                    <i class="fas fa-user"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Popup -->
+    <div id="search-overlay" class="search-overlay fixed inset-0 bg-black bg-opacity-50 z-50" aria-hidden="true"></div>
+    <div id="search-popup" class="search-popup fixed top-0 left-0 right-0 bg-white z-50 p-6 shadow-lg" role="dialog" aria-modal="true" aria-labelledby="search-title">
+        <div class="w-full lg:max-w-7xl mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 id="search-title" class="text-xl font-bold text-primary-orange">Cari Artikel</h2>
+                <button id="close-search" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="Close Search">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="relative mb-6">
+                <input 
+                    type="text" 
+                    id="search-input"
+                    placeholder="Ketik judul artikel yang dicari..."
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange focus:ring-opacity-20 transition-colors"
+                    aria-describedby="search-help"
+                >
+                <button id="search-button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-primary-orange transition-colors" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div id="search-help" class="text-sm text-gray-500 mb-4">Masukkan kata kunci judul artikel untuk mencari</div>
+            
+            <div id="search-results" class="max-h-96 overflow-y-auto">
+                <div id="search-empty" class="text-center py-8 text-gray-500">
+                    <i class="fas fa-search text-4xl mb-4 opacity-50"></i>
+                    <p>Ketik judul artikel untuk memulai pencarian</p>
+                </div>
+                
+                <div id="search-loading" class="hidden text-center py-8">
+                    <i class="fas fa-spinner fa-spin text-2xl text-primary-orange mb-4"></i>
+                    <p>Mencari artikel...</p>
+                </div>
+                
+                <div id="search-no-results" class="hidden text-center py-8 text-gray-500">
+                    <i class="fas fa-times-circle text-4xl mb-4 opacity-50"></i>
+                    <p>Artikel tidak ditemukan</p>
+                    <p class="text-sm">Coba gunakan kata kunci yang berbeda</p>
+                </div>
+                
+                <div id="search-results-container" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Search results will be populated here by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Menu for Mobile & Tablet -->
+    <div id="sidebar-overlay" class="sidebar-overlay fixed inset-0 bg-black bg-opacity-50 z-50" aria-hidden="true"></div>
+    <div id="sidebar" class="sidebar fixed top-0 left-0 h-full w-64 bg-white z-50 p-6" role="dialog" aria-modal="true" aria-labelledby="sidebar-title">
+        <div class="flex justify-between items-center mb-8">
+            <h2 id="sidebar-title" class="text-xl font-bold text-primary-orange">Inclinique<span class="text-primary-red"> Store</span></h2>
+            <button id="close-sidebar" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="Close Menu">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <nav class="space-y-6" aria-label="Mobile Navigation">
+            <a href="index.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-home mr-3" aria-hidden="true"></i>HOME
+            </a>
+            <a href="product.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-shopping-bag mr-3" aria-hidden="true"></i>SHOP ALL
+            </a>
+            <a href="news.html" class="block text-primary-orange font-medium py-2 border-b border-gray-100" aria-current="page">
+                <i class="fas fa-blog mr-3" aria-hidden="true"></i>BEAUTY INSIDER
+            </a>
+            <a href="about.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-info-circle mr-3" aria-hidden="true"></i>ABOUT US
+            </a>
+            <a href="career.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-envelope mr-3" aria-hidden="true"></i>CAREER
+            </a>
+            <button id="mobile-search-toggle" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors w-full text-left">
+                <i class="fas fa-search mr-3" aria-hidden="true"></i>Pencarian
+            </button>
+            <a href="account.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-user mr-3" aria-hidden="true"></i>Akun Saya
+            </a>
+        </nav>
+        
+        <div class="mt-8 pt-6 border-t border-gray-200">
+            <h3 class="font-semibold text-gray-700 mb-4">Kategori Artikel</h3>
+            <div class="space-y-3">
+                <a href="#tips" class="block text-gray-600 hover:text-primary-orange transition-colors">Tips Skincare</a>
+                <a href="#trend" class="block text-gray-600 hover:text-primary-orange transition-colors">Trend Terbaru</a>
+                <a href="#review" class="block text-gray-600 hover:text-primary-orange transition-colors">Product Review</a>
+                <a href="#healthy" class="block text-gray-600 hover:text-primary-orange transition-colors">Kulit Sehat</a>
+                <a href="#ingredient" class="block text-gray-600 hover:text-primary-orange transition-colors">Ingredient Focus</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <section class="py-8 bg-primary-light">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800 mb-2">Beauty Insider</h1>
+                    <p class="text-gray-600">Tips, tren, dan informasi terbaru seputar perawatan kulit</p>
+                </div>
+                <div class="mt-4 md:mt-0">
+                    <div class="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg shadow-sm">
+                        <i class="fas fa-search text-gray-400" aria-hidden="true"></i>
+                        <input type="text" placeholder="Cari artikel..." class="border-none focus:outline-none focus:ring-0" id="inline-search">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Article -->
+    <section class="py-12 bg-white" aria-labelledby="featured-article-title">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="bg-gradient-to-r from-primary-orange to-primary-red rounded-2xl overflow-hidden shadow-xl">
+                <div class="grid grid-cols-1 lg:grid-cols-2">
+                    <div class="p-8 lg:p-12 text-gray-800">
+                        <span class="inline-block bg-white text-primary-orange px-3 py-1 rounded-full text-sm font-medium mb-4">FEATURED</span>
+                        <h2 id="featured-article-title" class="text-3xl lg:text-4xl font-bold mb-4">5 Kesalahan Skincare yang Sering Dilakukan di Pagi Hari</h2>
+                        <p class="text-gray-800 text-opacity-90 mb-6">Pelajari kesalahan umum dalam rutinitas pagi yang bisa merusak kulit dan cara memperbaikinya untuk hasil yang optimal.</p>
+                        <div class="flex items-center space-x-4 text-gray-800 text-opacity-80 mb-6">
+                            <div class="flex items-center">
+                                <i class="fas fa-user mr-2" aria-hidden="true"></i>
+                                <span>Dr. Sarah Beauty</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="far fa-clock mr-2" aria-hidden="true"></i>
+                                <span>5 menit membaca</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="far fa-calendar mr-2" aria-hidden="true"></i>
+                                <span>15 Mar 2024</span>
+                            </div>
+                        </div>
+                        <a href="news-detail.html" class="inline-flex items-center bg-white text-primary-orange px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                            Baca Artikel
+                            <i class="fas fa-arrow-right ml-2" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                    <div class="hidden lg:block">
+                        <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                             alt="Wanita sedang melakukan perawatan kulit di pagi hari" 
+                             class="w-full h-[450px] object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-12 bg-gray-50">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Articles Grid -->
+                <div class="lg:w-3/4">
+                    <!-- Category Filter -->
+                    <div class="flex flex-wrap gap-3 mb-8" role="tablist" aria-label="Filter Artikel Berdasarkan Kategori">
+                        <button class="article-category active px-4 py-2 rounded-full bg-primary-orange text-white text-sm font-medium" 
+                                role="tab" aria-selected="true" aria-controls="all-articles">
+                            Semua Artikel
+                        </button>
+                        <button class="article-category px-4 py-2 rounded-full bg-white border border-gray-300 text-gray-700 hover:border-primary-orange hover:text-primary-orange text-sm font-medium transition-colors" 
+                                role="tab" aria-selected="false" aria-controls="tips-articles">
+                            Tips Harian
+                        </button>
+                        <button class="article-category px-4 py-2 rounded-full bg-white border border-gray-300 text-gray-700 hover:border-primary-orange hover:text-primary-orange text-sm font-medium transition-colors" 
+                                role="tab" aria-selected="false" aria-controls="review-articles">
+                            Product Review
+                        </button>
+                        <button class="article-category px-4 py-2 rounded-full bg-white border border-gray-300 text-gray-700 hover:border-primary-orange hover:text-primary-orange text-sm font-medium transition-colors" 
+                                role="tab" aria-selected="false" aria-controls="trend-articles">
+                            Trend 2024
+                        </button>
+                        <button class="article-category px-4 py-2 rounded-full bg-white border border-gray-300 text-gray-700 hover:border-primary-orange hover:text-primary-orange text-sm font-medium transition-colors" 
+                                role="tab" aria-selected="false" aria-controls="healthy-articles">
+                            Kulit Sehat
+                        </button>
+                    </div>
+                    
+                    <!-- Articles Grid -->
+                    <div id="articles-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                        <!-- Article 1 -->
+                        <article class="bg-white rounded-lg overflow-hidden shadow-md article-card" data-category="tips">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                     alt="Rutinitas perawatan kulit malam hari" 
+                                     class="w-full h-48 object-cover">
+                                <span class="absolute top-3 left-3 bg-primary-orange text-white text-xs px-2 py-1 rounded">TIPS HARIAN</span>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-3 hover:text-primary-orange transition-colors cursor-pointer">
+                                    Rutinitas Malam yang Wajib Dilakukan untuk Kulit Glowing
+                                </h3>
+                                <p class="text-gray-600 mb-4">Temukan 5 langkah essential dalam rutinitas malam yang akan membuat kulit Anda bangun dengan kondisi terbaik...</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                        <span class="flex items-center">
+                                            <i class="far fa-clock mr-1" aria-hidden="true"></i>
+                                            4 min
+                                        </span>
+                                        <span>12 Mar 2024</span>
+                                    </div>
+                                    <a href="news-detail.html" class="text-primary-orange font-medium hover:underline flex items-center">
+                                        Baca
+                                        <i class="fas fa-arrow-right ml-1 text-xs" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Article 2 -->
+                        <article class="bg-white rounded-lg overflow-hidden shadow-md article-card" data-category="review">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1556228578-9f6ac5e4d0d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                     alt="Serum vitamin C untuk perawatan kulit" 
+                                     class="w-full h-48 object-cover">
+                                <span class="absolute top-3 left-3 bg-primary-red text-white text-xs px-2 py-1 rounded">PRODUCT REVIEW</span>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-3 hover:text-primary-orange transition-colors cursor-pointer">
+                                    Review Mendalam: Serum Vitamin C Terbaik 2024
+                                </h3>
+                                <p class="text-gray-600 mb-4">Kami menguji 10 serum vitamin C terpopuler. Lihat hasil dan rekomendasi untuk jenis kulit Anda...</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                        <span class="flex items-center">
+                                            <i class="far fa-clock mr-1" aria-hidden="true"></i>
+                                            7 min
+                                        </span>
+                                        <span>10 Mar 2024</span>
+                                    </div>
+                                    <a href="news-detail.html" class="text-primary-orange font-medium hover:underline flex items-center">
+                                        Baca
+                                        <i class="fas fa-arrow-right ml-1 text-xs" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Article 3 -->
+                        <article class="bg-white rounded-lg overflow-hidden shadow-md article-card" data-category="trend">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1570194065650-4222e69b28d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                     alt="Trend skincare terbaru tahun 2024" 
+                                     class="w-full h-48 object-cover">
+                                <span class="absolute top-3 left-3 bg-primary-purple text-white text-xs px-2 py-1 rounded">TREND 2024</span>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-3 hover:text-primary-orange transition-colors cursor-pointer">
+                                    5 Trend Skincare yang Akan Dominan di 2024
+                                </h3>
+                                <p class="text-gray-600 mb-4">Dari skin cycling hingga blue beauty, simak trend skincare yang perlu Anda ketahui tahun ini...</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                        <span class="flex items-center">
+                                            <i class="far fa-clock mr-1" aria-hidden="true"></i>
+                                            6 min
+                                        </span>
+                                        <span>8 Mar 2024</span>
+                                    </div>
+                                    <a href="news-detail.html" class="text-primary-orange font-medium hover:underline flex items-center">
+                                        Baca
+                                        <i class="fas fa-arrow-right ml-1 text-xs" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Article 4 -->
+                        <article class="bg-white rounded-lg overflow-hidden shadow-md article-card" data-category="healthy">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                     alt="Perawatan kulit sensitif" 
+                                     class="w-full h-48 object-cover">
+                                <span class="absolute top-3 left-3 bg-primary-blue text-white text-xs px-2 py-1 rounded">KULIT SEHAT</span>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-3 hover:text-primary-orange transition-colors cursor-pointer">
+                                    Panduan Lengkap Merawat Kulit Sensitif dengan Benar
+                                </h3>
+                                <p class="text-gray-600 mb-4">Kulit sensitif butuh perhatian khusus. Pelajari cara merawatnya tanpa menyebabkan iritasi...</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                        <span class="flex items-center">
+                                            <i class="far fa-clock mr-1" aria-hidden="true"></i>
+                                            8 min
+                                        </span>
+                                        <span>5 Mar 2024</span>
+                                    </div>
+                                    <a href="news-detail.html" class="text-primary-orange font-medium hover:underline flex items-center">
+                                        Baca
+                                        <i class="fas fa-arrow-right ml-1 text-xs" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Article 5 -->
+                        <article class="bg-white rounded-lg overflow-hidden shadow-md article-card" data-category="tips">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                     alt="Penggunaan sunscreen untuk perlindungan kulit" 
+                                     class="w-full h-48 object-cover">
+                                <span class="absolute top-3 left-3 bg-primary-green text-white text-xs px-2 py-1 rounded">TIPS HARIAN</span>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-3 hover:text-primary-orange transition-colors cursor-pointer">
+                                    Mengapa Sunscreen adalah Investasi Terbaik untuk Kulit Anda
+                                </h3>
+                                <p class="text-gray-600 mb-4">Tabir surya bukan hanya untuk pantai. Ketahui pentingnya sunscreen dalam rutinitas harian Anda...</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                        <span class="flex items-center">
+                                            <i class="far fa-clock mr-1" aria-hidden="true"></i>
+                                            5 min
+                                        </span>
+                                        <span>3 Mar 2024</span>
+                                    </div>
+                                    <a href="news-detail.html" class="text-primary-orange font-medium hover:underline flex items-center">
+                                        Baca
+                                        <i class="fas fa-arrow-right ml-1 text-xs" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Article 6 -->
+                        <article class="bg-white rounded-lg overflow-hidden shadow-md article-card" data-category="ingredient">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                     alt="Perbandingan bahan skincare hyaluronic acid dan niacinamide" 
+                                     class="w-full h-48 object-cover">
+                                <span class="absolute top-3 left-3 bg-primary-pink text-white text-xs px-2 py-1 rounded">INGREDIENT FOCUS</span>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-semibold text-gray-800 mb-3 hover:text-primary-orange transition-colors cursor-pointer">
+                                    Hyaluronic Acid vs Niacinamide: Mana yang Lebih Anda Butuhkan?
+                                </h3>
+                                <p class="text-gray-600 mb-4">Dua bahan skincare populer ini memiliki manfaat berbeda. Pahami mana yang cocok untuk kebutuhan kulit Anda...</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                        <span class="flex items-center">
+                                            <i class="far fa-clock mr-1" aria-hidden="true"></i>
+                                            7 min
+                                        </span>
+                                        <span>1 Mar 2024</span>
+                                    </div>
+                                    <a href="news-detail.html" class="text-primary-orange font-medium hover:underline flex items-center">
+                                        Baca
+                                        <i class="fas fa-arrow-right ml-1 text-xs" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="mt-12 flex justify-center">
+                        <div class="flex items-center space-x-2" role="navigation" aria-label="Pagination">
+                            <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 text-gray-700 hover:border-primary-orange transition-colors" aria-label="Previous page">
+                                <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                            </button>
+                            <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-primary-orange bg-primary-orange text-white" aria-label="Page 1" aria-current="page">1</button>
+                            <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 text-gray-700 hover:border-primary-orange transition-colors" aria-label="Page 2">2</button>
+                            <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 text-gray-700 hover:border-primary-orange transition-colors" aria-label="Page 3">3</button>
+                            <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 text-gray-700 hover:border-primary-orange transition-colors" aria-label="Page 4">4</button>
+                            <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 text-gray-700 hover:border-primary-orange transition-colors" aria-label="Next page">
+                                <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sidebar -->
+                <div class="lg:w-1/4">
+                    <!-- Popular Articles -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-8">
+                        <h3 class="font-semibold text-gray-800 mb-4 text-lg">Artikel Populer</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-3 group cursor-pointer">
+                                <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" 
+                                     alt="Moisturizer untuk kulit berminyak" 
+                                     class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
+                                <div>
+                                    <h4 class="font-medium text-gray-800 group-hover:text-primary-orange transition-colors text-sm leading-tight mb-1">Cara Memilih Moisturizer yang Tepat untuk Kulit Berminyak</h4>
+                                    <span class="text-xs text-gray-500">1.2K views</span>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3 group cursor-pointer">
+                                <img src="https://images.unsplash.com/photo-1570194065650-4222e69b28d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" 
+                                     alt="Bahan skincare wajib" 
+                                     class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
+                                <div>
+                                    <h4 class="font-medium text-gray-800 group-hover:text-primary-orange transition-colors text-sm leading-tight mb-1">5 Bahan Skincare yang Wajib Ada dalam Routine</h4>
+                                    <span class="text-xs text-gray-500">980 views</span>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3 group cursor-pointer">
+                                <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" 
+                                     alt="Double cleansing untuk perawatan kulit" 
+                                     class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
+                                <div>
+                                    <h4 class="font-medium text-gray-800 group-hover:text-primary-orange transition-colors text-sm leading-tight mb-1">Myth vs Fact: Kebenaran tentang Double Cleansing</h4>
+                                    <span class="text-xs text-gray-500">850 views</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Newsletter -->
+                    <div class="bg-primary-orange text-white p-6 rounded-lg">
+                        <h3 class="font-semibold mb-3">Dapatkan Update Terbaru</h3>
+                        <p class="text-white text-opacity-90 text-sm mb-4">Berlangganan newsletter untuk mendapatkan artikel terbaru langsung di inbox Anda</p>
+                        <div class="space-y-3">
+                            <input type="email" placeholder="Alamat email Anda" class="w-full px-3 py-2 rounded text-gray-800 text-sm focus:outline-none">
+                            <button class="w-full bg-primary-red text-white py-2 rounded text-sm font-medium hover:bg-red-800 transition-colors">
+                                Berlangganan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="py-16 bg-primary-orange text-white">
+        <div class="w-full lg:max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-4">Jadilah Bagian dari Komunitas Beauty Insider</h2>
+            <p class="max-w-2xl mx-auto mb-8">Dapatkan tips eksklusif, update trend terbaru, dan promo spesial untuk member kami</p>
+            
+            <div class="max-w-md mx-auto flex flex-col sm:flex-row">
+                <input type="email" placeholder="Alamat email Anda" class="flex-grow px-4 py-3 rounded-t-lg sm:rounded-l-lg sm:rounded-t-none text-gray-800 focus:outline-none">
+                <button class="bg-primary-red px-6 py-3 rounded-b-lg sm:rounded-r-lg sm:rounded-b-none font-medium hover:bg-red-800 transition duration-300">Gabung Sekarang</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12 lg:pb-12 pb-[120px]">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Inclinique<span class="text-primary-red"> Store</span></h3>
+                    <p class="text-gray-400 mb-4">Rangkaian skincare terbaik dengan formula yang aman dan efektif untuk semua jenis kulit.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Produk</h4>
+                    <ul class="space-y-2">
+                        <li><a href="product.html#cleansers" class="text-gray-400 hover:text-white transition-colors">Pembersih</a></li>
+                        <li><a href="product.html#moisturizers" class="text-gray-400 hover:text-white transition-colors">Pelembap</a></li>
+                        <li><a href="product.html#serums" class="text-gray-400 hover:text-white transition-colors">Serum</a></li>
+                        <li><a href="product.html#sunscreens" class="text-gray-400 hover:text-white transition-colors">Tabir Surya</a></li>
+                        <li><a href="product.html#special-care" class="text-gray-400 hover:text-white transition-colors">Perawatan Khusus</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Bantuan</h4>
+                    <ul class="space-y-2">
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition-colors">Kontak Kami</a></li>
+                        <li><a href="shipping.html" class="text-gray-400 hover:text-white transition-colors">Pengiriman</a></li>
+                        <li><a href="returns.html" class="text-gray-400 hover:text-white transition-colors">Pengembalian</a></li>
+                        <li><a href="faq.html" class="text-gray-400 hover:text-white transition-colors">FAQ</a></li>
+                        <li><a href="privacy.html" class="text-gray-400 hover:text-white transition-colors">Kebijakan Privasi</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Kontak</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-3" aria-hidden="true"></i>
+                            <span>Jl. Skincare No. 123, Jakarta</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-3" aria-hidden="true"></i>
+                            <span>+62 857 6711 3554</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3" aria-hidden="true"></i>
+                            <span>info@incliniquestore.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; <span id="current-year">2024</span> Inclinique Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bottom Navigation for Mobile & Tablet -->
+    <nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white py-3 px-6 flex justify-between items-center lg:hidden z-40" aria-label="Mobile Navigation">
+        <a href="index.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-home text-2xl mb-1" aria-hidden="true"></i>
+            <span class="text-xs font-medium">Beranda</span>
+        </a>
+        <a href="product.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-shopping-bag text-2xl mb-1" aria-hidden="true"></i>
+            <span class="text-xs font-medium">Belanja</span>
+        </a>
+        <a href="news.html" class="flex flex-col items-center text-primary-orange transition-colors duration-300 w-full" aria-current="page">
+            <i class="fas fa-blog text-2xl mb-1" aria-hidden="true"></i>
+            <span class="text-xs font-medium">Artikel</span>
+        </a>
+        <a href="account.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-user text-2xl mb-1" aria-hidden="true"></i>
+            <span class="text-xs font-medium">Masuk</span>
+        </a>
+    </nav>
+
+    <script>
+        // JavaScript untuk interaktivitas halaman berita
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // Search functionality
+            const searchToggleMobile = document.getElementById('search-toggle-mobile');
+            const searchToggleDesktop = document.getElementById('search-toggle-desktop');
+            const mobileSearchToggle = document.getElementById('mobile-search-toggle');
+            const closeSearch = document.getElementById('close-search');
+            const searchPopup = document.getElementById('search-popup');
+            const searchOverlay = document.getElementById('search-overlay');
+            const searchInput = document.getElementById('search-input');
+            const searchButton = document.getElementById('search-button');
+            const inlineSearch = document.getElementById('inline-search');
+
+            function openSearch() {
+                searchPopup.classList.add('open');
+                searchOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                // Focus on search input when opened
+                setTimeout(() => {
+                    searchInput.focus();
+                }, 300);
+            }
+
+            function closeSearchFunc() {
+                searchPopup.classList.remove('open');
+                searchOverlay.classList.remove('open');
+                document.body.style.overflow = 'auto';
+            }
+
+            // Event listeners untuk search
+            if (searchToggleMobile) {
+                searchToggleMobile.addEventListener('click', openSearch);
+            }
+            if (searchToggleDesktop) {
+                searchToggleDesktop.addEventListener('click', openSearch);
+            }
+            if (mobileSearchToggle) {
+                mobileSearchToggle.addEventListener('click', function() {
+                    closeSidebarFunc();
+                    setTimeout(openSearch, 300);
+                });
+            }
+            if (closeSearch) {
+                closeSearch.addEventListener('click', closeSearchFunc);
+            }
+            if (searchOverlay) {
+                searchOverlay.addEventListener('click', closeSearchFunc);
+            }
+
+            // Search functionality
+            if (searchButton) {
+                searchButton.addEventListener('click', performSearch);
+            }
+            
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        performSearch();
+                    }
+                });
+            }
+            
+            if (inlineSearch) {
+                inlineSearch.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        openSearch();
+                        searchInput.value = inlineSearch.value;
+                        performSearch();
+                    }
+                });
+            }
+
+            function performSearch() {
+                const query = searchInput.value.trim();
+                const searchEmpty = document.getElementById('search-empty');
+                const searchLoading = document.getElementById('search-loading');
+                const searchNoResults = document.getElementById('search-no-results');
+                const searchResultsContainer = document.getElementById('search-results-container');
+                
+                if (query === '') {
+                    // Show empty state
+                    searchEmpty.classList.remove('hidden');
+                    searchLoading.classList.add('hidden');
+                    searchNoResults.classList.add('hidden');
+                    searchResultsContainer.classList.add('hidden');
+                    return;
+                }
+                
+                // Show loading state
+                searchEmpty.classList.add('hidden');
+                searchLoading.classList.remove('hidden');
+                searchNoResults.classList.add('hidden');
+                searchResultsContainer.classList.add('hidden');
+                
+                // Simulate search with timeout
+                setTimeout(() => {
+                    // Get all articles
+                    const articles = document.querySelectorAll('.article-card');
+                    const results = [];
+                    
+                    articles.forEach(article => {
+                        const title = article.querySelector('h3').textContent.toLowerCase();
+                        const description = article.querySelector('p').textContent.toLowerCase();
+                        const category = article.querySelector('span').textContent.toLowerCase();
+                        
+                        if (title.includes(query.toLowerCase()) || 
+                            description.includes(query.toLowerCase()) || 
+                            category.includes(query.toLowerCase())) {
+                            results.push({
+                                title: article.querySelector('h3').textContent,
+                                description: article.querySelector('p').textContent,
+                                category: article.querySelector('span').textContent,
+                                image: article.querySelector('img').src,
+                                link: article.querySelector('a').href
+                            });
+                        }
+                    });
+                    
+                    // Hide loading
+                    searchLoading.classList.add('hidden');
+                    
+                    if (results.length > 0) {
+                        // Show results
+                        displaySearchResults(results);
+                        searchResultsContainer.classList.remove('hidden');
+                    } else {
+                        // Show no results
+                        searchNoResults.classList.remove('hidden');
+                    }
+                }, 1000);
+            }
+            
+            function displaySearchResults(results) {
+                const container = document.getElementById('search-results-container');
+                container.innerHTML = '';
+                
+                results.forEach(result => {
+                    const articleElement = document.createElement('div');
+                    articleElement.className = 'bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow article-card';
+                    articleElement.innerHTML = `
+                        <div class="flex items-start space-x-4">
+                            <img class="w-16 h-16 object-cover rounded-lg" src="${result.image}" alt="${result.title}">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-gray-800 mb-1">${result.title}</h3>
+                                <p class="text-sm text-gray-600 mb-2">${result.description}</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-primary-orange font-medium">${result.category}</span>
+                                    <a href="${result.link}" class="text-primary-orange text-sm font-medium hover:underline">Baca Selengkapnya</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(articleElement);
+                });
+            }
+
+            // Sidebar toggle functionality
+            const menuToggle = document.getElementById('menu-toggle');
+            const closeSidebar = document.getElementById('close-sidebar');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            
+            function openSidebar() {
+                sidebar.classList.add('open');
+                sidebarOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeSidebarFunc() {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('open');
+                document.body.style.overflow = 'auto';
+            }
+            
+            if (menuToggle) {
+                menuToggle.addEventListener('click', openSidebar);
+            }
+            if (closeSidebar) {
+                closeSidebar.addEventListener('click', closeSidebarFunc);
+            }
+            if (sidebarOverlay) {
+                sidebarOverlay.addEventListener('click', closeSidebarFunc);
+            }
+
+            // Article category filter
+            const articleCategories = document.querySelectorAll('.article-category');
+            const articlesContainer = document.getElementById('articles-container');
+            const articles = document.querySelectorAll('.article-card');
+            
+            articleCategories.forEach(category => {
+                category.addEventListener('click', function() {
+                    // Remove active class from all categories
+                    articleCategories.forEach(cat => {
+                        cat.classList.remove('active');
+                        cat.classList.remove('bg-primary-orange');
+                        cat.classList.remove('text-white');
+                        cat.classList.add('bg-white');
+                        cat.classList.add('text-gray-700');
+                        cat.classList.add('border');
+                        cat.classList.add('border-gray-300');
+                        cat.setAttribute('aria-selected', 'false');
+                    });
+                    
+                    // Add active class to clicked category
+                    this.classList.add('active');
+                    this.classList.add('bg-primary-orange');
+                    this.classList.add('text-white');
+                    this.classList.remove('bg-white');
+                    this.classList.remove('text-gray-700');
+                    this.classList.remove('border');
+                    this.classList.remove('border-gray-300');
+                    this.setAttribute('aria-selected', 'true');
+                    
+                    // Filter articles
+                    const categoryType = this.textContent.trim().toLowerCase();
+                    
+                    if (categoryType === 'semua artikel') {
+                        articles.forEach(article => {
+                            article.style.display = 'block';
+                        });
+                    } else {
+                        articles.forEach(article => {
+                            const articleCategory = article.getAttribute('data-category');
+                            if (categoryType.includes(articleCategory)) {
+                                article.style.display = 'block';
+                            } else {
+                                article.style.display = 'none';
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Article card hover effect
+            const articleCards = document.querySelectorAll('.article-card');
+            
+            articleCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 10px 25px rgba(0,0,0,0.1)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 4px 6px rgba(0,0,0,0.05)';
+                });
+            });
+
+            // Pagination functionality
+            const paginationButtons = document.querySelectorAll('.bottom-nav a, .pagination button');
+            
+            paginationButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // In a real implementation, this would load the appropriate page
+                    console.log('Navigating to:', this.getAttribute('href') || this.getAttribute('aria-label'));
+                });
+            });
+
+            // Smooth scroll untuk anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Close search on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeSearchFunc();
+                    closeSidebarFunc();
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

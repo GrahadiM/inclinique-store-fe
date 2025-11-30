@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="5 Kesalahan Skincare yang Sering Dilakukan di Pagi Hari - Pelajari kesalahan umum dalam rutinitas pagi yang bisa merusak kulit dan cara memperbaikinya untuk hasil yang optimal.">
+    <title>5 Kesalahan Skincare di Pagi Hari | Beauty Insider - Inclinique Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #FEF3E2 0%, #FA812F 100%);
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        .sidebar-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .sidebar-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Search Popup Styles */
+        .search-popup {
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        .search-popup.open {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .search-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .search-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Custom colors */
+        .bg-primary-light {
+            background-color: #FFECC0;
+        }
+        .bg-primary-yellow {
+            background-color: #FAB12F;
+        }
+        .bg-primary-orange {
+            background-color: #FA812F;
+        }
+        .bg-primary-red {
+            background-color: #DD0303;
+        }
+        .text-primary-yellow {
+            color: #FAB12F;
+        }
+        .text-primary-orange {
+            color: #FA812F;
+        }
+        .text-primary-red {
+            color: #DD0303;
+        }
+        .border-primary-orange {
+            border-color: #FA812F;
+        }
+        .hover\:bg-primary-orange:hover {
+            background-color: #FA812F;
+        }
+        .hover\:text-primary-orange:hover {
+            color: #FA812F;
+        }
+
+        /* Article content styles */
+        .article-content h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #1F2937;
+        }
+        .article-content h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #374151;
+        }
+        .article-content p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+            color: #4B5563;
+        }
+        .article-content ul, .article-content ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+        .article-content li {
+            margin-bottom: 0.5rem;
+            line-height: 1.7;
+        }
+        .article-content blockquote {
+            border-left: 4px solid #FA812F;
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: #6B7280;
+        }
+        .article-content img {
+            border-radius: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        /* Share buttons */
+        .share-btn {
+            transition: all 0.3s ease;
+        }
+        .share-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Table of contents */
+        .toc {
+            position: sticky;
+            top: 100px;
+        }
+        .toc-link {
+            transition: all 0.2s ease;
+        }
+        .toc-link:hover, .toc-link.active {
+            color: #FA812F;
+            transform: translateX(5px);
+        }
+
+        /* Loading animation */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .loading-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+<body class="font-sans">
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="w-full lg:max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="index.html" class="text-2xl font-bold text-primary-orange hover:opacity-80 transition-opacity" aria-label="Inclinique Store Home">
+                    Inclinique<span class="text-primary-red"> Store</span>
+                </a>
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden lg:flex space-x-8" aria-label="Main Navigation">
+                <a href="index.html" class="text-gray-700 hover:text-primary-orange font-medium transition-colors">HOME</a>
+                <a href="product.html" class="text-gray-700 hover:text-primary-orange font-medium transition-colors">SHOP ALL</a>
+                <a href="news.html" class="text-primary-orange font-medium border-b-2 border-primary-orange" aria-current="page">BEAUTY INSIDER</a>
+                <a href="about.html" class="text-gray-700 hover:text-primary-orange font-medium transition-colors">ABOUT US</a>
+                <a href="career.html" class="text-gray-700 hover:text-primary-orange font-medium transition-colors">CAREER</a>
+            </nav>
+            
+            <!-- Mobile & Tablet Header Icons -->
+            <div class="flex items-center space-x-4 lg:hidden">
+                <button id="search-toggle-mobile" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="Open Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="cart.html" class="text-gray-700 hover:text-primary-orange relative transition-colors" aria-label="Shopping Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-primary-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                </a>
+                <button id="menu-toggle" class="text-gray-700" aria-label="Open Menu">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Desktop Header Icons -->
+            <div class="hidden lg:flex items-center space-x-4">
+                <button id="search-toggle-desktop" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="Open Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="cart.html" class="text-gray-700 hover:text-primary-orange relative transition-colors" aria-label="Shopping Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-primary-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                </a>
+                <a href="account.html" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="User Account">
+                    <i class="fas fa-user"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Popup -->
+    <div id="search-overlay" class="search-overlay fixed inset-0 bg-black bg-opacity-50 z-50" aria-hidden="true"></div>
+    <div id="search-popup" class="search-popup fixed top-0 left-0 right-0 bg-white z-50 p-6 shadow-lg" role="dialog" aria-modal="true" aria-labelledby="search-title">
+        <div class="w-full lg:max-w-7xl mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 id="search-title" class="text-xl font-bold text-primary-orange">Cari Artikel</h2>
+                <button id="close-search" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="Close Search">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="relative mb-6">
+                <input 
+                    type="text" 
+                    id="search-input"
+                    placeholder="Ketik judul artikel yang dicari..."
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange focus:ring-opacity-20 transition-colors"
+                    aria-describedby="search-help"
+                >
+                <button id="search-button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-primary-orange transition-colors" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div id="search-help" class="text-sm text-gray-500 mb-4">Masukkan kata kunci judul artikel untuk mencari</div>
+            
+            <div id="search-results" class="max-h-96 overflow-y-auto">
+                <div id="search-empty" class="text-center py-8 text-gray-500">
+                    <i class="fas fa-search text-4xl mb-4 opacity-50"></i>
+                    <p>Ketik judul artikel untuk memulai pencarian</p>
+                </div>
+                
+                <div id="search-loading" class="hidden text-center py-8">
+                    <i class="fas fa-spinner fa-spin text-2xl text-primary-orange mb-4"></i>
+                    <p>Mencari artikel...</p>
+                </div>
+                
+                <div id="search-no-results" class="hidden text-center py-8 text-gray-500">
+                    <i class="fas fa-times-circle text-4xl mb-4 opacity-50"></i>
+                    <p>Artikel tidak ditemukan</p>
+                    <p class="text-sm">Coba gunakan kata kunci yang berbeda</p>
+                </div>
+                
+                <div id="search-results-container" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Search results will be populated here by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Menu for Mobile & Tablet -->
+    <div id="sidebar-overlay" class="sidebar-overlay fixed inset-0 bg-black bg-opacity-50 z-50" aria-hidden="true"></div>
+    <div id="sidebar" class="sidebar fixed top-0 left-0 h-full w-64 bg-white z-50 p-6" role="dialog" aria-modal="true" aria-labelledby="sidebar-title">
+        <div class="flex justify-between items-center mb-8">
+            <h2 id="sidebar-title" class="text-xl font-bold text-primary-orange">Inclinique<span class="text-primary-red"> Store</span></h2>
+            <button id="close-sidebar" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="Close Menu">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <nav class="space-y-6" aria-label="Mobile Navigation">
+            <a href="index.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-home mr-3" aria-hidden="true"></i>HOME
+            </a>
+            <a href="product.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-shopping-bag mr-3" aria-hidden="true"></i>SHOP ALL
+            </a>
+            <a href="news.html" class="block text-primary-orange font-medium py-2 border-b border-gray-100" aria-current="page">
+                <i class="fas fa-blog mr-3" aria-hidden="true"></i>BEAUTY INSIDER
+            </a>
+            <a href="about.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-info-circle mr-3" aria-hidden="true"></i>ABOUT US
+            </a>
+            <a href="career.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-envelope mr-3" aria-hidden="true"></i>CAREER
+            </a>
+            <button id="mobile-search-toggle" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors w-full text-left">
+                <i class="fas fa-search mr-3" aria-hidden="true"></i>Pencarian
+            </button>
+            <a href="account.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-user mr-3" aria-hidden="true"></i>Akun Saya
+            </a>
+        </nav>
+        
+        <div class="mt-8 pt-6 border-t border-gray-200">
+            <h3 class="font-semibold text-gray-700 mb-4">Kategori Artikel</h3>
+            <div class="space-y-3">
+                <a href="news.html#tips" class="block text-gray-600 hover:text-primary-orange transition-colors">Tips Skincare</a>
+                <a href="news.html#trend" class="block text-gray-600 hover:text-primary-orange transition-colors">Trend Terbaru</a>
+                <a href="news.html#review" class="block text-gray-600 hover:text-primary-orange transition-colors">Product Review</a>
+                <a href="news.html#healthy" class="block text-gray-600 hover:text-primary-orange transition-colors">Kulit Sehat</a>
+                <a href="news.html#ingredient" class="block text-gray-600 hover:text-primary-orange transition-colors">Ingredient Focus</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Breadcrumb -->
+    <section class="py-4 bg-gray-50">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <nav class="flex" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    <li class="inline-flex items-center">
+                        <a href="index.html" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary-orange">
+                            <i class="fas fa-home mr-2"></i>
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                            <a href="news.html" class="ml-1 md:ml-2 text-sm font-medium text-gray-700 hover:text-primary-orange md:ml-2">Beauty Insider</a>
+                        </div>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                            <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">5 Kesalahan Skincare di Pagi Hari</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Article Detail -->
+    <section class="py-8 bg-white">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Main Article Content -->
+                <div class="lg:w-2/3">
+                    <article class="bg-white rounded-lg">
+                        <!-- Article Header -->
+                        <header class="mb-8">
+                            <span class="inline-block bg-primary-orange text-white px-3 py-1 rounded-full text-sm font-medium mb-4">TIPS HARIAN</span>
+                            <h1 class="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">5 Kesalahan Skincare yang Sering Dilakukan di Pagi Hari</h1>
+                            
+                            <div class="flex flex-wrap items-center gap-4 text-gray-600 mb-6">
+                                <div class="flex items-center">
+                                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" 
+                                         alt="Dr. Sarah Beauty" 
+                                         class="w-10 h-10 rounded-full mr-3 object-cover">
+                                    <div>
+                                        <p class="font-medium">Dr. Sarah Beauty</p>
+                                        <p class="text-sm">Dermatologis & Beauty Expert</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="far fa-clock mr-2"></i>
+                                    <span>5 menit membaca</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="far fa-calendar mr-2"></i>
+                                    <span>15 Mar 2024</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="far fa-eye mr-2"></i>
+                                    <span>1.2K views</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Featured Image -->
+                            <div class="relative rounded-xl overflow-hidden mb-6">
+                                <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                                     alt="Wanita sedang melakukan perawatan kulit di pagi hari" 
+                                     class="w-full h-64 lg:h-96 object-cover">
+                                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6 text-white">
+                                    <p class="text-sm">Rutinitas pagi yang tepat dapat membuat perbedaan besar untuk kesehatan kulit Anda</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Social Share -->
+                            <div class="flex items-center justify-between py-4 border-t border-b border-gray-200">
+                                <div class="flex items-center">
+                                    <span class="text-gray-700 mr-3">Bagikan:</span>
+                                    <div class="flex space-x-2">
+                                        <a href="#" class="share-btn w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700">
+                                            <i class="fab fa-facebook-f text-xs"></i>
+                                        </a>
+                                        <a href="#" class="share-btn w-8 h-8 rounded-full bg-blue-400 text-white flex items-center justify-center hover:bg-blue-500">
+                                            <i class="fab fa-twitter text-xs"></i>
+                                        </a>
+                                        <a href="#" class="share-btn w-8 h-8 rounded-full bg-pink-600 text-white flex items-center justify-center hover:bg-pink-700">
+                                            <i class="fab fa-instagram text-xs"></i>
+                                        </a>
+                                        <a href="#" class="share-btn w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center hover:bg-green-600">
+                                            <i class="fab fa-whatsapp text-xs"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <button class="text-gray-500 hover:text-primary-orange transition-colors">
+                                    <i class="far fa-bookmark"></i>
+                                </button>
+                            </div>
+                        </header>
+                        
+                        <!-- Article Content -->
+                        <div class="article-content prose max-w-none">
+                            <p class="text-lg font-medium text-gray-700 mb-6">Rutinitas skincare di pagi hari sangat penting untuk melindungi kulit dari polusi, sinar UV, dan stres sepanjang hari. Namun, banyak orang tanpa sadar melakukan kesalahan yang justru merusak kulit. Berikut adalah 5 kesalahan skincare pagi yang sering dilakukan dan cara memperbaikinya.</p>
+                            
+                            <h2 id="section1">1. Langsung Mencuci Muka dengan Air Panas</h2>
+                            <p>Banyak orang berpikir bahwa air panas dapat membersihkan wajah lebih efektif. Faktanya, air panas justru dapat mengikis minyak alami kulit yang berfungsi sebagai pelindung.</p>
+                            
+                            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 my-6">
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-lightbulb text-yellow-400"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm text-yellow-700">
+                                            <strong>Tips:</strong> Gunakan air hangat suam-suam kuku atau air dingin untuk mencuci muka di pagi hari. Air dingin dapat membantu menutup pori-pori dan mengurangi pembengkakan.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                 alt="Wanita mencuci muka dengan air" 
+                                 class="w-full rounded-lg">
+                            
+                            <h2 id="section2">2. Melewatkan Toner</h2>
+                            <p>Toner sering dianggap sebagai langkah tambahan yang tidak penting. Padahal, toner membantu menyeimbangkan pH kulit setelah pembersihan dan mempersiapkan kulit untuk menyerap produk perawatan berikutnya dengan lebih efektif.</p>
+                            
+                            <div class="bg-blue-50 border-l-4 border-blue-400 p-4 my-6">
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-info-circle text-blue-400"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm text-blue-700">
+                                            <strong>Fakta:</strong> Kulit memiliki pH alami sekitar 5.5. Pembersih wajah dapat mengganggu keseimbangan ini, dan toner membantu mengembalikannya.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h2 id="section3">3. Tidak Menggunakan Vitamin C</h2>
+                            <p>Vitamin C adalah antioksidan kuat yang melindungi kulit dari radikal bebas dan polusi. Mengaplikasikannya di pagi hari dapat meningkatkan efektivitas tabir surya dan mencegah penuaan dini.</p>
+                            
+                            <blockquote>
+                                "Serum vitamin C di pagi hari adalah investasi terbaik untuk melindungi kulit dari kerusakan lingkungan sepanjang hari." - Dr. Sarah Beauty
+                            </blockquote>
+                            
+                            <h2 id="section4">4. Mengaplikasikan Tabir Surya dengan Cara yang Salah</h2>
+                            <p>Banyak orang hanya mengaplikasikan tabir surya dalam jumlah sedikit atau melupakan area tertentu seperti telinga dan leher. Tabir surya harus diaplikasikan dalam jumlah cukup (sekitar dua jari untuk wajah dan leher) dan diulang setiap 2-3 jam jika beraktivitas di luar ruangan.</p>
+                            
+                            <img src="https://images.unsplash.com/photo-1556228578-9f6ac5e4d0d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                 alt="Aplikasi tabir surya pada wajah" 
+                                 class="w-full rounded-lg">
+                            
+                            <h2 id="section5">5. Terlalu Banyak Produk dalam Waktu Singkat</h2>
+                            <p>Mengaplikasikan terlalu banyak produk dalam waktu singkat tanpa memberikan jeda untuk penyerapan dapat mengurangi efektivitas masing-masing produk. Setiap produk membutuhkan waktu untuk diserap kulit sebelum mengaplikasikan produk berikutnya.</p>
+                            
+                            <div class="bg-green-50 border-l-4 border-green-400 p-4 my-6">
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-check-circle text-green-400"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm text-green-700">
+                                            <strong>Saran:</strong> Beri jeda 1-2 menit antara aplikasi setiap produk skincare untuk memastikan penyerapan optimal.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h3>Rutinitas Pagi yang Disarankan</h3>
+                            <ol class="list-decimal pl-5">
+                                <li>Pembersih wajah lemah</li>
+                                <li>Toner untuk menyeimbangkan pH</li>
+                                <li>Serum vitamin C</li>
+                                <li>Moisturizer</li>
+                                <li>Tabir surya (langkah terpenting!)</li>
+                            </ol>
+                            
+                            <div class="bg-primary-orange text-white p-6 rounded-lg mt-8">
+                                <h3 class="text-xl font-bold mb-2">Ingin Konsultasi Lebih Lanjut?</h3>
+                                <p class="mb-4">Dapatkan rekomendasi produk yang tepat untuk jenis kulit Anda dengan berkonsultasi gratis dengan beauty advisor kami.</p>
+                                <a href="consultation.html" class="inline-flex items-center bg-white text-primary-orange px-4 py-2 rounded font-semibold hover:bg-gray-100 transition-colors">
+                                    Jadwalkan Konsultasi
+                                    <i class="fas fa-arrow-right ml-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Article Tags -->
+                        <div class="mt-8 pt-6 border-t border-gray-200">
+                            <h3 class="font-semibold text-gray-800 mb-3">Tags:</h3>
+                            <div class="flex flex-wrap gap-2">
+                                <a href="news.html#skincare" class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-primary-orange hover:text-white transition-colors">skincare</a>
+                                <a href="news.html#rutinitas-pagi" class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-primary-orange hover:text-white transition-colors">rutinitas pagi</a>
+                                <a href="news.html#tips-kecantikan" class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-primary-orange hover:text-white transition-colors">tips kecantikan</a>
+                                <a href="news.html#perawatan-kulit" class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-primary-orange hover:text-white transition-colors">perawatan kulit</a>
+                                <a href="news.html#kesehatan-kulit" class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-primary-orange hover:text-white transition-colors">kesehatan kulit</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Author Bio -->
+                        <div class="mt-8 pt-6 border-t border-gray-200">
+                            <div class="flex items-start">
+                                <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" 
+                                     alt="Dr. Sarah Beauty" 
+                                     class="w-16 h-16 rounded-full object-cover mr-4">
+                                <div>
+                                    <h3 class="font-semibold text-gray-800">Tentang Penulis</h3>
+                                    <p class="text-gray-600 mt-1">Dr. Sarah Beauty adalah dermatologis bersertifikat dengan pengalaman lebih dari 10 tahun di industri kecantikan. Ia memiliki spesialisasi dalam perawatan kulit dan telah membantu ribuan pasien mencapai kulit sehat dan bercahaya.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <!-- Related Products -->
+                    <div class="mt-12">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6">Rekomendasi Produk untuk Rutinitas Pagi</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Product 1 -->
+                            <div class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+                                <div class="relative">
+                                    <img src="https://images.unsplash.com/photo-1556228578-9f6ac5e4d0d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                         alt="Serum Vitamin C" 
+                                         class="w-full h-48 object-cover">
+                                    <span class="absolute top-3 right-3 bg-primary-red text-white text-xs px-2 py-1 rounded">BESTSELLER</span>
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-gray-800 mb-2">Brightening Vitamin C Serum</h3>
+                                    <p class="text-gray-600 text-sm mb-3">Serum dengan 15% vitamin C untuk kulit cerah dan terlindungi dari polusi.</p>
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-bold text-primary-orange">Rp 249.000</span>
+                                        <button class="bg-primary-orange text-white px-3 py-1 rounded text-sm hover:bg-orange-600 transition-colors">+ Keranjang</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Product 2 -->
+                            <div class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+                                <div class="relative">
+                                    <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                         alt="Sunscreen" 
+                                         class="w-full h-48 object-cover">
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-gray-800 mb-2">Daily Protection Sunscreen SPF 50+</h3>
+                                    <p class="text-gray-600 text-sm mb-3">Tabir surya ringan dengan perlindungan broad spectrum untuk kulit wajah.</p>
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-bold text-primary-orange">Rp 189.000</span>
+                                        <button class="bg-primary-orange text-white px-3 py-1 rounded text-sm hover:bg-orange-600 transition-colors">+ Keranjang</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Product 3 -->
+                            <div class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+                                <div class="relative">
+                                    <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                         alt="Gentle Cleanser" 
+                                         class="w-full h-48 object-cover">
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-gray-800 mb-2">Gentle Foaming Cleanser</h3>
+                                    <p class="text-gray-600 text-sm mb-3">Pembersih wajah lembut dengan pH balanced untuk semua jenis kulit.</p>
+                                    <div class="flex items-center justify-between">
+                                        <span class="font-bold text-primary-orange">Rp 129.000</span>
+                                        <button class="bg-primary-orange text-white px-3 py-1 rounded text-sm hover:bg-orange-600 transition-colors">+ Keranjang</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sidebar -->
+                <div class="lg:w-1/3">
+                    <!-- Table of Contents -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-8 sticky top-24">
+                        <h3 class="font-semibold text-gray-800 mb-4 text-lg">Daftar Isi</h3>
+                        <nav class="space-y-2">
+                            <a href="#section1" class="toc-link block text-gray-600 hover:text-primary-orange transition-colors py-1 border-l-2 border-transparent hover:border-primary-orange pl-3">1. Langsung Mencuci Muka dengan Air Panas</a>
+                            <a href="#section2" class="toc-link block text-gray-600 hover:text-primary-orange transition-colors py-1 border-l-2 border-transparent hover:border-primary-orange pl-3">2. Melewatkan Toner</a>
+                            <a href="#section3" class="toc-link block text-gray-600 hover:text-primary-orange transition-colors py-1 border-l-2 border-transparent hover:border-primary-orange pl-3">3. Tidak Menggunakan Vitamin C</a>
+                            <a href="#section4" class="toc-link block text-gray-600 hover:text-primary-orange transition-colors py-1 border-l-2 border-transparent hover:border-primary-orange pl-3">4. Mengaplikasikan Tabir Surya dengan Cara yang Salah</a>
+                            <a href="#section5" class="toc-link block text-gray-600 hover:text-primary-orange transition-colors py-1 border-l-2 border-transparent hover:border-primary-orange pl-3">5. Terlalu Banyak Produk dalam Waktu Singkat</a>
+                        </nav>
+                    </div>
+                    
+                    <!-- Popular Articles -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-8">
+                        <h3 class="font-semibold text-gray-800 mb-4 text-lg">Artikel Terkait</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-3 group cursor-pointer">
+                                <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" 
+                                     alt="Rutinitas Malam" 
+                                     class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
+                                <div>
+                                    <h4 class="font-medium text-gray-800 group-hover:text-primary-orange transition-colors text-sm leading-tight mb-1">Rutinitas Malam yang Wajib Dilakukan untuk Kulit Glowing</h4>
+                                    <span class="text-xs text-gray-500">4 min read</span>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3 group cursor-pointer">
+                                <img src="https://images.unsplash.com/photo-1556228578-9f6ac5e4d0d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" 
+                                     alt="Review Serum Vitamin C" 
+                                     class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
+                                <div>
+                                    <h4 class="font-medium text-gray-800 group-hover:text-primary-orange transition-colors text-sm leading-tight mb-1">Review Mendalam: Serum Vitamin C Terbaik 2024</h4>
+                                    <span class="text-xs text-gray-500">7 min read</span>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3 group cursor-pointer">
+                                <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" 
+                                     alt="Sunscreen" 
+                                     class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
+                                <div>
+                                    <h4 class="font-medium text-gray-800 group-hover:text-primary-orange transition-colors text-sm leading-tight mb-1">Mengapa Sunscreen adalah Investasi Terbaik untuk Kulit Anda</h4>
+                                    <span class="text-xs text-gray-500">5 min read</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Newsletter -->
+                    <div class="bg-primary-orange text-white p-6 rounded-lg">
+                        <h3 class="font-semibold mb-3">Dapatkan Update Terbaru</h3>
+                        <p class="text-white text-opacity-90 text-sm mb-4">Berlangganan newsletter untuk mendapatkan artikel terbaru langsung di inbox Anda</p>
+                        <div class="space-y-3">
+                            <input type="email" placeholder="Alamat email Anda" class="w-full px-3 py-2 rounded text-gray-800 text-sm focus:outline-none">
+                            <button class="w-full bg-primary-red text-white py-2 rounded text-sm font-medium hover:bg-red-800 transition-colors">
+                                Berlangganan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="py-16 bg-primary-orange text-white">
+        <div class="w-full lg:max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-4">Jadilah Bagian dari Komunitas Beauty Insider</h2>
+            <p class="max-w-2xl mx-auto mb-8">Dapatkan tips eksklusif, update trend terbaru, dan promo spesial untuk member kami</p>
+            
+            <div class="max-w-md mx-auto flex flex-col sm:flex-row">
+                <input type="email" placeholder="Alamat email Anda" class="flex-grow px-4 py-3 rounded-t-lg sm:rounded-l-lg sm:rounded-t-none text-gray-800 focus:outline-none">
+                <button class="bg-primary-red px-6 py-3 rounded-b-lg sm:rounded-r-lg sm:rounded-b-none font-medium hover:bg-red-800 transition duration-300">Gabung Sekarang</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12 lg:pb-12 pb-[120px]">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Inclinique<span class="text-primary-red"> Store</span></h3>
+                    <p class="text-gray-400 mb-4">Rangkaian skincare terbaik dengan formula yang aman dan efektif untuk semua jenis kulit.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Produk</h4>
+                    <ul class="space-y-2">
+                        <li><a href="product.html#cleansers" class="text-gray-400 hover:text-white transition-colors">Pembersih</a></li>
+                        <li><a href="product.html#moisturizers" class="text-gray-400 hover:text-white transition-colors">Pelembap</a></li>
+                        <li><a href="product.html#serums" class="text-gray-400 hover:text-white transition-colors">Serum</a></li>
+                        <li><a href="product.html#sunscreens" class="text-gray-400 hover:text-white transition-colors">Tabir Surya</a></li>
+                        <li><a href="product.html#special-care" class="text-gray-400 hover:text-white transition-colors">Perawatan Khusus</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Bantuan</h4>
+                    <ul class="space-y-2">
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition-colors">Kontak Kami</a></li>
+                        <li><a href="shipping.html" class="text-gray-400 hover:text-white transition-colors">Pengiriman</a></li>
+                        <li><a href="returns.html" class="text-gray-400 hover:text-white transition-colors">Pengembalian</a></li>
+                        <li><a href="faq.html" class="text-gray-400 hover:text-white transition-colors">FAQ</a></li>
+                        <li><a href="privacy.html" class="text-gray-400 hover:text-white transition-colors">Kebijakan Privasi</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Kontak</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-3" aria-hidden="true"></i>
+                            <span>Jl. Skincare No. 123, Jakarta</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-3" aria-hidden="true"></i>
+                            <span>+62 857 6711 3554</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3" aria-hidden="true"></i>
+                            <span>info@incliniquestore.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; <span id="current-year">2024</span> Inclinique Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bottom Navigation for Mobile & Tablet -->
+    <nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white py-3 px-6 flex justify-between items-center lg:hidden z-40" aria-label="Mobile Navigation">
+        <a href="index.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-home text-2xl mb-1" aria-hidden="true"></i>
+            <span class="text-xs font-medium">Beranda</span>
+        </a>
+        <a href="product.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-shopping-bag text-2xl mb-1" aria-hidden="true"></i>
+            <span class="text-xs font-medium">Belanja</span>
+        </a>
+        <a href="news.html" class="flex flex-col items-center text-primary-orange transition-colors duration-300 w-full" aria-current="page">
+            <i class="fas fa-blog text-2xl mb-1" aria-hidden="true"></i>
+            <span class="text-xs font-medium">Artikel</span>
+        </a>
+        <a href="account.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-user text-2xl mb-1" aria-hidden="true"></i>
+            <span class="text-xs font-medium">Masuk</span>
+        </a>
+    </nav>
+
+    <script>
+        // JavaScript untuk interaktivitas halaman detail berita
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // Search functionality
+            const searchToggleMobile = document.getElementById('search-toggle-mobile');
+            const searchToggleDesktop = document.getElementById('search-toggle-desktop');
+            const mobileSearchToggle = document.getElementById('mobile-search-toggle');
+            const closeSearch = document.getElementById('close-search');
+            const searchPopup = document.getElementById('search-popup');
+            const searchOverlay = document.getElementById('search-overlay');
+            const searchInput = document.getElementById('search-input');
+            const searchButton = document.getElementById('search-button');
+
+            function openSearch() {
+                searchPopup.classList.add('open');
+                searchOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                // Focus on search input when opened
+                setTimeout(() => {
+                    searchInput.focus();
+                }, 300);
+            }
+
+            function closeSearchFunc() {
+                searchPopup.classList.remove('open');
+                searchOverlay.classList.remove('open');
+                document.body.style.overflow = 'auto';
+            }
+
+            // Event listeners untuk search
+            if (searchToggleMobile) {
+                searchToggleMobile.addEventListener('click', openSearch);
+            }
+            if (searchToggleDesktop) {
+                searchToggleDesktop.addEventListener('click', openSearch);
+            }
+            if (mobileSearchToggle) {
+                mobileSearchToggle.addEventListener('click', function() {
+                    closeSidebarFunc();
+                    setTimeout(openSearch, 300);
+                });
+            }
+            if (closeSearch) {
+                closeSearch.addEventListener('click', closeSearchFunc);
+            }
+            if (searchOverlay) {
+                searchOverlay.addEventListener('click', closeSearchFunc);
+            }
+
+            // Sidebar toggle functionality
+            const menuToggle = document.getElementById('menu-toggle');
+            const closeSidebar = document.getElementById('close-sidebar');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            
+            function openSidebar() {
+                sidebar.classList.add('open');
+                sidebarOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeSidebarFunc() {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('open');
+                document.body.style.overflow = 'auto';
+            }
+            
+            if (menuToggle) {
+                menuToggle.addEventListener('click', openSidebar);
+            }
+            if (closeSidebar) {
+                closeSidebar.addEventListener('click', closeSidebarFunc);
+            }
+            if (sidebarOverlay) {
+                sidebarOverlay.addEventListener('click', closeSidebarFunc);
+            }
+
+            // Table of contents highlighting
+            const tocLinks = document.querySelectorAll('.toc-link');
+            const sections = document.querySelectorAll('h2[id]');
+            
+            // Highlight TOC on scroll
+            function highlightTOC() {
+                let currentSection = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 100;
+                    if (window.scrollY >= sectionTop) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+                
+                tocLinks.forEach(link => {
+                    link.classList.remove('active', 'border-primary-orange');
+                    if (link.getAttribute('href') === `#${currentSection}`) {
+                        link.classList.add('active', 'border-primary-orange');
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', highlightTOC);
+            
+            // Smooth scroll for TOC links
+            tocLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    
+                    if (targetSection) {
+                        window.scrollTo({
+                            top: targetSection.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Share buttons functionality
+            const shareButtons = document.querySelectorAll('.share-btn');
+            
+            shareButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const platform = this.querySelector('i').classList[1];
+                    
+                    // In a real implementation, this would open the appropriate share dialog
+                    console.log(`Sharing on ${platform}`);
+                    
+                    // Show a temporary message
+                    const originalHTML = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check"></i>';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalHTML;
+                    }, 1000);
+                });
+            });
+
+            // Add to cart buttons
+            const addToCartButtons = document.querySelectorAll('button:contains("+ Keranjang")');
+            
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productName = this.closest('.p-4').querySelector('h3').textContent;
+                    
+                    // In a real implementation, this would add the product to cart
+                    console.log(`Added ${productName} to cart`);
+                    
+                    // Show a temporary message
+                    const originalText = this.textContent;
+                    this.textContent = 'Ditambahkan!';
+                    this.classList.add('bg-green-500');
+                    
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                        this.classList.remove('bg-green-500');
+                    }, 1500);
+                });
+            });
+
+            // Close search on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeSearchFunc();
+                    closeSidebarFunc();
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

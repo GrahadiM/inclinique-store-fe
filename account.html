@@ -1,0 +1,1942 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Profile Pengguna - Inclinique Store. Kelola akun, pesanan, dan preferensi skincare Anda di satu tempat.">
+    <title>Profile Saya - Inclinique Store | Kelola Akun dan Pesanan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #FEF3E2 0%, #FA812F 100%);
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        .sidebar-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .sidebar-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Search Popup Styles */
+        .search-popup {
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        .search-popup.open {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .search-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .search-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Custom colors */
+        .bg-primary-light {
+            background-color: #FFECC0;
+        }
+        .bg-primary-yellow {
+            background-color: #FAB12F;
+        }
+        .bg-primary-orange {
+            background-color: #FA812F;
+        }
+        .bg-primary-red {
+            background-color: #DD0303;
+        }
+        .text-primary-yellow {
+            color: #FAB12F;
+        }
+        .text-primary-orange {
+            color: #FA812F;
+        }
+        .text-primary-red {
+            color: #DD0303;
+        }
+        .border-primary-orange {
+            border-color: #FA812F;
+        }
+        .hover\:bg-primary-orange:hover {
+            background-color: #FA812F;
+        }
+        .hover\:text-primary-orange:hover {
+            color: #FA812F;
+        }
+
+        /* Profile Sidebar */
+        .profile-sidebar {
+            transition: all 0.3s ease;
+        }
+        .profile-menu-item {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        .profile-menu-item.active {
+            background-color: #FEF3E2;
+            border-left-color: #FA812F;
+            color: #FA812F;
+        }
+        .profile-menu-item:hover:not(.active) {
+            background-color: #f9fafb;
+            border-left-color: #FAB12F;
+        }
+
+        /* Stats Cards */
+        .stat-card {
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Order Status */
+        .order-status {
+            position: relative;
+        }
+        .order-status::before {
+            content: '';
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #e5e7eb;
+        }
+        .order-status.completed::before {
+            background-color: #10B981;
+        }
+        .order-status.processing::before {
+            background-color: #F59E0B;
+        }
+        .order-status.shipped::before {
+            background-color: #3B82F6;
+        }
+        .order-status.cancelled::before {
+            background-color: #EF4444;
+        }
+
+        /* Skin Analysis */
+        .skin-metric {
+            transition: all 0.3s ease;
+        }
+        .skin-metric:hover {
+            transform: scale(1.05);
+        }
+        .skin-type-card, .skin-condition-card, .skin-goal-card {
+            transition: all 0.3s ease;
+        }
+
+        .skin-type-card:hover, .skin-condition-card:hover, .skin-goal-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .routine-step {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .routine-step:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Animation for analysis update */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .updating {
+            animation: pulse 1s ease-in-out;
+        }
+
+        /* Loading animation */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .loading-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Form Styles */
+        .form-input:focus {
+            box-shadow: 0 0 0 3px rgba(250, 129, 47, 0.1);
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="w-full lg:max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="index.html" class="text-2xl font-bold text-primary-orange hover:opacity-80 transition-opacity" aria-label="Inclinique Store Home">
+                    Inclinique<span class="text-primary-red"> Store</span>
+                </a>
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden lg:flex space-x-8" aria-label="Main Navigation">
+                <a href="index.html" class="text-gray-700 hover:text-primary-orange font-medium transition-colors">HOME</a>
+                <a href="product.html" class="text-gray-700 hover:text-primary-orange font-medium transition-colors">SHOP ALL</a>
+                <a href="news.html" class="text-gray-700 hover:text-primary-orange font-medium transition-colors">BEAUTY INSIDER</a>
+                <a href="about.html" class="text-gray-700 hover:text-primary-orange font-medium transition-colors">ABOUT US</a>
+                <a href="career.html" class="text-gray-700 hover:text-primary-orange font-medium transition-colors">CAREER</a>
+            </nav>
+            
+            <!-- Mobile & Tablet Header Icons -->
+            <div class="flex items-center space-x-4 lg:hidden">
+                <button id="search-toggle-mobile" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="Open Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="cart.html" class="text-gray-700 hover:text-primary-orange relative transition-colors" aria-label="Shopping Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-primary-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                </a>
+                <button id="menu-toggle" class="text-gray-700" aria-label="Open Menu">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Desktop Header Icons -->
+            <div class="hidden lg:flex items-center space-x-4">
+                <button id="search-toggle-desktop" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="Open Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="cart.html" class="text-gray-700 hover:text-primary-orange relative transition-colors" aria-label="Shopping Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-primary-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                </a>
+                <a href="profile.html" class="text-primary-orange transition-colors flex items-center" aria-label="User Profile">
+                    <i class="fas fa-user"></i>
+                    <span class="ml-1 font-medium">Sarah</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Popup -->
+    <div id="search-overlay" class="search-overlay fixed inset-0 bg-black bg-opacity-50 z-50" aria-hidden="true"></div>
+    <div id="search-popup" class="search-popup fixed top-0 left-0 right-0 bg-white z-50 p-6 shadow-lg" role="dialog" aria-modal="true" aria-labelledby="search-title">
+        <div class="w-full lg:max-w-7xl mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 id="search-title" class="text-xl font-bold text-primary-orange">Cari Produk</h2>
+                <button id="close-search" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="Close Search">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="relative mb-6">
+                <input 
+                    type="text" 
+                    id="search-input"
+                    placeholder="Ketik nama produk yang dicari..."
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange focus:ring-opacity-20 transition-colors"
+                    aria-describedby="search-help"
+                >
+                <button id="search-button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-primary-orange transition-colors" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div id="search-help" class="text-sm text-gray-500 mb-4">Masukkan kata kunci produk untuk mencari</div>
+            
+            <div id="search-results" class="max-h-96 overflow-y-auto">
+                <div id="search-empty" class="text-center py-8 text-gray-500">
+                    <i class="fas fa-search text-4xl mb-4 opacity-50"></i>
+                    <p>Ketik nama produk untuk memulai pencarian</p>
+                </div>
+                
+                <div id="search-loading" class="hidden text-center py-8">
+                    <i class="fas fa-spinner fa-spin text-2xl text-primary-orange mb-4"></i>
+                    <p>Mencari produk...</p>
+                </div>
+                
+                <div id="search-no-results" class="hidden text-center py-8 text-gray-500">
+                    <i class="fas fa-times-circle text-4xl mb-4 opacity-50"></i>
+                    <p>Produk tidak ditemukan</p>
+                    <p class="text-sm">Coba gunakan kata kunci yang berbeda</p>
+                </div>
+                
+                <div id="search-results-container" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Search results will be populated here by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Menu for Mobile & Tablet -->
+    <div id="sidebar-overlay" class="sidebar-overlay fixed inset-0 bg-black bg-opacity-50 z-50" aria-hidden="true"></div>
+    <div id="sidebar" class="sidebar fixed top-0 left-0 h-full w-64 bg-white z-50 p-6" role="dialog" aria-modal="true" aria-labelledby="sidebar-title">
+        <div class="flex justify-between items-center mb-8">
+            <h2 id="sidebar-title" class="text-xl font-bold text-primary-orange">Inclinique<span class="text-primary-red"> Store</span></h2>
+            <button id="close-sidebar" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="Close Menu">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <nav class="space-y-6" aria-label="Mobile Navigation">
+            <a href="index.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-home mr-3" aria-hidden="true"></i>HOME
+            </a>
+            <a href="product.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-shopping-bag mr-3" aria-hidden="true"></i>SHOP ALL
+            </a>
+            <a href="news.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-blog mr-3" aria-hidden="true"></i>BEAUTY INSIDER
+            </a>
+            <a href="about.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-info-circle mr-3" aria-hidden="true"></i>ABOUT US
+            </a>
+            <a href="career.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-envelope mr-3" aria-hidden="true"></i>CAREER
+            </a>
+            <button id="mobile-search-toggle" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors w-full text-left">
+                <i class="fas fa-search mr-3" aria-hidden="true"></i>Pencarian
+            </button>
+            <a href="profile.html" class="block text-primary-orange font-medium py-2 border-b border-gray-100" aria-current="page">
+                <i class="fas fa-user mr-3" aria-hidden="true"></i>Profil Saya
+            </a>
+        </nav>
+        
+        <div class="mt-8 pt-6 border-t border-gray-200">
+            <h3 class="font-semibold text-gray-700 mb-4">Kategori Produk</h3>
+            <div class="space-y-3">
+                <a href="product.html#cleansers" class="block text-gray-600 hover:text-primary-orange transition-colors">Pembersih</a>
+                <a href="product.html#moisturizers" class="block text-gray-600 hover:text-primary-orange transition-colors">Pelembap</a>
+                <a href="product.html#serums" class="block text-gray-600 hover:text-primary-orange transition-colors">Serum</a>
+                <a href="product.html#sunscreens" class="block text-gray-600 hover:text-primary-orange transition-colors">Tabir Surya</a>
+                <a href="product.html#special-care" class="block text-gray-600 hover:text-primary-orange transition-colors">Perawatan Khusus</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Header -->
+    <section class="py-8 bg-white border-b">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" 
+                             alt="Profile Picture" 
+                             class="w-16 h-16 rounded-full object-cover border-4 border-primary-light">
+                        <button class="absolute bottom-0 right-0 bg-primary-orange text-white p-1 rounded-full">
+                            <i class="fas fa-camera text-xs"></i>
+                        </button>
+                    </div>
+                    <div class="ml-4">
+                        <h1 class="text-2xl font-bold text-gray-800">Sarah Johnson</h1>
+                        <p class="text-gray-600">Member sejak April 2022</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="bg-primary-light px-4 py-2 rounded-lg">
+                        <p class="text-sm text-gray-600">Points</p>
+                        <p class="font-bold text-primary-orange">1,250</p>
+                    </div>
+                    <div class="bg-primary-light px-4 py-2 rounded-lg">
+                        <p class="text-sm text-gray-600">Tier</p>
+                        <p class="font-bold text-primary-orange">Gold</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Profile Content -->
+    <section class="py-8">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Profile Sidebar -->
+                <div class="lg:w-1/4">
+                    <div class="profile-sidebar bg-white rounded-xl shadow-sm p-6 sticky top-24">
+                        <nav class="space-y-2">
+                            <a href="#" class="profile-menu-item active flex items-center py-3 px-4 rounded-lg font-medium" data-tab="overview">
+                                <i class="fas fa-chart-pie mr-3"></i>
+                                Ringkasan
+                            </a>
+                            <a href="#" class="profile-menu-item flex items-center py-3 px-4 rounded-lg font-medium" data-tab="orders">
+                                <i class="fas fa-shopping-bag mr-3"></i>
+                                Pesanan Saya
+                                <span class="ml-auto bg-primary-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                            </a>
+                            <a href="#" class="profile-menu-item flex items-center py-3 px-4 rounded-lg font-medium" data-tab="skin-profile">
+                                <i class="fas fa-user-md mr-3"></i>
+                                Profil Kulit
+                            </a>
+                            <a href="#" class="profile-menu-item flex items-center py-3 px-4 rounded-lg font-medium" data-tab="wishlist">
+                                <i class="fas fa-heart mr-3"></i>
+                                Wishlist
+                                <span class="ml-auto bg-primary-orange text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">8</span>
+                            </a>
+                            <a href="#" class="profile-menu-item flex items-center py-3 px-4 rounded-lg font-medium" data-tab="addresses">
+                                <i class="fas fa-map-marker-alt mr-3"></i>
+                                Alamat Saya
+                            </a>
+                            <a href="#" class="profile-menu-item flex items-center py-3 px-4 rounded-lg font-medium" data-tab="settings">
+                                <i class="fas fa-cog mr-3"></i>
+                                Pengaturan Akun
+                            </a>
+                            <a href="#" class="profile-menu-item flex items-center py-3 px-4 rounded-lg font-medium text-red-500" data-tab="logout">
+                                <i class="fas fa-sign-out-alt mr-3"></i>
+                                Keluar
+                            </a>
+                        </nav>
+                        
+                        <div class="mt-8 pt-6 border-t border-gray-200">
+                            <h3 class="font-semibold text-gray-700 mb-4">Butuh Bantuan?</h3>
+                            <div class="space-y-3">
+                                <a href="contact.html" class="flex items-center text-gray-600 hover:text-primary-orange transition-colors">
+                                    <i class="fas fa-headset mr-2"></i>
+                                    Hubungi Customer Service
+                                </a>
+                                <a href="faq.html" class="flex items-center text-gray-600 hover:text-primary-orange transition-colors">
+                                    <i class="fas fa-question-circle mr-2"></i>
+                                    FAQ
+                                </a>
+                                <a href="consultation.html" class="flex items-center text-gray-600 hover:text-primary-orange transition-colors">
+                                    <i class="fas fa-comments mr-2"></i>
+                                    Konsultasi Gratis
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profile Content -->
+                <div class="lg:w-3/4">
+                    <!-- Overview Tab -->
+                    <div id="overview" class="tab-content active">
+                        <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                            <h2 class="text-2xl font-bold text-gray-800 mb-6">Ringkasan Akun</h2>
+                            
+                            <!-- Stats Cards -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                                <div class="stat-card bg-primary-light p-6 rounded-xl text-center">
+                                    <div class="bg-primary-orange text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i class="fas fa-shopping-bag text-xl"></i>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-gray-800 mb-2">15</h3>
+                                    <p class="text-gray-600">Total Pesanan</p>
+                                </div>
+                                
+                                <div class="stat-card bg-primary-light p-6 rounded-xl text-center">
+                                    <div class="bg-primary-red text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i class="fas fa-heart text-xl"></i>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-gray-800 mb-2">8</h3>
+                                    <p class="text-gray-600">Produk di Wishlist</p>
+                                </div>
+                                
+                                <div class="stat-card bg-primary-light p-6 rounded-xl text-center">
+                                    <div class="bg-primary-yellow text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <i class="fas fa-star text-xl"></i>
+                                    </div>
+                                    <h3 class="text-xl font-bold text-gray-800 mb-2">12</h3>
+                                    <p class="text-gray-600">Ulasan Ditulis</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Recent Orders -->
+                            <div class="mb-8">
+                                <h3 class="text-xl font-bold text-gray-800 mb-4">Pesanan Terbaru</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                                        <div>
+                                            <p class="font-medium text-gray-800">Order #INCL-2024-0876</p>
+                                            <p class="text-sm text-gray-600">2 produk • Total: Rp 348.000</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <span class="inline-block bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm font-medium">Selesai</span>
+                                            <p class="text-sm text-gray-600 mt-1">15 Mar 2024</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                                        <div>
+                                            <p class="font-medium text-gray-800">Order #INCL-2024-0854</p>
+                                            <p class="text-sm text-gray-600">3 produk • Total: Rp 521.000</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <span class="inline-block bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-medium">Dikirim</span>
+                                            <p class="text-sm text-gray-600 mt-1">12 Mar 2024</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="#" class="block text-center mt-4 text-primary-orange font-medium hover:underline" data-tab="orders">
+                                    Lihat Semua Pesanan
+                                </a>
+                            </div>
+                            
+                            <!-- Skin Profile Summary -->
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-800 mb-4">Profil Kulit Anda</h3>
+                                <div class="bg-gray-50 p-6 rounded-xl">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div>
+                                            <p class="font-medium text-gray-800">Kombinasi • Sensitif</p>
+                                            <p class="text-sm text-gray-600">Terakhir diperbarui: 1 Mar 2024</p>
+                                        </div>
+                                        <a href="#" class="text-primary-orange font-medium hover:underline" data-tab="skin-profile">
+                                            Perbarui Profil
+                                        </a>
+                                    </div>
+                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                        <div class="skin-metric text-center">
+                                            <div class="bg-white p-3 rounded-lg shadow-sm">
+                                                <p class="text-sm text-gray-600 mb-1">Kelebaban</p>
+                                                <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+                                                    <div class="bg-green-500 h-2 rounded-full" style="width: 75%"></div>
+                                                </div>
+                                                <p class="text-xs text-gray-600">Baik</p>
+                                            </div>
+                                        </div>
+                                        <div class="skin-metric text-center">
+                                            <div class="bg-white p-3 rounded-lg shadow-sm">
+                                                <p class="text-sm text-gray-600 mb-1">Minyak</p>
+                                                <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+                                                    <div class="bg-yellow-500 h-2 rounded-full" style="width: 60%"></div>
+                                                </div>
+                                                <p class="text-xs text-gray-600">Sedang</p>
+                                            </div>
+                                        </div>
+                                        <div class="skin-metric text-center">
+                                            <div class="bg-white p-3 rounded-lg shadow-sm">
+                                                <p class="text-sm text-gray-600 mb-1">Elastisitas</p>
+                                                <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+                                                    <div class="bg-blue-500 h-2 rounded-full" style="width: 80%"></div>
+                                                </div>
+                                                <p class="text-xs text-gray-600">Sangat Baik</p>
+                                            </div>
+                                        </div>
+                                        <div class="skin-metric text-center">
+                                            <div class="bg-white p-3 rounded-lg shadow-sm">
+                                                <p class="text-sm text-gray-600 mb-1">Texture</p>
+                                                <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+                                                    <div class="bg-purple-500 h-2 rounded-full" style="width: 70%"></div>
+                                                </div>
+                                                <p class="text-xs text-gray-600">Baik</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Recommended Products -->
+                        <div class="bg-white rounded-xl shadow-sm p-6">
+                            <h2 class="text-2xl font-bold text-gray-800 mb-6">Rekomendasi untuk Anda</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <!-- Product 1 -->
+                                <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+                                    <div class="relative">
+                                        <img src="https://images.unsplash.com/photo-1556228578-9f6ac5e4d0d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                             alt="Brightening Vitamin C Serum" 
+                                             class="w-full h-48 object-cover">
+                                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-100">
+                                            <i class="far fa-heart text-gray-600"></i>
+                                        </button>
+                                    </div>
+                                    <div class="p-4">
+                                        <h3 class="font-semibold text-gray-800 mb-2">Brightening Vitamin C Serum</h3>
+                                        <p class="text-gray-600 text-sm mb-3">Cocok untuk kulit kombinasi</p>
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-bold text-primary-orange">Rp 249.000</span>
+                                            <button class="bg-primary-orange text-white px-3 py-1 rounded text-sm hover:bg-orange-600 transition-colors">+ Keranjang</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Product 2 -->
+                                <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+                                    <div class="relative">
+                                        <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                             alt="Gentle Foaming Cleanser" 
+                                             class="w-full h-48 object-cover">
+                                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-100">
+                                            <i class="far fa-heart text-gray-600"></i>
+                                        </button>
+                                    </div>
+                                    <div class="p-4">
+                                        <h3 class="font-semibold text-gray-800 mb-2">Gentle Foaming Cleanser</h3>
+                                        <p class="text-gray-600 text-sm mb-3">Untuk kulit sensitif</p>
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-bold text-primary-orange">Rp 129.000</span>
+                                            <button class="bg-primary-orange text-white px-3 py-1 rounded text-sm hover:bg-orange-600 transition-colors">+ Keranjang</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Product 3 -->
+                                <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+                                    <div class="relative">
+                                        <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                             alt="Soothing Aloe Vera Gel" 
+                                             class="w-full h-48 object-cover">
+                                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-100">
+                                            <i class="far fa-heart text-gray-600"></i>
+                                        </button>
+                                    </div>
+                                    <div class="p-4">
+                                        <h3 class="font-semibold text-gray-800 mb-2">Soothing Aloe Vera Gel</h3>
+                                        <p class="text-gray-600 text-sm mb-3">Menenangkan kulit sensitif</p>
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-bold text-primary-orange">Rp 189.000</span>
+                                            <button class="bg-primary-orange text-white px-3 py-1 rounded text-sm hover:bg-orange-600 transition-colors">+ Keranjang</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Orders Tab -->
+                    <div id="orders" class="tab-content">
+                        <div class="bg-white rounded-xl shadow-sm p-6">
+                            <h2 class="text-2xl font-bold text-gray-800 mb-6">Pesanan Saya</h2>
+                            
+                            <!-- Order Filter -->
+                            <div class="flex flex-wrap gap-3 mb-6">
+                                <button class="filter-btn active px-4 py-2 rounded-full bg-primary-orange text-white text-sm font-medium" data-filter="all">
+                                    Semua
+                                </button>
+                                <button class="filter-btn px-4 py-2 rounded-full bg-white border border-gray-300 text-gray-700 hover:border-primary-orange text-sm font-medium" data-filter="processing">
+                                    Diproses
+                                </button>
+                                <button class="filter-btn px-4 py-2 rounded-full bg-white border border-gray-300 text-gray-700 hover:border-primary-orange text-sm font-medium" data-filter="shipped">
+                                    Dikirim
+                                </button>
+                                <button class="filter-btn px-4 py-2 rounded-full bg-white border border-gray-300 text-gray-700 hover:border-primary-orange text-sm font-medium" data-filter="completed">
+                                    Selesai
+                                </button>
+                                <button class="filter-btn px-4 py-2 rounded-full bg-white border border-gray-300 text-gray-700 hover:border-primary-orange text-sm font-medium" data-filter="cancelled">
+                                    Dibatalkan
+                                </button>
+                            </div>
+                            
+                            <!-- Orders List -->
+                            <div class="space-y-6">
+                                <!-- Order 1 -->
+                                <div class="border border-gray-200 rounded-xl p-6">
+                                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                                        <div>
+                                            <p class="font-bold text-gray-800">Order #INCL-2024-0876</p>
+                                            <p class="text-sm text-gray-600">15 Maret 2024</p>
+                                        </div>
+                                        <div class="mt-2 md:mt-0">
+                                            <span class="inline-block bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm font-medium">Selesai</span>
+                                            <p class="text-lg font-bold text-primary-orange mt-1">Rp 348.000</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="border-t border-gray-200 pt-4">
+                                        <div class="flex items-start mb-4">
+                                            <img src="https://images.unsplash.com/photo-1556228578-9f6ac5e4d0d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" 
+                                                 alt="Brightening Vitamin C Serum" 
+                                                 class="w-16 h-16 object-cover rounded-lg mr-4">
+                                            <div class="flex-1">
+                                                <p class="font-medium text-gray-800">Brightening Vitamin C Serum</p>
+                                                <p class="text-sm text-gray-600">Qty: 1 • Rp 249.000</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex items-start">
+                                            <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" 
+                                                 alt="Daily Protection Sunscreen" 
+                                                 class="w-16 h-16 object-cover rounded-lg mr-4">
+                                            <div class="flex-1">
+                                                <p class="font-medium text-gray-800">Daily Protection Sunscreen SPF 50+</p>
+                                                <p class="text-sm text-gray-600">Qty: 1 • Rp 99.000</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col sm:flex-row gap-3 mt-6">
+                                        <button class="bg-primary-orange text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors">
+                                            Beli Lagi
+                                        </button>
+                                        <button class="border border-primary-orange text-primary-orange px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-orange hover:text-white transition-colors">
+                                            Tinggalkan Ulasan
+                                        </button>
+                                        <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition-colors">
+                                            Lihat Detail
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Order 2 -->
+                                <div class="border border-gray-200 rounded-xl p-6">
+                                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                                        <div>
+                                            <p class="font-bold text-gray-800">Order #INCL-2024-0854</p>
+                                            <p class="text-sm text-gray-600">12 Maret 2024</p>
+                                        </div>
+                                        <div class="mt-2 md:mt-0">
+                                            <span class="inline-block bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-medium">Dikirim</span>
+                                            <p class="text-lg font-bold text-primary-orange mt-1">Rp 521.000</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="border-t border-gray-200 pt-4">
+                                        <div class="mb-4">
+                                            <p class="font-medium text-gray-800 mb-2">Status Pengiriman</p>
+                                            <div class="flex items-center space-x-4 text-sm">
+                                                <div class="order-status completed">
+                                                    <span class="font-medium">Pesanan Diproses</span>
+                                                    <p class="text-gray-600">10 Mar</p>
+                                                </div>
+                                                <div class="order-status completed">
+                                                    <span class="font-medium">Pesanan Dikirim</span>
+                                                    <p class="text-gray-600">13 Mar</p>
+                                                </div>
+                                                <div class="order-status shipped">
+                                                    <span class="font-medium">Dalam Perjalanan</span>
+                                                    <p class="text-gray-600">Estimasi: 16 Mar</p>
+                                                </div>
+                                                <div class="order-status">
+                                                    <span class="font-medium">Terkirim</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex items-start">
+                                            <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" 
+                                                 alt="Gentle Foaming Cleanser" 
+                                                 class="w-16 h-16 object-cover rounded-lg mr-4">
+                                            <div class="flex-1">
+                                                <p class="font-medium text-gray-800">Gentle Foaming Cleanser</p>
+                                                <p class="text-sm text-gray-600">Qty: 1 • Rp 129.000</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col sm:flex-row gap-3 mt-6">
+                                        <button class="bg-primary-orange text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors">
+                                            Lacak Pengiriman
+                                        </button>
+                                        <button class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition-colors">
+                                            Lihat Detail
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Pagination -->
+                            <div class="mt-8 flex justify-center">
+                                <div class="flex items-center space-x-2">
+                                    <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 text-gray-700 hover:border-primary-orange transition-colors">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-primary-orange bg-primary-orange text-white">1</button>
+                                    <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 text-gray-700 hover:border-primary-orange transition-colors">2</button>
+                                    <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 text-gray-700 hover:border-primary-orange transition-colors">3</button>
+                                    <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-300 text-gray-700 hover:border-primary-orange transition-colors">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Skin Profile Tab -->
+                                        <div id="skin-profile" class="tab-content">
+                        <div class="bg-white rounded-xl shadow-sm p-6">
+                            <div class="flex justify-between items-start mb-6">
+                                <h2 class="text-2xl font-bold text-gray-800">Profil Kulit Saya</h2>
+                                <div class="text-right">
+                                    <p class="text-sm text-gray-600">Terakhir diperbarui</p>
+                                    <p class="font-medium text-primary-orange">1 Maret 2024</p>
+                                </div>
+                            </div>
+
+                            <!-- Skin Assessment Card -->
+                            <div class="bg-gradient-to-r from-primary-orange to-primary-red text-white p-6 rounded-xl mb-8">
+                                <div class="flex items-center mb-4">
+                                    <i class="fas fa-star text-2xl mr-3"></i>
+                                    <h3 class="text-xl font-bold">Hasil Analisis Kulit Anda</h3>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div class="text-center">
+                                        <p class="text-3xl font-bold">B+</p>
+                                        <p class="text-sm opacity-90">Skor Keseluruhan</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-3xl font-bold">Kombinasi</p>
+                                        <p class="text-sm opacity-90">Tipe Kulit Dominan</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-3xl font-bold">Sensitif</p>
+                                        <p class="text-sm opacity-90">Kondisi Utama</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                <!-- Skin Type & Conditions -->
+                                <div class="lg:col-span-2">
+                                    <!-- Skin Type Selection -->
+                                    <div class="mb-8">
+                                        <h3 class="text-xl font-bold text-gray-800 mb-4">Tipe Kulit</h3>
+                                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                            <div class="skin-type-card border-2 border-primary-orange bg-primary-light p-4 rounded-xl text-center cursor-pointer" data-type="combination">
+                                                <div class="w-12 h-12 bg-primary-orange rounded-full flex items-center justify-center mx-auto mb-2">
+                                                    <i class="fas fa-tint text-white text-lg"></i>
+                                                </div>
+                                                <p class="font-medium text-gray-800 mb-1">Kombinasi</p>
+                                                <p class="text-xs text-gray-600">Area T berminyak, pipi normal/kering</p>
+                                            </div>
+                                            <div class="skin-type-card border border-gray-200 p-4 rounded-xl text-center cursor-pointer hover:border-primary-orange transition-colors" data-type="oily">
+                                                <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-2">
+                                                    <i class="fas fa-tint text-gray-500 text-lg"></i>
+                                                </div>
+                                                <p class="font-medium text-gray-800 mb-1">Berminyak</p>
+                                                <p class="text-xs text-gray-600">Kulit mengilap, pori-pori besar</p>
+                                            </div>
+                                            <div class="skin-type-card border border-gray-200 p-4 rounded-xl text-center cursor-pointer hover:border-primary-orange transition-colors" data-type="dry">
+                                                <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-2">
+                                                    <i class="fas fa-tint text-gray-500 text-lg"></i>
+                                                </div>
+                                                <p class="font-medium text-gray-800 mb-1">Kering</p>
+                                                <p class="text-xs text-gray-600">Kulit terasa ketat, mudah mengelupas</p>
+                                            </div>
+                                            <div class="skin-type-card border border-gray-200 p-4 rounded-xl text-center cursor-pointer hover:border-primary-orange transition-colors" data-type="normal">
+                                                <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-2">
+                                                    <i class="fas fa-tint text-gray-500 text-lg"></i>
+                                                </div>
+                                                <p class="font-medium text-gray-800 mb-1">Normal</p>
+                                                <p class="text-xs text-gray-600">Seimbang, tidak berminyak atau kering</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Skin Conditions -->
+                                    <div class="mb-8">
+                                        <h3 class="text-xl font-bold text-gray-800 mb-4">Kondisi Kulit</h3>
+                                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                            <div class="skin-condition-card border-2 border-primary-orange bg-primary-light p-4 rounded-xl text-center cursor-pointer" data-condition="sensitive">
+                                                <div class="w-12 h-12 bg-primary-orange rounded-full flex items-center justify-center mx-auto mb-2">
+                                                    <i class="fas fa-allergies text-white text-lg"></i>
+                                                </div>
+                                                <p class="font-medium text-gray-800 mb-1">Sensitif</p>
+                                                <p class="text-xs text-gray-600">Mudah iritasi, kemerahan</p>
+                                            </div>
+                                            <div class="skin-condition-card border border-gray-200 p-4 rounded-xl text-center cursor-pointer hover:border-primary-orange transition-colors" data-condition="acne">
+                                                <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-2">
+                                                    <i class="fas fa-dot-circle text-gray-500 text-lg"></i>
+                                                </div>
+                                                <p class="font-medium text-gray-800 mb-1">Berjerawat</p>
+                                                <p class="text-xs text-gray-600">Komedo, jerawat aktif</p>
+                                            </div>
+                                            <div class="skin-condition-card border border-gray-200 p-4 rounded-xl text-center cursor-pointer hover:border-primary-orange transition-colors" data-condition="dull">
+                                                <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-2">
+                                                    <i class="fas fa-sun text-gray-500 text-lg"></i>
+                                                </div>
+                                                <p class="font-medium text-gray-800 mb-1">Kusam</p>
+                                                <p class="text-xs text-gray-600">Warna tidak merata, kurang cerah</p>
+                                            </div>
+                                            <div class="skin-condition-card border border-gray-200 p-4 rounded-xl text-center cursor-pointer hover:border-primary-orange transition-colors" data-condition="aging">
+                                                <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-2">
+                                                    <i class="fas fa-wrinkle text-gray-500 text-lg"></i>
+                                                </div>
+                                                <p class="font-medium text-gray-800 mb-1">Penuaan</p>
+                                                <p class="text-xs text-gray-600">Garis halus, kerutan</p>
+                                            </div>
+                                            <div class="skin-condition-card border border-gray-200 p-4 rounded-xl text-center cursor-pointer hover:border-primary-orange transition-colors" data-condition="pigmentation">
+                                                <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-2">
+                                                    <i class="fas fa-circle text-gray-500 text-lg"></i>
+                                                </div>
+                                                <p class="font-medium text-gray-800 mb-1">Flek</p>
+                                                <p class="text-xs text-gray-600">Hiperpigmentasi, noda hitam</p>
+                                            </div>
+                                            <div class="skin-condition-card border border-gray-200 p-4 rounded-xl text-center cursor-pointer hover:border-primary-orange transition-colors" data-condition="pores">
+                                                <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-2">
+                                                    <i class="fas fa-circle-notch text-gray-500 text-lg"></i>
+                                                </div>
+                                                <p class="font-medium text-gray-800 mb-1">Pori Besar</p>
+                                                <p class="text-xs text-gray-600">Pori-pori terlihat jelas</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Skin Sensitivity Level -->
+                                    <div class="mb-8">
+                                        <h3 class="text-xl font-bold text-gray-800 mb-4">Tingkat Sensitivitas Kulit</h3>
+                                        <div class="bg-gray-50 p-6 rounded-xl">
+                                            <div class="flex items-center justify-between mb-4">
+                                                <span class="font-medium text-gray-800">Skala Sensitivitas</span>
+                                                <span class="text-primary-orange font-bold">7/10</span>
+                                            </div>
+                                            <div class="w-full bg-gray-200 rounded-full h-3 mb-2">
+                                                <div class="bg-orange-500 h-3 rounded-full" style="width: 70%"></div>
+                                            </div>
+                                            <div class="flex justify-between text-xs text-gray-600">
+                                                <span>Rendah</span>
+                                                <span>Sedang</span>
+                                                <span>Tinggi</span>
+                                            </div>
+                                            <p class="text-sm text-gray-600 mt-3">Kulit Anda cenderung bereaksi terhadap produk baru dan perubahan cuaca. Disarankan menggunakan produk gentle dan melakukan patch test.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Detailed Skin Analysis -->
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-800 mb-4">Analisis Detail Kulit</h3>
+                                    <div class="space-y-4">
+                                        <!-- Hydration Level -->
+                                        <div class="bg-gray-50 p-4 rounded-xl">
+                                            <div class="flex justify-between items-center mb-2">
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-tint text-blue-500 mr-2"></i>
+                                                    <span class="font-medium text-gray-800">Tingkat Kelembaban</span>
+                                                </div>
+                                                <span class="text-primary-orange font-bold">68%</span>
+                                            </div>
+                                            <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                                                <div class="bg-blue-500 h-2 rounded-full" style="width: 68%"></div>
+                                            </div>
+                                            <p class="text-xs text-gray-600">Kulit cukup terhidrasi namun membutuhkan pelembap tambahan di area pipi.</p>
+                                        </div>
+
+                                        <!-- Oil Production -->
+                                        <div class="bg-gray-50 p-4 rounded-xl">
+                                            <div class="flex justify-between items-center mb-2">
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-oil-can text-yellow-500 mr-2"></i>
+                                                    <span class="font-medium text-gray-800">Produksi Minyak</span>
+                                                </div>
+                                                <span class="text-primary-orange font-bold">72%</span>
+                                            </div>
+                                            <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 72%"></div>
+                                            </div>
+                                            <p class="text-xs text-gray-600">Area T menghasilkan minyak berlebih, terutama di dahi dan hidung.</p>
+                                        </div>
+
+                                        <!-- Elasticity -->
+                                        <div class="bg-gray-50 p-4 rounded-xl">
+                                            <div class="flex justify-between items-center mb-2">
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-expand-arrows-alt text-green-500 mr-2"></i>
+                                                    <span class="font-medium text-gray-800">Elastisitas</span>
+                                                </div>
+                                                <span class="text-primary-orange font-bold">82%</span>
+                                            </div>
+                                            <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                                                <div class="bg-green-500 h-2 rounded-full" style="width: 82%"></div>
+                                            </div>
+                                            <p class="text-xs text-gray-600">Kulit memiliki elastisitas yang baik, menunjukkan produksi kolagen optimal.</p>
+                                        </div>
+
+                                        <!-- Texture -->
+                                        <div class="bg-gray-50 p-4 rounded-xl">
+                                            <div class="flex justify-between items-center mb-2">
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-texture text-purple-500 mr-2"></i>
+                                                    <span class="font-medium text-gray-800">Tekstur</span>
+                                                </div>
+                                                <span class="text-primary-orange font-bold">65%</span>
+                                            </div>
+                                            <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                                                <div class="bg-purple-500 h-2 rounded-full" style="width: 65%"></div>
+                                            </div>
+                                            <p class="text-xs text-gray-600">Tekstur sedikit tidak merata, membutuhkan eksfoliasi rutin.</p>
+                                        </div>
+
+                                        <!-- Evenness -->
+                                        <div class="bg-gray-50 p-4 rounded-xl">
+                                            <div class="flex justify-between items-center mb-2">
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-palette text-pink-500 mr-2"></i>
+                                                    <span class="font-medium text-gray-800">Kemerataan Warna</span>
+                                                </div>
+                                                <span class="text-primary-orange font-bold">58%</span>
+                                            </div>
+                                            <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                                                <div class="bg-pink-500 h-2 rounded-full" style="width: 58%"></div>
+                                            </div>
+                                            <p class="text-xs text-gray-600">Terdapat sedikit hiperpigmentasi di area pipi dan dahi.</p>
+                                        </div>
+
+                                        <!-- Pore Visibility -->
+                                        <div class="bg-gray-50 p-4 rounded-xl">
+                                            <div class="flex justify-between items-center mb-2">
+                                                <div class="flex items-center">
+                                                    <i class="fas fa-circle-notch text-indigo-500 mr-2"></i>
+                                                    <span class="font-medium text-gray-800">Visibilitas Pori</span>
+                                                </div>
+                                                <span class="text-primary-orange font-bold">75%</span>
+                                            </div>
+                                            <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                                                <div class="bg-indigo-500 h-2 rounded-full" style="width: 75%"></div>
+                                            </div>
+                                            <p class="text-xs text-gray-600">Pori-pori terlihat jelas di area hidung dan pipi.</p>
+                                        </div>
+                                    </div>
+
+                                    <button class="w-full mt-6 bg-primary-orange text-white py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors flex items-center justify-center">
+                                        <i class="fas fa-sync-alt mr-2"></i>
+                                        Perbarui Analisis Kulit
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Skin Goals -->
+                            <div class="mt-8">
+                                <h3 class="text-xl font-bold text-gray-800 mb-4">Tujuan Perawatan Kulit</h3>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div class="skin-goal-card border-2 border-primary-orange bg-primary-light p-4 rounded-xl text-center cursor-pointer" data-goal="hydration">
+                                        <div class="w-12 h-12 bg-primary-orange rounded-full flex items-center justify-center mx-auto mb-2">
+                                            <i class="fas fa-tint text-white text-lg"></i>
+                                        </div>
+                                        <p class="font-medium text-gray-800 mb-1">Hidrasi Optimal</p>
+                                        <p class="text-xs text-gray-600">Tingkatkan kelembaban kulit</p>
+                                    </div>
+                                    <div class="skin-goal-card border border-gray-200 p-4 rounded-xl text-center cursor-pointer hover:border-primary-orange transition-colors" data-goal="oil-control">
+                                        <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-2">
+                                            <i class="fas fa-wind text-gray-500 text-lg"></i>
+                                        </div>
+                                        <p class="font-medium text-gray-800 mb-1">Kontrol Minyak</p>
+                                        <p class="text-xs text-gray-600">Kurangi kilap berlebih</p>
+                                    </div>
+                                    <div class="skin-goal-card border-2 border-primary-orange bg-primary-light p-4 rounded-xl text-center cursor-pointer" data-goal="sensitivity">
+                                        <div class="w-12 h-12 bg-primary-orange rounded-full flex items-center justify-center mx-auto mb-2">
+                                            <i class="fas fa-shield-alt text-white text-lg"></i>
+                                        </div>
+                                        <p class="font-medium text-gray-800 mb-1">Perkuat Skin Barrier</p>
+                                        <p class="text-xs text-gray-600">Kurangi sensitivitas</p>
+                                    </div>
+                                    <div class="skin-goal-card border border-gray-200 p-4 rounded-xl text-center cursor-pointer hover:border-primary-orange transition-colors" data-goal="brightening">
+                                        <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-2">
+                                            <i class="fas fa-sun text-gray-500 text-lg"></i>
+                                        </div>
+                                        <p class="font-medium text-gray-800 mb-1">Brightening</p>
+                                        <p class="text-xs text-gray-600">Kulit lebih cerah merata</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Current Routine with Timing and Frequency -->
+                            <div class="mt-8">
+                                <div class="flex justify-between items-center mb-6">
+                                    <h3 class="text-xl font-bold text-gray-800">Rutinitas Perawatan Saat Ini</h3>
+                                    <button class="bg-primary-orange text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition-colors flex items-center">
+                                        <i class="fas fa-edit mr-2"></i>
+                                        Edit Rutinitas
+                                    </button>
+                                </div>
+
+                                <div class="bg-gray-50 p-6 rounded-xl">
+                                    <!-- Morning Routine -->
+                                    <div class="mb-8">
+                                        <div class="flex items-center mb-4">
+                                            <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center mr-3">
+                                                <i class="fas fa-sun text-white text-sm"></i>
+                                            </div>
+                                            <h4 class="font-bold text-gray-800 text-lg">Rutinitas Pagi</h4>
+                                            <span class="ml-auto bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-medium">
+                                                <i class="far fa-clock mr-1"></i>15 menit
+                                            </span>
+                                        </div>
+                                        
+                                        <div class="space-y-3">
+                                            <div class="routine-step bg-white p-4 rounded-lg border-l-4 border-blue-500">
+                                                <div class="flex items-center justify-between">
+                                                    <div class="flex items-center">
+                                                        <span class="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3">1</span>
+                                                        <div>
+                                                            <p class="font-medium text-gray-800">Gentle Foaming Cleanser</p>
+                                                            <p class="text-sm text-gray-600">Pembersih wajah pH balanced</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">60 detik</span>
+                                                        <p class="text-xs text-gray-500 mt-1">Setiap hari</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="routine-step bg-white p-4 rounded-lg border-l-4 border-green-500">
+                                                <div class="flex items-center justify-between">
+                                                    <div class="flex items-center">
+                                                        <span class="w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3">2</span>
+                                                        <div>
+                                                            <p class="font-medium text-gray-800">Brightening Vitamin C Serum</p>
+                                                            <p class="text-sm text-gray-600">15% L-Ascorbic Acid + Ferulic Acid</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">30 detik</span>
+                                                        <p class="text-xs text-gray-500 mt-1">Setiap hari</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="routine-step bg-white p-4 rounded-lg border-l-4 border-purple-500">
+                                                <div class="flex items-center justify-between">
+                                                    <div class="flex items-center">
+                                                        <span class="w-6 h-6 bg-purple-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3">3</span>
+                                                        <div>
+                                                            <p class="font-medium text-gray-800">Hydrating Light Moisturizer</p>
+                                                            <p class="text-sm text-gray-600">Hyaluronic Acid + Ceramides</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">45 detik</span>
+                                                        <p class="text-xs text-gray-500 mt-1">Setiap hari</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="routine-step bg-white p-4 rounded-lg border-l-4 border-orange-500">
+                                                <div class="flex items-center justify-between">
+                                                    <div class="flex items-center">
+                                                        <span class="w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3">4</span>
+                                                        <div>
+                                                            <p class="font-medium text-gray-800">Daily Protection Sunscreen SPF 50+</p>
+                                                            <p class="text-sm text-gray-600">PA++++, Broad Spectrum</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">60 detik</span>
+                                                        <p class="text-xs text-gray-500 mt-1">Setiap hari</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Evening Routine -->
+                                    <div>
+                                        <div class="flex items-center mb-4">
+                                            <div class="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center mr-3">
+                                                <i class="fas fa-moon text-white text-sm"></i>
+                                            </div>
+                                            <h4 class="font-bold text-gray-800 text-lg">Rutinitas Malam</h4>
+                                            <span class="ml-auto bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-sm font-medium">
+                                                <i class="far fa-clock mr-1"></i>20 menit
+                                            </span>
+                                        </div>
+                                        
+                                        <div class="space-y-3">
+                                            <div class="routine-step bg-white p-4 rounded-lg border-l-4 border-blue-500">
+                                                <div class="flex items-center justify-between">
+                                                    <div class="flex items-center">
+                                                        <span class="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3">1</span>
+                                                        <div>
+                                                            <p class="font-medium text-gray-800">Oil-Based Cleanser</p>
+                                                            <p class="text-sm text-gray-600">Double cleansing step pertama</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">90 detik</span>
+                                                        <p class="text-xs text-gray-500 mt-1">Setiap hari</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="routine-step bg-white p-4 rounded-lg border-l-4 border-green-500">
+                                                <div class="flex items-center justify-between">
+                                                    <div class="flex items-center">
+                                                        <span class="w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3">2</span>
+                                                        <div>
+                                                            <p class="font-medium text-gray-800">Gentle Foaming Cleanser</p>
+                                                            <p class="text-sm text-gray-600">Double cleansing step kedua</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">60 detik</span>
+                                                        <p class="text-xs text-gray-500 mt-1">Setiap hari</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="routine-step bg-white p-4 rounded-lg border-l-4 border-purple-500">
+                                                <div class="flex items-center justify-between">
+                                                    <div class="flex items-center">
+                                                        <span class="w-6 h-6 bg-purple-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3">3</span>
+                                                        <div>
+                                                            <p class="font-medium text-gray-800">Hydrating & Soothing Toner</p>
+                                                            <p class="text-sm text-gray-600">Centella Asiatica + Panthenol</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">30 detik</span>
+                                                        <p class="text-xs text-gray-500 mt-1">Setiap hari</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="routine-step bg-white p-4 rounded-lg border-l-4 border-pink-500">
+                                                <div class="flex items-center justify-between">
+                                                    <div class="flex items-center">
+                                                        <span class="w-6 h-6 bg-pink-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3">4</span>
+                                                        <div>
+                                                            <p class="font-medium text-gray-800">Repair Night Cream</p>
+                                                            <p class="text-sm text-gray-600">Peptides + Retinol (2x seminggu)</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">45 detik</span>
+                                                        <p class="text-xs text-gray-500 mt-1">Senin & Kamis</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="routine-step bg-white p-4 rounded-lg border-l-4 border-indigo-500">
+                                                <div class="flex items-center justify-between">
+                                                    <div class="flex items-center">
+                                                        <span class="w-6 h-6 bg-indigo-500 text-white rounded-full flex items-center justify-center text-xs font-bold mr-3">5</span>
+                                                        <div>
+                                                            <p class="font-medium text-gray-800">Eye Cream</p>
+                                                            <p class="text-sm text-gray-600">Caffeine + Vitamin K</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">30 detik</span>
+                                                        <p class="text-xs text-gray-500 mt-1">Setiap hari</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Weekly Treatments -->
+                                    <div class="mt-8 pt-6 border-t border-gray-200">
+                                        <div class="flex items-center mb-4">
+                                            <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center mr-3">
+                                                <i class="fas fa-calendar-alt text-white text-sm"></i>
+                                            </div>
+                                            <h4 class="font-bold text-gray-800 text-lg">Perawatan Mingguan</h4>
+                                        </div>
+                                        
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div class="bg-white p-4 rounded-lg border">
+                                                <div class="flex items-center mb-2">
+                                                    <i class="fas fa-spa text-green-500 mr-2"></i>
+                                                    <p class="font-medium text-gray-800">Eksfoliasi Kimia</p>
+                                                </div>
+                                                <p class="text-sm text-gray-600 mb-2">AHA 7% + BHA 2% Solution</p>
+                                                <div class="flex items-center text-xs text-gray-500">
+                                                    <i class="far fa-clock mr-1"></i>
+                                                    <span>Rabu & Minggu malam</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="bg-white p-4 rounded-lg border">
+                                                <div class="flex items-center mb-2">
+                                                    <i class="fas fa-mask text-blue-500 mr-2"></i>
+                                                    <p class="font-medium text-gray-800">Sheet Mask Hydrating</p>
+                                                </div>
+                                                <p class="text-sm text-gray-600 mb-2">Hyaluronic Acid & Ceramide</p>
+                                                <div class="flex items-center text-xs text-gray-500">
+                                                    <i class="far fa-clock mr-1"></i>
+                                                    <span>Jumat malam</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Wishlist Tab -->
+                    <div id="wishlist" class="tab-content">
+                        <div class="bg-white rounded-xl shadow-sm p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-2xl font-bold text-gray-800">Wishlist Saya</h2>
+                                <p class="text-gray-600">8 produk</p>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <!-- Wishlist Item 1 -->
+                                <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+                                    <div class="relative">
+                                        <img src="https://images.unsplash.com/photo-1556228578-9f6ac5e4d0d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                             alt="Brightening Vitamin C Serum" 
+                                             class="w-full h-48 object-cover">
+                                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-100">
+                                            <i class="fas fa-heart text-primary-red"></i>
+                                        </button>
+                                    </div>
+                                    <div class="p-4">
+                                        <h3 class="font-semibold text-gray-800 mb-2">Brightening Vitamin C Serum</h3>
+                                        <p class="text-gray-600 text-sm mb-3">Serum dengan 15% vitamin C untuk kulit cerah</p>
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-bold text-primary-orange">Rp 249.000</span>
+                                            <button class="bg-primary-orange text-white px-3 py-1 rounded text-sm hover:bg-orange-600 transition-colors">+ Keranjang</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Wishlist Item 2 -->
+                                <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+                                    <div class="relative">
+                                        <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                             alt="Hydrating Toner" 
+                                             class="w-full h-48 object-cover">
+                                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-100">
+                                            <i class="fas fa-heart text-primary-red"></i>
+                                        </button>
+                                        <span class="absolute top-3 left-3 bg-primary-red text-white text-xs px-2 py-1 rounded">BESTSELLER</span>
+                                    </div>
+                                    <div class="p-4">
+                                        <h3 class="font-semibold text-gray-800 mb-2">Hydrating Toner</h3>
+                                        <p class="text-gray-600 text-sm mb-3">Toner melembapkan dengan hyaluronic acid</p>
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-bold text-primary-orange">Rp 149.000</span>
+                                            <button class="bg-primary-orange text-white px-3 py-1 rounded text-sm hover:bg-orange-600 transition-colors">+ Keranjang</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Wishlist Item 3 -->
+                                <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+                                    <div class="relative">
+                                        <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
+                                             alt="Repair Night Cream" 
+                                             class="w-full h-48 object-cover">
+                                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-100">
+                                            <i class="fas fa-heart text-primary-red"></i>
+                                        </button>
+                                    </div>
+                                    <div class="p-4">
+                                        <h3 class="font-semibold text-gray-800 mb-2">Repair Night Cream</h3>
+                                        <p class="text-gray-600 text-sm mb-3">Krim malam dengan retinol untuk peremajaan kulit</p>
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-bold text-primary-orange">Rp 329.000</span>
+                                            <button class="bg-primary-orange text-white px-3 py-1 rounded text-sm hover:bg-orange-600 transition-colors">+ Keranjang</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-8 text-center">
+                                <button class="border-2 border-primary-orange text-primary-orange px-6 py-2 rounded-lg font-semibold hover:bg-primary-orange hover:text-white transition-colors">
+                                    Lihat Semua Wishlist
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Addresses Tab -->
+                    <div id="addresses" class="tab-content">
+                        <div class="bg-white rounded-xl shadow-sm p-6">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-2xl font-bold text-gray-800">Alamat Saya</h2>
+                                <button class="bg-primary-orange text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition-colors">
+                                    + Tambah Alamat Baru
+                                </button>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Address 1 -->
+                                <div class="border-2 border-primary-orange bg-primary-light p-6 rounded-xl">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <h3 class="font-bold text-gray-800">Alamat Utama</h3>
+                                        <span class="bg-primary-orange text-white px-2 py-1 rounded text-xs font-medium">Utama</span>
+                                    </div>
+                                    <div class="space-y-2 text-gray-700">
+                                        <p class="font-medium">Sarah Johnson</p>
+                                        <p>+62 812-3456-7890</p>
+                                        <p>Jl. Merdeka No. 123, RT 05/RW 02</p>
+                                        <p>Kel. Menteng, Kec. Menteng</p>
+                                        <p>Jakarta Pusat, 10310</p>
+                                    </div>
+                                    <div class="flex space-x-3 mt-4">
+                                        <button class="text-primary-orange font-medium hover:underline">Edit</button>
+                                        <button class="text-gray-600 hover:text-red-500">Hapus</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Address 2 -->
+                                <div class="border border-gray-200 p-6 rounded-xl">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <h3 class="font-bold text-gray-800">Alamat Kantor</h3>
+                                    </div>
+                                    <div class="space-y-2 text-gray-700">
+                                        <p class="font-medium">Sarah Johnson (Kantor)</p>
+                                        <p>+62 812-3456-7890</p>
+                                        <p>Jl. Sudirman No. 456, Gedung Plaza</p>
+                                        <p>Lt. 15, Suite 1502</p>
+                                        <p>Jakarta Selatan, 12190</p>
+                                    </div>
+                                    <div class="flex space-x-3 mt-4">
+                                        <button class="text-primary-orange font-medium hover:underline">Jadikan Utama</button>
+                                        <button class="text-primary-orange font-medium hover:underline">Edit</button>
+                                        <button class="text-gray-600 hover:text-red-500">Hapus</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Settings Tab -->
+                    <div id="settings" class="tab-content">
+                        <div class="bg-white rounded-xl shadow-sm p-6">
+                            <h2 class="text-2xl font-bold text-gray-800 mb-6">Pengaturan Akun</h2>
+                            
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                <!-- Personal Information -->
+                                <div class="lg:col-span-2">
+                                    <h3 class="text-xl font-bold text-gray-800 mb-4">Informasi Pribadi</h3>
+                                    <form class="space-y-4">
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">Nama Depan</label>
+                                                <input type="text" id="firstName" value="Sarah" class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange transition-colors">
+                                            </div>
+                                            <div>
+                                                <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">Nama Belakang</label>
+                                                <input type="text" id="lastName" value="Johnson" class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange transition-colors">
+                                            </div>
+                                        </div>
+                                        
+                                        <div>
+                                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                                            <input type="email" id="email" value="sarah.j@email.com" class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange transition-colors">
+                                        </div>
+                                        
+                                        <div>
+                                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Nomor Telepon</label>
+                                            <input type="tel" id="phone" value="+62 812-3456-7890" class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange transition-colors">
+                                        </div>
+                                        
+                                        <div>
+                                            <label for="birthDate" class="block text-sm font-medium text-gray-700 mb-2">Tanggal Lahir</label>
+                                            <input type="date" id="birthDate" value="1995-08-15" class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange transition-colors">
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Kelamin</label>
+                                            <div class="flex space-x-4">
+                                                <label class="flex items-center">
+                                                    <input type="radio" name="gender" value="female" checked class="mr-2 text-primary-orange focus:ring-primary-orange">
+                                                    <span>Perempuan</span>
+                                                </label>
+                                                <label class="flex items-center">
+                                                    <input type="radio" name="gender" value="male" class="mr-2 text-primary-orange focus:ring-primary-orange">
+                                                    <span>Laki-laki</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                        <button type="submit" class="bg-primary-orange text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors">
+                                            Simpan Perubahan
+                                        </button>
+                                    </form>
+                                </div>
+                                
+                                <!-- Account Security -->
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-800 mb-4">Keamanan Akun</h3>
+                                    <div class="space-y-4">
+                                        <button class="w-full text-left p-4 border border-gray-200 rounded-lg hover:border-primary-orange transition-colors">
+                                            <div class="flex items-center justify-between">
+                                                <div>
+                                                    <p class="font-medium text-gray-800">Ubah Password</p>
+                                                    <p class="text-sm text-gray-600">Terakhir diubah 3 bulan lalu</p>
+                                                </div>
+                                                <i class="fas fa-chevron-right text-gray-400"></i>
+                                            </div>
+                                        </button>
+                                        
+                                        <button class="w-full text-left p-4 border border-gray-200 rounded-lg hover:border-primary-orange transition-colors">
+                                            <div class="flex items-center justify-between">
+                                                <div>
+                                                    <p class="font-medium text-gray-800">Two-Factor Authentication</p>
+                                                    <p class="text-sm text-gray-600">Tidak aktif</p>
+                                                </div>
+                                                <i class="fas fa-chevron-right text-gray-400"></i>
+                                            </div>
+                                        </button>
+                                        
+                                        <button class="w-full text-left p-4 border border-gray-200 rounded-lg hover:border-primary-orange transition-colors">
+                                            <div class="flex items-center justify-between">
+                                                <div>
+                                                    <p class="font-medium text-gray-800">Sesi Aktif</p>
+                                                    <p class="text-sm text-gray-600">2 perangkat</p>
+                                                </div>
+                                                <i class="fas fa-chevron-right text-gray-400"></i>
+                                            </div>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="mt-8">
+                                        <h3 class="text-xl font-bold text-gray-800 mb-4">Preferensi</h3>
+                                        <div class="space-y-3">
+                                            <label class="flex items-center">
+                                                <input type="checkbox" checked class="mr-3 text-primary-orange focus:ring-primary-orange">
+                                                <span class="text-gray-700">Email marketing dan promo</span>
+                                            </label>
+                                            <label class="flex items-center">
+                                                <input type="checkbox" checked class="mr-3 text-primary-orange focus:ring-primary-orange">
+                                                <span class="text-gray-700">Notifikasi pesanan</span>
+                                            </label>
+                                            <label class="flex items-center">
+                                                <input type="checkbox" class="mr-3 text-primary-orange focus:ring-primary-orange">
+                                                <span class="text-gray-700">Notifikasi produk baru</span>
+                                            </label>
+                                            <label class="flex items-center">
+                                                <input type="checkbox" checked class="mr-3 text-primary-orange focus:ring-primary-orange">
+                                                <span class="text-gray-700">Notifikasi artikel beauty</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Logout Tab -->
+                    <div id="logout" class="tab-content">
+                        <div class="bg-white rounded-xl shadow-sm p-6 text-center">
+                            <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <i class="fas fa-sign-out-alt text-2xl text-red-500"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold text-gray-800 mb-4">Keluar dari Akun</h2>
+                            <p class="text-gray-600 mb-8 max-w-md mx-auto">Apakah Anda yakin ingin keluar dari akun Inclinique Store? Anda harus login kembali untuk mengakses profil dan pesanan Anda.</p>
+                            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                                <button class="bg-red-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors">
+                                    Ya, Keluar
+                                </button>
+                                <button class="border border-gray-300 text-gray-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors" data-tab="overview">
+                                    Batalkan
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12 lg:pb-12 pb-[120px]">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Inclinique<span class="text-primary-red"> Store</span></h3>
+                    <p class="text-gray-400 mb-4">Rangkaian skincare terbaik dengan formula yang aman dan efektif untuk semua jenis kulit.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Produk</h4>
+                    <ul class="space-y-2">
+                        <li><a href="product.html#cleansers" class="text-gray-400 hover:text-white transition-colors">Pembersih</a></li>
+                        <li><a href="product.html#moisturizers" class="text-gray-400 hover:text-white transition-colors">Pelembap</a></li>
+                        <li><a href="product.html#serums" class="text-gray-400 hover:text-white transition-colors">Serum</a></li>
+                        <li><a href="product.html#sunscreens" class="text-gray-400 hover:text-white transition-colors">Tabir Surya</a></li>
+                        <li><a href="product.html#special-care" class="text-gray-400 hover:text-white transition-colors">Perawatan Khusus</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Bantuan</h4>
+                    <ul class="space-y-2">
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition-colors">Kontak Kami</a></li>
+                        <li><a href="shipping.html" class="text-gray-400 hover:text-white transition-colors">Pengiriman</a></li>
+                        <li><a href="returns.html" class="text-gray-400 hover:text-white transition-colors">Pengembalian</a></li>
+                        <li><a href="faq.html" class="text-gray-400 hover:text-white transition-colors">FAQ</a></li>
+                        <li><a href="privacy.html" class="text-gray-400 hover:text-white transition-colors">Kebijakan Privasi</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Kontak</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-3" aria-hidden="true"></i>
+                            <span>Jl. Skincare No. 123, Jakarta</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-3" aria-hidden="true"></i>
+                            <span>+62 857 6711 3554</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3" aria-hidden="true"></i>
+                            <span>info@incliniquestore.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; <span id="current-year">2024</span> Inclinique Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bottom Navigation for Mobile & Tablet -->
+    <nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white py-3 px-6 flex justify-between items-center lg:hidden z-40" aria-label="Mobile Navigation">
+        <a href="index.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-home text-2xl mb-1" aria-hidden="true"></i>
+            <span class="text-xs font-medium">Beranda</span>
+        </a>
+        <a href="product.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-shopping-bag text-2xl mb-1" aria-hidden="true"></i>
+            <span class="text-xs font-medium">Belanja</span>
+        </a>
+        <a href="news.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-blog text-2xl mb-1" aria-hidden="true"></i>
+            <span class="text-xs font-medium">Artikel</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center text-primary-orange transition-colors duration-300 w-full" aria-current="page">
+            <i class="fas fa-user text-2xl mb-1" aria-hidden="true"></i>
+            <span class="text-xs font-medium">Profil</span>
+        </a>
+    </nav>
+
+    <script>
+        // JavaScript untuk interaktivitas halaman profile
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // Search functionality
+            const searchToggleMobile = document.getElementById('search-toggle-mobile');
+            const searchToggleDesktop = document.getElementById('search-toggle-desktop');
+            const mobileSearchToggle = document.getElementById('mobile-search-toggle');
+            const closeSearch = document.getElementById('close-search');
+            const searchPopup = document.getElementById('search-popup');
+            const searchOverlay = document.getElementById('search-overlay');
+            const searchInput = document.getElementById('search-input');
+            const searchButton = document.getElementById('search-button');
+
+            function openSearch() {
+                searchPopup.classList.add('open');
+                searchOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                // Focus on search input when opened
+                setTimeout(() => {
+                    searchInput.focus();
+                }, 300);
+            }
+
+            function closeSearchFunc() {
+                searchPopup.classList.remove('open');
+                searchOverlay.classList.remove('open');
+                document.body.style.overflow = 'auto';
+            }
+
+            // Event listeners untuk search
+            if (searchToggleMobile) {
+                searchToggleMobile.addEventListener('click', openSearch);
+            }
+            if (searchToggleDesktop) {
+                searchToggleDesktop.addEventListener('click', openSearch);
+            }
+            if (mobileSearchToggle) {
+                mobileSearchToggle.addEventListener('click', function() {
+                    closeSidebarFunc();
+                    setTimeout(openSearch, 300);
+                });
+            }
+            if (closeSearch) {
+                closeSearch.addEventListener('click', closeSearchFunc);
+            }
+            if (searchOverlay) {
+                searchOverlay.addEventListener('click', closeSearchFunc);
+            }
+
+            // Sidebar toggle functionality
+            const menuToggle = document.getElementById('menu-toggle');
+            const closeSidebar = document.getElementById('close-sidebar');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            
+            function openSidebar() {
+                sidebar.classList.add('open');
+                sidebarOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeSidebarFunc() {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('open');
+                document.body.style.overflow = 'auto';
+            }
+            
+            if (menuToggle) {
+                menuToggle.addEventListener('click', openSidebar);
+            }
+            if (closeSidebar) {
+                closeSidebar.addEventListener('click', closeSidebarFunc);
+            }
+            if (sidebarOverlay) {
+                sidebarOverlay.addEventListener('click', closeSidebarFunc);
+            }
+
+            // Tab switching functionality
+            const menuItems = document.querySelectorAll('.profile-menu-item');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            menuItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all menu items
+                    menuItems.forEach(menuItem => {
+                        menuItem.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked menu item
+                    this.classList.add('active');
+                    
+                    // Hide all tab contents
+                    tabContents.forEach(tab => {
+                        tab.classList.remove('active');
+                    });
+                    
+                    // Show selected tab content
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+
+            // Order filtering
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // Update active button
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('active', 'bg-primary-orange', 'text-white');
+                        btn.classList.add('bg-white', 'text-gray-700', 'border', 'border-gray-300');
+                    });
+                    
+                    this.classList.add('active', 'bg-primary-orange', 'text-white');
+                    this.classList.remove('bg-white', 'text-gray-700', 'border', 'border-gray-300');
+                    
+                    // In a real implementation, this would filter orders
+                    console.log(`Filtering orders by: ${filter}`);
+                });
+            });
+
+            // Add to cart buttons
+            const addToCartButtons = document.querySelectorAll('button:contains("+ Keranjang")');
+            
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productCard = this.closest('.border');
+                    const productName = productCard.querySelector('h3').textContent;
+                    
+                    // In a real implementation, this would add the product to cart
+                    console.log(`Added ${productName} to cart`);
+                    
+                    // Show a temporary message
+                    const originalText = this.textContent;
+                    this.textContent = 'Ditambahkan!';
+                    this.classList.add('bg-green-500');
+                    
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                        this.classList.remove('bg-green-500');
+                    }, 1500);
+                });
+            });
+
+            // Wishlist toggle
+            const wishlistButtons = document.querySelectorAll('.fa-heart');
+            
+            wishlistButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    if (this.classList.contains('far')) {
+                        this.classList.remove('far');
+                        this.classList.add('fas', 'text-primary-red');
+                    } else {
+                        this.classList.remove('fas', 'text-primary-red');
+                        this.classList.add('far');
+                    }
+                });
+            });
+
+            // Form submission
+            const forms = document.querySelectorAll('form');
+            
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Simple validation
+                    const requiredFields = this.querySelectorAll('[required]');
+                    let isValid = true;
+                    
+                    requiredFields.forEach(field => {
+                        if (!field.value.trim()) {
+                            isValid = false;
+                            field.classList.add('border-red-500');
+                        } else {
+                            field.classList.remove('border-red-500');
+                        }
+                    });
+                    
+                    if (isValid) {
+                        // In a real application, this would submit to a server
+                        alert('Perubahan berhasil disimpan!');
+                    } else {
+                        alert('Harap lengkapi semua field yang wajib diisi.');
+                    }
+                });
+            });
+
+            // Skin Type Selection
+            const skinTypeCards = document.querySelectorAll('.skin-type-card');
+            skinTypeCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    skinTypeCards.forEach(c => {
+                        c.classList.remove('border-2', 'border-primary-orange', 'bg-primary-light');
+                        c.classList.add('border', 'border-gray-200');
+                        const icon = c.querySelector('.w-12');
+                        icon.classList.remove('bg-primary-orange');
+                        icon.classList.add('bg-gray-200');
+                    });
+                    
+                    this.classList.remove('border', 'border-gray-200');
+                    this.classList.add('border-2', 'border-primary-orange', 'bg-primary-light');
+                    const icon = this.querySelector('.w-12');
+                    icon.classList.remove('bg-gray-200');
+                    icon.classList.add('bg-primary-orange');
+                    
+                    // Update skin type in the assessment card
+                    const skinType = this.getAttribute('data-type');
+                    document.querySelector('.skin-type-dominant').textContent = 
+                        skinType.charAt(0).toUpperCase() + skinType.slice(1);
+                });
+            });
+
+            // Skin Condition Selection
+            const skinConditionCards = document.querySelectorAll('.skin-condition-card');
+            skinConditionCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    if (this.classList.contains('border-primary-orange')) {
+                        this.classList.remove('border-2', 'border-primary-orange', 'bg-primary-light');
+                        this.classList.add('border', 'border-gray-200');
+                        const icon = this.querySelector('.w-12');
+                        icon.classList.remove('bg-primary-orange');
+                        icon.classList.add('bg-gray-200');
+                    } else {
+                        this.classList.remove('border', 'border-gray-200');
+                        this.classList.add('border-2', 'border-primary-orange', 'bg-primary-light');
+                        const icon = this.querySelector('.w-12');
+                        icon.classList.remove('bg-gray-200');
+                        icon.classList.add('bg-primary-orange');
+                    }
+                });
+            });
+
+            // Skin Goals Selection
+            const skinGoalCards = document.querySelectorAll('.skin-goal-card');
+            skinGoalCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    if (this.classList.contains('border-primary-orange')) {
+                        this.classList.remove('border-2', 'border-primary-orange', 'bg-primary-light');
+                        this.classList.add('border', 'border-gray-200');
+                        const icon = this.querySelector('.w-12');
+                        icon.classList.remove('bg-primary-orange');
+                        icon.classList.add('bg-gray-200');
+                    } else {
+                        this.classList.remove('border', 'border-gray-200');
+                        this.classList.add('border-2', 'border-primary-orange', 'bg-primary-light');
+                        const icon = this.querySelector('.w-12');
+                        icon.classList.remove('bg-gray-200');
+                        icon.classList.add('bg-primary-orange');
+                    }
+                });
+            });
+
+            // Update Skin Analysis
+            const updateAnalysisBtn = document.querySelector('.bg-primary-orange');
+            updateAnalysisBtn.addEventListener('click', function() {
+                // Simulate analysis update
+                this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Menganalisis...';
+                
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-check mr-2"></i>Analisis Diperbarui';
+                    
+                    // Update last updated date
+                    const now = new Date();
+                    document.querySelector('.font-medium.text-primary-orange').textContent = 
+                        now.toLocaleDateString('id-ID', { 
+                            day: 'numeric', 
+                            month: 'long', 
+                            year: 'numeric' 
+                        });
+                    
+                    // Reset button after 2 seconds
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-sync-alt mr-2"></i>Perbarui Analisis Kulit';
+                    }, 2000);
+                }, 2000);
+            });
+
+            // Routine Step Interactions
+            const routineSteps = document.querySelectorAll('.routine-step');
+            routineSteps.forEach(step => {
+                step.addEventListener('click', function() {
+                    this.classList.toggle('bg-blue-50');
+                });
+            });
+
+            // Close search on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeSearchFunc();
+                    closeSidebarFunc();
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

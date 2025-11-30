@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Karir di Inclinique Store - Bergabunglah dengan tim inovatif kami di industri skincare Indonesia. Temukan peluang karir dan budaya kerja yang inspiratif.">
+    <title>Karir - Inclinique Store | Bangun Masa Depan Bersama Tim Inovatif Kami</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #FEF3E2 0%, #FA812F 100%);
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        .sidebar-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .sidebar-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Search Popup Styles */
+        .search-popup {
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        .search-popup.open {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .search-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .search-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Custom colors */
+        .bg-primary-light {
+            background-color: #FFECC0;
+        }
+        .bg-primary-yellow {
+            background-color: #FAB12F;
+        }
+        .bg-primary-orange {
+            background-color: #FA812F;
+        }
+        .bg-primary-red {
+            background-color: #DD0303;
+        }
+        .text-primary-yellow {
+            color: #FAB12F;
+        }
+        .text-primary-orange {
+            color: #FA812F;
+        }
+        .text-primary-red {
+            color: #DD0303;
+        }
+        .border-primary-orange {
+            border-color: #FA812F;
+        }
+        .hover\:bg-primary-orange:hover {
+            background-color: #FA812F;
+        }
+        .hover\:text-primary-orange:hover {
+            color: #FA812F;
+        }
+
+        /* Career Cards */
+        .career-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        .career-card:hover {
+            transform: translateY(-5px);
+            border-left-color: #FA812F;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* Benefit Cards */
+        .benefit-card {
+            transition: all 0.3s ease;
+        }
+        .benefit-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Culture Section */
+        .culture-item {
+            transition: all 0.3s ease;
+        }
+        .culture-item:hover {
+            transform: scale(1.05);
+        }
+
+        /* Application Form */
+        .application-form {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+
+        /* Stats Counter */
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FA812F, #DD0303);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Testimonial */
+        .testimonial-card {
+            transition: all 0.3s ease;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Loading animation */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .loading-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* Job Filter */
+        .filter-btn {
+            transition: all 0.3s ease;
+        }
+        .filter-btn.active {
+            background-color: #FA812F;
+            color: white;
+        }
+    </style>
+</head>
+<body class="font-sans">
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="w-full lg:max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="index.html" class="text-2xl font-bold text-primary-orange hover:opacity-80 transition-opacity" aria-label="Inclinique Store Home">
+                    Inclinique<span class="text-primary-red"> Store</span>
+                </a>
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden lg:flex space-x-8" aria-label="Main Navigation">
+                <a href="index.html" class="text-gray-700 hover:text-primary-orange font-medium transition-colors">HOME</a>
+                <a href="product.html" class="text-gray-700 hover:text-primary-orange font-medium transition-colors">SHOP ALL</a>
+                <a href="news.html" class="text-gray-700 hover:text-primary-orange font-medium transition-colors">BEAUTY INSIDER</a>
+                <a href="about.html" class="text-gray-700 hover:text-primary-orange font-medium transition-colors">ABOUT US</a>
+                <a href="career.html" class="text-primary-orange font-medium border-b-2 border-primary-orange" aria-current="page">CAREER</a>
+            </nav>
+            
+            <!-- Mobile & Tablet Header Icons -->
+            <div class="flex items-center space-x-4 lg:hidden">
+                <button id="search-toggle-mobile" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="Open Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="cart.html" class="text-gray-700 hover:text-primary-orange relative transition-colors" aria-label="Shopping Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-primary-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                </a>
+                <button id="menu-toggle" class="text-gray-700" aria-label="Open Menu">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Desktop Header Icons -->
+            <div class="hidden lg:flex items-center space-x-4">
+                <button id="search-toggle-desktop" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="Open Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="cart.html" class="text-gray-700 hover:text-primary-orange relative transition-colors" aria-label="Shopping Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-primary-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                </a>
+                <a href="account.html" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="User Account">
+                    <i class="fas fa-user"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Popup -->
+    <div id="search-overlay" class="search-overlay fixed inset-0 bg-black bg-opacity-50 z-50" aria-hidden="true"></div>
+    <div id="search-popup" class="search-popup fixed top-0 left-0 right-0 bg-white z-50 p-6 shadow-lg" role="dialog" aria-modal="true" aria-labelledby="search-title">
+        <div class="w-full lg:max-w-7xl mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 id="search-title" class="text-xl font-bold text-primary-orange">Cari Produk</h2>
+                <button id="close-search" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="Close Search">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="relative mb-6">
+                <input 
+                    type="text" 
+                    id="search-input"
+                    placeholder="Ketik nama produk yang dicari..."
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange focus:ring-opacity-20 transition-colors"
+                    aria-describedby="search-help"
+                >
+                <button id="search-button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-primary-orange transition-colors" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div id="search-help" class="text-sm text-gray-500 mb-4">Masukkan kata kunci produk untuk mencari</div>
+            
+            <div id="search-results" class="max-h-96 overflow-y-auto">
+                <div id="search-empty" class="text-center py-8 text-gray-500">
+                    <i class="fas fa-search text-4xl mb-4 opacity-50"></i>
+                    <p>Ketik nama produk untuk memulai pencarian</p>
+                </div>
+                
+                <div id="search-loading" class="hidden text-center py-8">
+                    <i class="fas fa-spinner fa-spin text-2xl text-primary-orange mb-4"></i>
+                    <p>Mencari produk...</p>
+                </div>
+                
+                <div id="search-no-results" class="hidden text-center py-8 text-gray-500">
+                    <i class="fas fa-times-circle text-4xl mb-4 opacity-50"></i>
+                    <p>Produk tidak ditemukan</p>
+                    <p class="text-sm">Coba gunakan kata kunci yang berbeda</p>
+                </div>
+                
+                <div id="search-results-container" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Search results will be populated here by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Menu for Mobile & Tablet -->
+    <div id="sidebar-overlay" class="sidebar-overlay fixed inset-0 bg-black bg-opacity-50 z-50" aria-hidden="true"></div>
+    <div id="sidebar" class="sidebar fixed top-0 left-0 h-full w-64 bg-white z-50 p-6" role="dialog" aria-modal="true" aria-labelledby="sidebar-title">
+        <div class="flex justify-between items-center mb-8">
+            <h2 id="sidebar-title" class="text-xl font-bold text-primary-orange">Inclinique<span class="text-primary-red"> Store</span></h2>
+            <button id="close-sidebar" class="text-gray-700 hover:text-primary-orange transition-colors" aria-label="Close Menu">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <nav class="space-y-6" aria-label="Mobile Navigation">
+            <a href="index.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-home mr-3" aria-hidden="true"></i>HOME
+            </a>
+            <a href="product.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-shopping-bag mr-3" aria-hidden="true"></i>SHOP ALL
+            </a>
+            <a href="news.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-blog mr-3" aria-hidden="true"></i>BEAUTY INSIDER
+            </a>
+            <a href="about.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-info-circle mr-3" aria-hidden="true"></i>ABOUT US
+            </a>
+            <a href="career.html" class="block text-primary-orange font-medium py-2 border-b border-gray-100" aria-current="page">
+                <i class="fas fa-envelope mr-3" aria-hidden="true"></i>CAREER
+            </a>
+            <button id="mobile-search-toggle" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors w-full text-left">
+                <i class="fas fa-search mr-3" aria-hidden="true"></i>Pencarian
+            </button>
+            <a href="account.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100 transition-colors">
+                <i class="fas fa-user mr-3" aria-hidden="true"></i>Akun Saya
+            </a>
+        </nav>
+        
+        <div class="mt-8 pt-6 border-t border-gray-200">
+            <h3 class="font-semibold text-gray-700 mb-4">Kategori Produk</h3>
+            <div class="space-y-3">
+                <a href="product.html#cleansers" class="block text-gray-600 hover:text-primary-orange transition-colors">Pembersih</a>
+                <a href="product.html#moisturizers" class="block text-gray-600 hover:text-primary-orange transition-colors">Pelembap</a>
+                <a href="product.html#serums" class="block text-gray-600 hover:text-primary-orange transition-colors">Serum</a>
+                <a href="product.html#sunscreens" class="block text-gray-600 hover:text-primary-orange transition-colors">Tabir Surya</a>
+                <a href="product.html#special-care" class="block text-gray-600 hover:text-primary-orange transition-colors">Perawatan Khusus</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="py-16 lg:py-24 hero-gradient">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-4xl lg:text-5xl font-bold text-gray-800 mb-6">Bangun Masa Depan Bersama Inclinique</h1>
+                    <p class="text-lg text-gray-700 mb-8">Bergabunglah dengan tim inovatif kami yang sedang mengubah landscape industri skincare Indonesia. Di Inclinique, kami tidak hanya menciptakan produk - kami menciptakan dampak.</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#open-positions" class="bg-primary-orange text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors text-center">
+                            Lihat Posisi Terbuka
+                        </a>
+                        <a href="#why-join" class="border-2 border-primary-orange text-primary-orange px-8 py-3 rounded-lg font-semibold hover:bg-primary-orange hover:text-white transition-colors text-center">
+                            Mengapa Bergabung?
+                        </a>
+                    </div>
+                </div>
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                         alt="Tim Inclinique Store" 
+                         class="rounded-2xl shadow-2xl">
+                    <div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-lg">
+                        <div class="flex items-center">
+                            <div class="bg-primary-orange text-white p-3 rounded-full mr-4">
+                                <i class="fas fa-users text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-800">50+ Anggota Tim</p>
+                                <p class="text-sm text-gray-600">Dan Terus Berkembang</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-white">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="stat-number">50+</div>
+                    <p class="text-gray-600 font-medium">Profesional Berpengalaman</p>
+                </div>
+                <div>
+                    <div class="stat-number">15+</div>
+                    <p class="text-gray-600 font-medium">Posisi Terbuka</p>
+                </div>
+                <div>
+                    <div class="stat-number">85%</div>
+                    <p class="text-gray-600 font-medium">Growth Karyawan</p>
+                </div>
+                <div>
+                    <div class="stat-number">4.8</div>
+                    <p class="text-gray-600 font-medium">Rating Kepuasan Karyawan</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Join Us -->
+    <section id="why-join" class="py-16 bg-gray-50">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">Mengapa Bergabung dengan Inclinique?</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Kami menawarkan lebih dari sekadar pekerjaan - kami menawarkan perjalanan karir yang bermakna</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="benefit-card bg-white p-8 rounded-2xl shadow-lg text-center">
+                    <div class="bg-primary-orange text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-rocket text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Growth yang Cepat</h3>
+                    <p class="text-gray-600">Akses ke program pengembangan karir, training berkelanjutan, dan peluang promosi yang jelas.</p>
+                </div>
+                
+                <div class="benefit-card bg-white p-8 rounded-2xl shadow-lg text-center">
+                    <div class="bg-primary-red text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-hand-holding-heart text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Paket Benefit Kompetitif</h3>
+                    <p class="text-gray-600">Asuransi kesehatan, bonus kinerja, tunjangan wellness, dan diskon produk eksklusif untuk karyawan.</p>
+                </div>
+                
+                <div class="benefit-card bg-white p-8 rounded-2xl shadow-lg text-center">
+                    <div class="bg-primary-yellow text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-balance-scale text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Work-Life Balance</h3>
+                    <p class="text-gray-600">Fleksibilitas kerja, WFH options, dan lingkungan kerja yang mendukung keseimbangan hidup.</p>
+                </div>
+                
+                <div class="benefit-card bg-white p-8 rounded-2xl shadow-lg text-center">
+                    <div class="bg-green-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-lightbulb text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Budaya Inovasi</h3>
+                    <p class="text-gray-600">Ruang untuk bereksperimen, mengemukakan ide, dan berkontribusi pada produk-produk revolusioner.</p>
+                </div>
+                
+                <div class="benefit-card bg-white p-8 rounded-2xl shadow-lg text-center">
+                    <div class="bg-purple-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-globe-asia text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Dampak yang Nyata</h3>
+                    <p class="text-gray-600">Berkontribusi langsung pada produk yang meningkatkan kehidupan jutaan pelanggan di Indonesia.</p>
+                </div>
+                
+                <div class="benefit-card bg-white p-8 rounded-2xl shadow-lg text-center">
+                    <div class="bg-blue-500 text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-users text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Tim yang Kolaboratif</h3>
+                    <p class="text-gray-600">Bekerja dengan profesional berbakat dari berbagai latar belakang dalam lingkungan yang supportive.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Culture -->
+    <section class="py-16 bg-white">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">Budaya Kerja Kami</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Nilai-nilai yang menjadi fondasi setiap interaksi dan inovasi di Inclinique</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="space-y-8">
+                        <div class="culture-item flex items-start">
+                            <div class="bg-primary-orange text-white p-3 rounded-lg mr-4">
+                                <i class="fas fa-bullseye text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">Customer-Obsessed</h3>
+                                <p class="text-gray-600">Setiap keputusan dan inovasi kami berpusat pada kebutuhan dan kepuasan pelanggan.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="culture-item flex items-start">
+                            <div class="bg-primary-red text-white p-3 rounded-lg mr-4">
+                                <i class="fas fa-handshake text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">Collaborative Excellence</h3>
+                                <p class="text-gray-600">Kami percaya bahwa kerja tim yang solid menghasilkan solusi yang lebih baik.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="culture-item flex items-start">
+                            <div class="bg-primary-yellow text-white p-3 rounded-lg mr-4">
+                                <i class="fas fa-seedling text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">Continuous Learning</h3>
+                                <p class="text-gray-600">Kami mendorong pertumbuhan berkelanjutan dan pembaharuan pengetahuan.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="culture-item flex items-start">
+                            <div class="bg-green-500 text-white p-3 rounded-lg mr-4">
+                                <i class="fas fa-heart text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">Passion for Impact</h3>
+                                <p class="text-gray-600">Semangat kami berasal dari dampak positif yang kami ciptakan bagi masyarakat.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                         alt="Budaya Kerja Inclinique" 
+                         class="rounded-2xl shadow-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Open Positions -->
+    <section id="open-positions" class="py-16 bg-gray-50">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">Posisi Terbuka</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Temukan peran yang sesuai dengan passion dan keahlian Anda</p>
+            </div>
+            
+            <!-- Job Filter -->
+            <div class="flex flex-wrap gap-3 mb-8 justify-center">
+                <button class="filter-btn active px-4 py-2 rounded-full bg-primary-orange text-white text-sm font-medium" data-filter="all">
+                    Semua Posisi
+                </button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-white border border-gray-300 text-gray-700 hover:border-primary-orange text-sm font-medium" data-filter="tech">
+                    Teknologi
+                </button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-white border border-gray-300 text-gray-700 hover:border-primary-orange text-sm font-medium" data-filter="marketing">
+                    Marketing
+                </button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-white border border-gray-300 text-gray-700 hover:border-primary-orange text-sm font-medium" data-filter="rd">
+                    R&D
+                </button>
+                <button class="filter-btn px-4 py-2 rounded-full bg-white border border-gray-300 text-gray-700 hover:border-primary-orange text-sm font-medium" data-filter="operations">
+                    Operations
+                </button>
+            </div>
+            
+            <!-- Jobs Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="jobs-container">
+                <!-- Job 1 -->
+                <div class="career-card bg-white p-6 rounded-xl shadow-md" data-category="tech">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Frontend Developer</h3>
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="bg-primary-light text-primary-orange px-3 py-1 rounded-full text-xs font-medium">Teknologi</span>
+                                <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-medium">Full-time</span>
+                                <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-medium">Jakarta</span>
+                            </div>
+                        </div>
+                        <span class="bg-primary-orange text-white px-3 py-1 rounded text-sm font-medium">New</span>
+                    </div>
+                    <p class="text-gray-600 mb-4">Kami mencari Frontend Developer yang passionate untuk mengembangkan pengalaman digital yang exceptional bagi pelanggan kami.</p>
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-500">
+                            <i class="far fa-clock mr-1"></i>Posted 2 days ago
+                        </div>
+                        <a href="#apply" class="text-primary-orange font-medium hover:underline flex items-center" data-job="Frontend Developer">
+                            Lamar Sekarang
+                            <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Job 2 -->
+                <div class="career-card bg-white p-6 rounded-xl shadow-md" data-category="marketing">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Digital Marketing Specialist</h3>
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="bg-pink-100 text-pink-600 px-3 py-1 rounded-full text-xs font-medium">Marketing</span>
+                                <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-medium">Full-time</span>
+                                <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-medium">Jakarta</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">Bergabunglah dengan tim marketing kami untuk mengembangkan strategi digital yang inovatif dan menjangkau audiens yang lebih luas.</p>
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-500">
+                            <i class="far fa-clock mr-1"></i>Posted 1 week ago
+                        </div>
+                        <a href="#apply" class="text-primary-orange font-medium hover:underline flex items-center" data-job="Digital Marketing Specialist">
+                            Lamar Sekarang
+                            <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Job 3 -->
+                <div class="career-card bg-white p-6 rounded-xl shadow-md" data-category="rd">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Skincare Formulator</h3>
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-xs font-medium">R&D</span>
+                                <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-medium">Full-time</span>
+                                <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-medium">Bandung</span>
+                            </div>
+                        </div>
+                        <span class="bg-primary-red text-white px-3 py-1 rounded text-sm font-medium">Urgent</span>
+                    </div>
+                    <p class="text-gray-600 mb-4">Bergabung dengan tim R&D kami untuk menciptakan formula skincare inovatif yang memenuhi kebutuhan kulit Indonesia.</p>
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-500">
+                            <i class="far fa-clock mr-1"></i>Posted 3 days ago
+                        </div>
+                        <a href="#apply" class="text-primary-orange font-medium hover:underline flex items-center" data-job="Skincare Formulator">
+                            Lamar Sekarang
+                            <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Job 4 -->
+                <div class="career-card bg-white p-6 rounded-xl shadow-md" data-category="operations">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Supply Chain Manager</h3>
+                            <div class="flex flex-wrap gap-2 mb-3">
+                                <span class="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-xs font-medium">Operations</span>
+                                <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-medium">Full-time</span>
+                                <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-medium">Jakarta</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">Kelola dan optimalkan supply chain operations kami untuk memastikan efisiensi dan ketersediaan produk yang optimal.</p>
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-500">
+                            <i class="far fa-clock mr-1"></i>Posted 2 weeks ago
+                        </div>
+                        <a href="#apply" class="text-primary-orange font-medium hover:underline flex items-center" data-job="Supply Chain Manager">
+                            Lamar Sekarang
+                            <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <p class="text-gray-600 mb-4">Tidak menemukan posisi yang sesuai? Kirim CV Anda untuk posisi yang akan datang</p>
+                <a href="#general-application" class="border-2 border-primary-orange text-primary-orange px-8 py-3 rounded-lg font-semibold hover:bg-primary-orange hover:text-white transition-colors">
+                    General Application
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Employee Testimonials -->
+    <section class="py-16 bg-white">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">Cerita dari Tim Kami</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Dengarkan langsung pengalaman mereka bekerja di Inclinique</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="testimonial-card bg-gray-50 p-6 rounded-2xl">
+                    <div class="flex items-center mb-4">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" 
+                             alt="Sarah" 
+                             class="w-12 h-12 rounded-full object-cover mr-4">
+                        <div>
+                            <p class="font-bold text-gray-800">Sarah, 28</p>
+                            <p class="text-sm text-gray-600">Product Manager</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic mb-4">"Selama 3 tahun di Inclinique, saya diberikan kepercayaan penuh untuk mengembangkan produk dari konsep hingga launch. Lingkungan kerja yang kolaboratif membuat setiap hari menjadi pembelajaran baru."</p>
+                    <div class="text-sm text-gray-500">Bergabung sejak 2020</div>
+                </div>
+                
+                <div class="testimonial-card bg-gray-50 p-6 rounded-2xl">
+                    <div class="flex items-center mb-4">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" 
+                             alt="Andi" 
+                             class="w-12 h-12 rounded-full object-cover mr-4">
+                        <div>
+                            <p class="font-bold text-gray-800">Andi, 32</p>
+                            <p class="text-sm text-gray-600">Senior Formulator</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic mb-4">"Sebagai formulator, saya sangat menghargai komitmen Inclinique terhadap kualitas dan inovasi. Fasilitas R&D yang lengkap memungkinkan kami bereksperimen dengan bahan-bahan terbaik."</p>
+                    <div class="text-sm text-gray-500">Bergabung sejak 2019</div>
+                </div>
+                
+                <div class="testimonial-card bg-gray-50 p-6 rounded-2xl">
+                    <div class="flex items-center mb-4">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" 
+                             alt="Maya" 
+                             class="w-12 h-12 rounded-full object-cover mr-4">
+                        <div>
+                            <p class="font-bold text-gray-800">Maya, 26</p>
+                            <p class="text-sm text-gray-600">Digital Marketing Lead</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic mb-4">"Dari fresh graduate hingga menjadi team lead, Inclinique memberikan ruang untuk berkembang yang tidak terbatas. Program mentorship dan training sangat membantu perjalanan karir saya."</p>
+                    <div class="text-sm text-gray-500">Bergabung sejak 2021</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Application Process -->
+    <section class="py-16 bg-primary-light">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">Proses Rekrutmen</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Transparan dan terstruktur untuk pengalaman kandidat yang optimal</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="bg-primary-orange text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 text-xl font-bold">1</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Application Review</h3>
+                    <p class="text-gray-600">Tim kami akan meninjau CV dan portofolio Anda dalam 3-5 hari kerja</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-primary-orange text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 text-xl font-bold">2</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Initial Interview</h3>
+                    <p class="text-gray-600">Wawancara dengan HR untuk memahami motivasi dan ekspektasi</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-primary-orange text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 text-xl font-bold">3</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Technical Assessment</h3>
+                    <p class="text-gray-600">Tes kemampuan teknis dan diskusi dengan tim terkait</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-primary-orange text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 text-xl font-bold">4</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Final Interview</h3>
+                    <p class="text-gray-600">Wawancara dengan leadership team dan penawaran</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Application Form -->
+    <section id="apply" class="py-16 application-form">
+        <div class="w-full lg:max-w-4xl mx-auto px-4">
+            <div class="bg-white p-8 lg:p-12 rounded-2xl shadow-lg">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Apply untuk <span id="selected-job">Posisi Terbuka</span></h2>
+                    <p class="text-gray-600">Isi form berikut dan kami akan menghubungi Anda dalam waktu 3-5 hari kerja</p>
+                </div>
+                
+                <form id="career-form" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="full-name" class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap *</label>
+                            <input type="text" id="full-name" name="full-name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange focus:ring-opacity-20 transition-colors">
+                        </div>
+                        
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                            <input type="email" id="email" name="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange focus:ring-opacity-20 transition-colors">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Nomor Telepon *</label>
+                            <input type="tel" id="phone" name="phone" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange focus:ring-opacity-20 transition-colors">
+                        </div>
+                        
+                        <div>
+                            <label for="position" class="block text-sm font-medium text-gray-700 mb-2">Posisi yang Dilamar *</label>
+                            <input type="text" id="position" name="position" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange focus:ring-opacity-20 transition-colors">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="experience" class="block text-sm font-medium text-gray-700 mb-2">Pengalaman Kerja (tahun) *</label>
+                        <input type="number" id="experience" name="experience" min="0" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange focus:ring-opacity-20 transition-colors">
+                    </div>
+                    
+                    <div>
+                        <label for="cover-letter" class="block text-sm font-medium text-gray-700 mb-2">Cover Letter *</label>
+                        <textarea id="cover-letter" name="cover-letter" rows="4" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange focus:ring-opacity-20 transition-colors" placeholder="Ceritakan mengapa Anda tertarik dengan posisi ini dan bagaimana pengalaman Anda relevan..."></textarea>
+                    </div>
+                    
+                    <div>
+                        <label for="resume" class="block text-sm font-medium text-gray-700 mb-2">Upload CV/Resume (PDF, max 5MB) *</label>
+                        <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange focus:ring-opacity-20 transition-colors">
+                    </div>
+                    
+                    <div>
+                        <label for="portfolio" class="block text-sm font-medium text-gray-700 mb-2">Portfolio/Link (opsional)</label>
+                        <input type="url" id="portfolio" name="portfolio" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange focus:ring-opacity-20 transition-colors" placeholder="https://">
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <input type="checkbox" id="consent" name="consent" required class="w-4 h-4 text-primary-orange border-gray-300 rounded focus:ring-primary-orange">
+                        <label for="consent" class="ml-2 text-sm text-gray-700">Saya menyetujui penyimpanan dan pemrosesan data pribadi saya sesuai dengan kebijakan privasi *</label>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-primary-orange text-white py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors">
+                        Kirim Application
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-primary-orange text-white">
+        <div class="w-full lg:max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-3xl lg:text-4xl font-bold mb-6">Siap Membangun Masa Depan Bersama Kami?</h2>
+            <p class="text-xl mb-8 max-w-3xl mx-auto">Bergabunglah dengan tim yang passionate tentang inovasi dan dampak positif</p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#open-positions" class="bg-white text-primary-orange px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                    Lihat Posisi Terbuka
+                </a>
+                <a href="mailto:career@incliniquestore.com" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary-orange transition-colors">
+                    Hubungi HR
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12 lg:pb-12 pb-[120px]">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Inclinique<span class="text-primary-red"> Store</span></h3>
+                    <p class="text-gray-400 mb-4">Rangkaian skincare terbaik dengan formula yang aman dan efektif untuk semua jenis kulit.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Produk</h4>
+                    <ul class="space-y-2">
+                        <li><a href="product.html#cleansers" class="text-gray-400 hover:text-white transition-colors">Pembersih</a></li>
+                        <li><a href="product.html#moisturizers" class="text-gray-400 hover:text-white transition-colors">Pelembap</a></li>
+                        <li><a href="product.html#serums" class="text-gray-400 hover:text-white transition-colors">Serum</a></li>
+                        <li><a href="product.html#sunscreens" class="text-gray-400 hover:text-white transition-colors">Tabir Surya</a></li>
+                        <li><a href="product.html#special-care" class="text-gray-400 hover:text-white transition-colors">Perawatan Khusus</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Bantuan</h4>
+                    <ul class="space-y-2">
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition-colors">Kontak Kami</a></li>
+                        <li><a href="shipping.html" class="text-gray-400 hover:text-white transition-colors">Pengiriman</a></li>
+                        <li><a href="returns.html" class="text-gray-400 hover:text-white transition-colors">Pengembalian</a></li>
+                        <li><a href="faq.html" class="text-gray-400 hover:text-white transition-colors">FAQ</a></li>
+                        <li><a href="privacy.html" class="text-gray-400 hover:text-white transition-colors">Kebijakan Privasi</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Kontak</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-3" aria-hidden="true"></i>
+                            <span>Jl. Skincare No. 123, Jakarta</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-3" aria-hidden="true"></i>
+                            <span>+62 857 6711 3554</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3" aria-hidden="true"></i>
+                            <span>info@incliniquestore.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; <span id="current-year">2024</span> Inclinique Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bottom Navigation for Mobile & Tablet -->
+    <nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white py-3 px-6 flex justify-between items-center lg:hidden z-40" aria-label="Mobile Navigation">
+        <a href="index.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-home text-2xl mb-1" aria-hidden="true"></i>
+            <span class="text-xs font-medium">Beranda</span>
+        </a>
+        <a href="product.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-shopping-bag text-2xl mb-1" aria-hidden="true"></i>
+            <span class="text-xs font-medium">Belanja</span>
+        </a>
+        <a href="news.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-blog text-2xl mb-1" aria-hidden="true"></i>
+            <span class="text-xs font-medium">Artikel</span>
+        </a>
+        <a href="account.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-user text-2xl mb-1" aria-hidden="true"></i>
+            <span class="text-xs font-medium">Masuk</span>
+        </a>
+    </nav>
+
+    <script>
+        // JavaScript untuk interaktivitas halaman career
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // Search functionality
+            const searchToggleMobile = document.getElementById('search-toggle-mobile');
+            const searchToggleDesktop = document.getElementById('search-toggle-desktop');
+            const mobileSearchToggle = document.getElementById('mobile-search-toggle');
+            const closeSearch = document.getElementById('close-search');
+            const searchPopup = document.getElementById('search-popup');
+            const searchOverlay = document.getElementById('search-overlay');
+            const searchInput = document.getElementById('search-input');
+            const searchButton = document.getElementById('search-button');
+
+            function openSearch() {
+                searchPopup.classList.add('open');
+                searchOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                // Focus on search input when opened
+                setTimeout(() => {
+                    searchInput.focus();
+                }, 300);
+            }
+
+            function closeSearchFunc() {
+                searchPopup.classList.remove('open');
+                searchOverlay.classList.remove('open');
+                document.body.style.overflow = 'auto';
+            }
+
+            // Event listeners untuk search
+            if (searchToggleMobile) {
+                searchToggleMobile.addEventListener('click', openSearch);
+            }
+            if (searchToggleDesktop) {
+                searchToggleDesktop.addEventListener('click', openSearch);
+            }
+            if (mobileSearchToggle) {
+                mobileSearchToggle.addEventListener('click', function() {
+                    closeSidebarFunc();
+                    setTimeout(openSearch, 300);
+                });
+            }
+            if (closeSearch) {
+                closeSearch.addEventListener('click', closeSearchFunc);
+            }
+            if (searchOverlay) {
+                searchOverlay.addEventListener('click', closeSearchFunc);
+            }
+
+            // Sidebar toggle functionality
+            const menuToggle = document.getElementById('menu-toggle');
+            const closeSidebar = document.getElementById('close-sidebar');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            
+            function openSidebar() {
+                sidebar.classList.add('open');
+                sidebarOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeSidebarFunc() {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('open');
+                document.body.style.overflow = 'auto';
+            }
+            
+            if (menuToggle) {
+                menuToggle.addEventListener('click', openSidebar);
+            }
+            if (closeSidebar) {
+                closeSidebar.addEventListener('click', closeSidebarFunc);
+            }
+            if (sidebarOverlay) {
+                sidebarOverlay.addEventListener('click', closeSidebarFunc);
+            }
+
+            // Job filtering functionality
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const jobCards = document.querySelectorAll('.career-card');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const filter = this.getAttribute('data-filter');
+                    
+                    // Update active button
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('active', 'bg-primary-orange', 'text-white');
+                        btn.classList.add('bg-white', 'text-gray-700', 'border', 'border-gray-300');
+                    });
+                    
+                    this.classList.add('active', 'bg-primary-orange', 'text-white');
+                    this.classList.remove('bg-white', 'text-gray-700', 'border', 'border-gray-300');
+                    
+                    // Filter jobs
+                    jobCards.forEach(card => {
+                        if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // Auto-fill position in application form
+            const applyLinks = document.querySelectorAll('a[data-job]');
+            const positionInput = document.getElementById('position');
+            const selectedJobSpan = document.getElementById('selected-job');
+            
+            applyLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const jobTitle = this.getAttribute('data-job');
+                    positionInput.value = jobTitle;
+                    selectedJobSpan.textContent = jobTitle;
+                    
+                    // Scroll to application form
+                    document.getElementById('apply').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Application form submission
+            const careerForm = document.getElementById('career-form');
+            
+            if (careerForm) {
+                careerForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Simple validation
+                    const requiredFields = this.querySelectorAll('[required]');
+                    let isValid = true;
+                    
+                    requiredFields.forEach(field => {
+                        if (!field.value.trim()) {
+                            isValid = false;
+                            field.classList.add('border-red-500');
+                        } else {
+                            field.classList.remove('border-red-500');
+                        }
+                    });
+                    
+                    if (isValid) {
+                        // In a real application, this would submit to a server
+                        alert('Terima kasih! Application Anda telah berhasil dikirim. Tim HR kami akan menghubungi Anda dalam 3-5 hari kerja.');
+                        this.reset();
+                    } else {
+                        alert('Harap lengkapi semua field yang wajib diisi.');
+                    }
+                });
+            }
+
+            // Animate stats counter
+            function animateStats() {
+                const statElements = document.querySelectorAll('.stat-number');
+                const finalValues = [50, 15, 85, 4.8];
+                const durations = [2000, 1500, 1000, 800];
+                
+                statElements.forEach((element, index) => {
+                    const finalValue = finalValues[index];
+                    const duration = durations[index];
+                    let startValue = 0;
+                    const increment = finalValue / (duration / 50);
+                    
+                    const timer = setInterval(() => {
+                        startValue += increment;
+                        if (startValue >= finalValue) {
+                            element.textContent = finalValue + (index === 3 ? '' : '+');
+                            clearInterval(timer);
+                        } else {
+                            element.textContent = Math.floor(startValue) + (index === 3 ? '' : '+');
+                        }
+                    }, 50);
+                });
+            }
+            
+            // Trigger stats animation when section is in view
+            const statsSection = document.querySelector('.bg-white');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateStats();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            if (statsSection) {
+                observer.observe(statsSection);
+            }
+
+            // Close search on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeSearchFunc();
+                    closeSidebarFunc();
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
