@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lacak Pesanan - Inclinique Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #FEF3E2 0%, #FA812F 100%);
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        .sidebar-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .sidebar-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Search Popup Styles */
+        .search-popup {
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        .search-popup.open {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .search-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .search-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Custom colors */
+        .bg-primary-light {
+            background-color: #FFECC0;
+        }
+        .bg-primary-yellow {
+            background-color: #FAB12F;
+        }
+        .bg-primary-orange {
+            background-color: #FA812F;
+        }
+        .bg-primary-red {
+            background-color: #DD0303;
+        }
+        .bg-primary-green {
+            background-color: #28A745;
+        }
+        .bg-primary-blue {
+            background-color: #007BFF;
+        }
+        .bg-primary-purple {
+            background-color: #6F42C1;
+        }
+        .bg-primary-pink {
+            background-color: #E83E8C;
+        }
+        .bg-primary-indigo {
+            background-color: #6610F2;
+        }
+        .bg-primary-teal {
+            background-color: #20C997;
+        }
+        .bg-primary-cyan {
+            background-color: #17A2B8;
+        }
+        .text-primary-yellow {
+            color: #FAB12F;
+        }
+        .text-primary-orange {
+            color: #FA812F;
+        }
+        .text-primary-red {
+            color: #DD0303;
+        }
+        .border-primary-orange {
+            border-color: #FA812F;
+        }
+        .hover\:bg-primary-orange:hover {
+            background-color: #FA812F;
+        }
+        .hover\:text-primary-orange:hover {
+            color: #FA812F;
+        }
+
+        /* Custom button styles */
+        .btn-block {
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+        
+        /* Tracking specific styles */
+        .tracking-bar {
+            height: 6px;
+            background-color: #E5E7EB;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 0 20px;
+        }
+        .tracking-progress {
+            height: 100%;
+            background-color: #10B981;
+            transition: width 0.5s ease;
+        }
+        .tracking-step {
+            position: relative;
+            text-align: center;
+            flex: 1;
+        }
+        .tracking-step.active .tracking-dot {
+            background-color: #10B981;
+            border-color: #10B981;
+        }
+        .tracking-step.completed .tracking-dot {
+            background-color: #10B981;
+            border-color: #10B981;
+        }
+        .tracking-step.completed .tracking-dot::after {
+            content: '✓';
+            color: white;
+            font-size: 10px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .tracking-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: white;
+            border: 2px solid #E5E7EB;
+            margin: 0 auto 8px;
+            position: relative;
+            z-index: 2;
+        }
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #E5E7EB;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #10B981;
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px #10B981;
+        }
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        .order-status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-processing {
+            background-color: #FFFBEB;
+            color: #D97706;
+        }
+        .status-shipped {
+            background-color: #ECFDF5;
+            color: #059669;
+        }
+        .status-delivered {
+            background-color: #F0F9FF;
+            color: #0369A1;
+        }
+    </style>
+</head>
+<body class="font-sans">
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="w-full lg:max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <h1 class="text-2xl font-bold text-primary-orange">Inclinique<span class="text-primary-red"> Store</span></h1>
+            </div>
+            
+            <!-- Desktop Navigation (hanya untuk layar besar) -->
+            <nav class="hidden lg:flex space-x-8">
+                <a href="index.html" class="text-gray-700 hover:text-primary-orange font-medium">HOME</a>
+                <a href="product.html" class="text-gray-700 hover:text-primary-orange font-medium">SHOP ALL</a>
+                <a href="news.html" class="text-gray-700 hover:text-primary-orange font-medium">BEAUTY INSIDER</a>
+                <a href="about.html" class="text-gray-700 hover:text-primary-orange font-medium">ABOUT US</a>
+                <a href="career.html" class="text-gray-700 hover:text-primary-orange font-medium">CAREER</a>
+            </nav>
+            
+            <!-- Mobile & Tablet Header Icons (untuk layar di bawah lg) -->
+            <div class="flex items-center space-x-4 lg:hidden">
+                <button id="search-toggle-mobile" class="text-gray-700 hover:text-primary-orange">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="cart.html" class="text-gray-700 hover:text-primary-orange relative">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-primary-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </a>
+                <!-- Hamburger Menu Button -->
+                <button id="menu-toggle" class="text-gray-700">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Desktop Header Icons (hanya untuk layar besar) -->
+            <div class="hidden lg:flex items-center space-x-4">
+                <button id="search-toggle-desktop" class="text-gray-700 hover:text-primary-orange">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="cart.html" class="text-gray-700 hover:text-primary-orange relative">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-primary-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </a>
+                <button class="text-gray-700 hover:text-primary-orange">
+                    <i class="fas fa-user"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Popup -->
+    <div id="search-overlay" class="search-overlay fixed inset-0 bg-black bg-opacity-50 z-50"></div>
+    <div id="search-popup" class="search-popup fixed top-0 left-0 right-0 bg-white z-50 p-6 shadow-lg">
+        <div class="w-full lg:max-w-7xl mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-primary-orange">Cari Produk</h2>
+                <button id="close-search" class="text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="relative mb-6">
+                <input 
+                    type="text" 
+                    id="search-input"
+                    placeholder="Ketik nama produk yang dicari..."
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange focus:ring-opacity-20"
+                >
+                <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-primary-orange">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            
+            <div id="search-results" class="max-h-96 overflow-y-auto">
+                <!-- Hasil pencarian akan muncul di sini -->
+                <div id="search-empty" class="text-center py-8 text-gray-500">
+                    <i class="fas fa-search text-4xl mb-4 opacity-50"></i>
+                    <p>Ketik nama produk untuk memulai pencarian</p>
+                </div>
+                
+                <div id="search-loading" class="hidden text-center py-8">
+                    <i class="fas fa-spinner fa-spin text-2xl text-primary-orange mb-4"></i>
+                    <p>Mencari produk...</p>
+                </div>
+                
+                <div id="search-no-results" class="hidden text-center py-8 text-gray-500">
+                    <i class="fas fa-times-circle text-4xl mb-4 opacity-50"></i>
+                    <p>Produk tidak ditemukan</p>
+                    <p class="text-sm">Coba gunakan kata kunci yang berbeda</p>
+                </div>
+                
+                <div id="search-results-container" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Template untuk hasil pencarian -->
+                    <template id="product-template">
+                        <div class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <div class="flex items-start space-x-4">
+                                <img class="w-16 h-16 object-cover rounded-lg" src="" alt="">
+                                <div class="flex-1">
+                                    <h3 class="font-semibold text-gray-800 mb-1"></h3>
+                                    <p class="text-sm text-gray-600 mb-2"></p>
+                                    <div class="space-y-2">
+                                        <span class="font-bold text-primary-orange text-lg block"></span>
+                                        <button class="btn-block bg-primary-orange text-white py-2 px-4 rounded-lg font-medium hover:bg-primary-red transition duration-300 flex items-center justify-center space-x-2">
+                                            <!-- <i class="fas fa-shopping-cart"></i> -->
+                                            <span>+ Keranjang</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Menu for Mobile & Tablet -->
+    <div id="sidebar-overlay" class="sidebar-overlay fixed inset-0 bg-black bg-opacity-50 z-50"></div>
+    <div id="sidebar" class="sidebar fixed top-0 left-0 h-full w-64 bg-white z-50 p-6">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-xl font-bold text-primary-orange">Inclinique<span class="text-primary-red"> Store</span></h2>
+            <button id="close-sidebar" class="text-gray-700">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <nav class="space-y-6">
+            <a href="index.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
+                <i class="fas fa-home mr-3"></i>HOME
+            </a>
+            <a href="product.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
+                <i class="fas fa-shopping-bag mr-3"></i>SHOP ALL
+            </a>
+            <a href="news.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
+                <i class="fas fa-blog mr-3"></i>BEAUTY INSIDER
+            </a>
+            <a href="about.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
+                <i class="fas fa-info-circle mr-3"></i>ABOUT US
+            </a>
+            <a href="career.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
+                <i class="fas fa-envelope mr-3"></i>CAREER
+            </a>
+            <a href="#" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
+                <i class="fas fa-search mr-3"></i>Pencarian
+            </a>
+            <a href="#" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
+                <i class="fas fa-user mr-3"></i>Akun Saya
+            </a>
+        </nav>
+        
+        <div class="mt-8 pt-6 border-t border-gray-200">
+            <h3 class="font-semibold text-gray-700 mb-4">Kategori Produk</h3>
+            <div class="space-y-3">
+                <a href="#" class="block text-gray-600 hover:text-primary-orange">Pembersih Wajah</a>
+                <a href="#" class="block text-gray-600 hover:text-primary-orange">Pelembap</a>
+                <a href="#" class="block text-gray-600 hover:text-primary-orange">Serum</a>
+                <a href="#" class="block text-gray-600 hover:text-primary-orange">Tabir Surya</a>
+                <a href="#" class="block text-gray-600 hover:text-primary-orange">Perawatan Khusus</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Breadcrumb -->
+    <section class="bg-gray-50 py-4">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <nav class="flex" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    <li class="inline-flex items-center">
+                        <a href="index.html" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary-orange">
+                            <i class="fas fa-home mr-2"></i>
+                            Home
+                        </a>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
+                            <span class="ml-1 text-sm font-medium text-primary-orange md:ml-2">Lacak Pesanan</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Track Order Section -->
+    <section class="py-12 bg-white">
+        <div class="w-full lg:max-w-4xl mx-auto px-4">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Lacak Pesanan</h1>
+            <p class="text-gray-600 mb-8">Masukkan nomor pesanan Anda untuk melacak status pengiriman</p>
+            
+            <!-- Search Order Form -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Cari Pesanan</h2>
+                
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1">
+                        <label for="order-number" class="block text-sm font-medium text-gray-700 mb-2">Nomor Pesanan</label>
+                        <input 
+                            type="text" 
+                            id="order-number"
+                            placeholder="Contoh: INCL-2024-7890"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange focus:ring-opacity-20"
+                        >
+                    </div>
+                    <div class="flex-1">
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <input 
+                            type="email" 
+                            id="email"
+                            placeholder="Email yang digunakan saat order"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange focus:ring-opacity-20"
+                        >
+                    </div>
+                    <div class="flex items-end">
+                        <button id="track-order-btn" class="bg-primary-orange text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-red transition duration-300 w-full md:w-auto">
+                            Lacak Pesanan
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="mt-4 text-sm text-gray-600">
+                    <p><i class="fas fa-info-circle mr-2 text-primary-orange"></i> Nomor pesanan dapat ditemukan di email konfirmasi yang kami kirimkan</p>
+                </div>
+            </div>
+            
+            <!-- Order Tracking Results -->
+            <div id="tracking-results" class="hidden">
+                <!-- Order Summary -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+                    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-800 mb-2">Pesanan #<span id="result-order-number">INCL-2024-7890</span></h2>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="order-status-badge status-shipped" id="order-status">Dikirim</span>
+                                <span class="text-sm text-gray-600">Dipesan pada <span id="order-date">15 Maret 2024</span></span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-lg font-bold text-primary-red" id="order-total">Rp 749.500</p>
+                            <p class="text-sm text-gray-600" id="item-count">3 item</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tracking Progress -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+                    <h2 class="text-xl font-bold text-gray-800 mb-6">Status Pengiriman</h2>
+                    
+                    <div class="mb-8">
+                        <div class="flex justify-between mb-2">
+                            <div class="tracking-step completed">
+                                <div class="tracking-dot"></div>
+                                <p class="text-sm font-medium text-gray-700">Pesanan<br>Dibuat</p>
+                            </div>
+                            <div class="tracking-step completed">
+                                <div class="tracking-dot"></div>
+                                <p class="text-sm font-medium text-gray-700">Pesanan<br>Diproses</p>
+                            </div>
+                            <div class="tracking-step active">
+                                <div class="tracking-dot"></div>
+                                <p class="text-sm font-medium text-gray-700">Pesanan<br>Dikirim</p>
+                            </div>
+                            <div class="tracking-step">
+                                <div class="tracking-dot"></div>
+                                <p class="text-sm font-medium text-gray-700">Pesanan<br>Tiba</p>
+                            </div>
+                        </div>
+                        <div class="tracking-bar">
+                            <div class="tracking-progress" id="tracking-progress" style="width: 66%"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Shipping Information -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="font-semibold text-gray-700 mb-3">Informasi Pengiriman</h3>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Kurir</span>
+                                    <span class="font-medium">JNE Reguler</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">No. Resi</span>
+                                    <span class="font-medium">JNE1234567890ID</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Estimasi Tiba</span>
+                                    <span class="font-medium">18 - 20 Maret 2024</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Alamat Tujuan</span>
+                                    <span class="font-medium text-right">Jl. Merdeka No. 123, Jakarta Pusat</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-semibold text-gray-700 mb-3">Status Terkini</h3>
+                            <div class="bg-primary-light p-4 rounded-lg">
+                                <p class="font-medium text-gray-800 mb-2">Paket dalam perjalanan ke kota tujuan</p>
+                                <p class="text-sm text-gray-600">Paket telah meninggalkan gudang sortir dan sedang dalam perjalanan ke Jakarta</p>
+                                <p class="text-xs text-gray-500 mt-2">Update terakhir: 16 Maret 2024, 14:30 WIB</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tracking Timeline -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+                    <h2 class="text-xl font-bold text-gray-800 mb-6">Riwayat Perjalanan</h2>
+                    
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="bg-white p-4 rounded-lg border border-gray-200">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-semibold text-gray-800">Paket dalam perjalanan ke kota tujuan</h3>
+                                    <span class="text-sm text-gray-500">16 Mar, 14:30</span>
+                                </div>
+                                <p class="text-gray-600 text-sm">Paket telah meninggalkan gudang sortir Jakarta dan sedang dalam perjalanan ke alamat tujuan</p>
+                                <p class="text-xs text-gray-500 mt-2">Lokasi: Jakarta</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="bg-white p-4 rounded-lg border border-gray-200">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-semibold text-gray-800">Paket tiba di gudang sortir</h3>
+                                    <span class="text-sm text-gray-500">16 Mar, 10:15</span>
+                                </div>
+                                <p class="text-gray-600 text-sm">Paket telah tiba di gudang sortir Jakarta untuk diproses lebih lanjut</p>
+                                <p class="text-xs text-gray-500 mt-2">Lokasi: Jakarta</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="bg-white p-4 rounded-lg border border-gray-200">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-semibold text-gray-800">Paket dikirim dari gudang utama</h3>
+                                    <span class="text-sm text-gray-500">16 Mar, 08:00</span>
+                                </div>
+                                <p class="text-gray-600 text-sm">Paket telah dikirim dari gudang utama menuju Jakarta</p>
+                                <p class="text-xs text-gray-500 mt-2">Lokasi: Bandung</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="bg-white p-4 rounded-lg border border-gray-200">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-semibold text-gray-800">Paket dipickup oleh kurir</h3>
+                                    <span class="text-sm text-gray-500">15 Mar, 16:45</span>
+                                </div>
+                                <p class="text-gray-600 text-sm">Paket telah diambil oleh kurir JNE dari gudang Inclinique Store</p>
+                                <p class="text-xs text-gray-500 mt-2">Lokasi: Bandung</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="bg-white p-4 rounded-lg border border-gray-200">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-semibold text-gray-800">Pesanan siap dikirim</h3>
+                                    <span class="text-sm text-gray-500">15 Mar, 15:20</span>
+                                </div>
+                                <p class="text-gray-600 text-sm">Pesanan telah dikemas dan siap untuk dikirimkan</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="bg-white p-4 rounded-lg border border-gray-200">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-semibold text-gray-800">Pembayaran diverifikasi</h3>
+                                    <span class="text-sm text-gray-500">15 Mar, 14:30</span>
+                                </div>
+                                <p class="text-gray-600 text-sm">Pembayaran telah diverifikasi dan pesanan diproses</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Order Details -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-6">Detail Pesanan</h2>
+                    
+                    <div class="space-y-4 mb-6">
+                        <!-- Item 1 -->
+                        <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                            <div class="flex items-center">
+                                <img src="https://cdn.scarlett.id/product/b940e111-cd95-4e6c-b83c-83e38b060def_SLIDE_4.jpg" alt="Scarlett 4in1 Bodycare" class="w-16 h-16 object-cover rounded-lg">
+                                <div class="ml-4">
+                                    <h3 class="font-semibold text-gray-800">Scarlett 4in1 Bodycare Daily Routine Barrier Shield & Glow</h3>
+                                    <p class="text-gray-500 text-sm">Size: 250ml</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-medium text-gray-800">1 x Rp 213.000</p>
+                                <p class="font-bold text-primary-red">Rp 213.000</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Item 2 -->
+                        <div class="flex items-center justify-between py-4 border-b border-gray-200">
+                            <div class="flex items-center">
+                                <img src="https://images.unsplash.com/photo-1556228578-9f6ac5e4d0d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Hydrating Serum" class="w-16 h-16 object-cover rounded-lg">
+                                <div class="ml-4">
+                                    <h3 class="font-semibold text-gray-800">Hydrating Serum</h3>
+                                    <p class="text-gray-500 text-sm">Serum dengan Hyaluronic Acid</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-medium text-gray-800">2 x Rp 189.000</p>
+                                <p class="font-bold text-primary-red">Rp 378.000</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Item 3 -->
+                        <div class="flex items-center justify-between py-4">
+                            <div class="flex items-center">
+                                <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Vitamin C Cream" class="w-16 h-16 object-cover rounded-lg">
+                                <div class="ml-4">
+                                    <h3 class="font-semibold text-gray-800">Vitamin C Cream</h3>
+                                    <p class="text-gray-500 text-sm">Krim pagi dengan Vitamin C</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-medium text-gray-800">1 x Rp 225.000</p>
+                                <p class="font-bold text-primary-red">Rp 225.000</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Order Summary -->
+                    <div class="border-t border-gray-200 pt-6">
+                        <div class="space-y-3 max-w-md ml-auto">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Subtotal</span>
+                                <span class="font-medium">Rp 816.000</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Diskon</span>
+                                <span class="font-medium text-green-600">- Rp 81.500</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Biaya Pengiriman</span>
+                                <span class="font-medium">Rp 15.000</span>
+                            </div>
+                            <div class="border-t border-gray-200 pt-3 mt-3">
+                                <div class="flex justify-between">
+                                    <span class="text-lg font-bold text-gray-800">Total</span>
+                                    <span class="text-lg font-bold text-primary-red">Rp 749.500</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Support Information -->
+                <div class="mt-8 text-center">
+                    <p class="text-gray-600 mb-4">Butuh bantuan dengan pesanan Anda?</p>
+                    <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
+                        <a href="#" class="text-primary-orange font-medium flex items-center">
+                            <i class="fas fa-headset mr-2"></i> Hubungi Customer Service
+                        </a>
+                        <span class="hidden sm:block text-gray-300">|</span>
+                        <a href="#" class="text-primary-orange font-medium flex items-center">
+                            <i class="fas fa-envelope mr-2"></i> Kirim Email
+                        </a>
+                        <span class="hidden sm:block text-gray-300">|</span>
+                        <a href="#" class="text-primary-orange font-medium flex items-center">
+                            <i class="fas fa-comment-alt mr-2"></i> Live Chat
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- No Results Message -->
+            <div id="no-results" class="hidden bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+                <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-search text-gray-400 text-3xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Pesanan Tidak Ditemukan</h2>
+                <p class="text-gray-600 mb-6 max-w-md mx-auto">Maaf, kami tidak dapat menemukan pesanan dengan informasi yang Anda berikan. Pastikan nomor pesanan dan email sudah benar.</p>
+                <button id="try-again-btn" class="bg-primary-orange text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-red transition duration-300">
+                    Coba Lagi
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-16 bg-primary-light">
+        <div class="w-full lg:max-w-4xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Pertanyaan Umum</h2>
+            
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-2">Berapa lama waktu yang dibutuhkan untuk memperbarui status pengiriman?</h3>
+                        <p class="text-gray-600">Status pengiriman biasanya diperbarui setiap 2-4 jam sekali. Update terbaru akan langsung terlihat di halaman lacak pesanan.</p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-2">Apa yang harus saya lakukan jika status pengiriman tidak update?</h3>
+                        <p class="text-gray-600">Jika status tidak update dalam 24 jam, silakan hubungi customer service kami dengan menyertakan nomor pesanan dan resi pengiriman.</p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-2">Bagaimana cara mengetahui perkiraan paket tiba?</h3>
+                        <p class="text-gray-600">Perkiraan waktu tiba dapat dilihat di bagian "Informasi Pengiriman". Estimasi ini dapat berubah tergantung kondisi pengiriman.</p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-2">Apa yang harus saya lakukan jika paket tidak kunjung tiba?</h3>
+                        <p class="text-gray-600">Jika paket melebihi estimasi waktu tiba, silakan hubungi customer service kami untuk bantuan lebih lanjut.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12 lg:pb-12 pb-[120px]">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Inclinique<span class="text-primary-red"> Store</span></h3>
+                    <p class="text-gray-400 mb-4">Rangkaian skincare terbaik dengan formula yang aman dan efektif untuk semua jenis kulit.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Produk</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Pembersih</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Pelembap</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Serum</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Tabir Surya</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Perawatan Khusus</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Bantuan</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Kontak Kami</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Pengiriman</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Pengembalian</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Kebijakan Privasi</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Kontak</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-3"></i>
+                            <span>Jl. Skincare No. 123, Jakarta</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-3"></i>
+                            <span>+62 857 6711 3554</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3"></i>
+                            <span>info@incliniquestore.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; <script>document.write(new Date().getFullYear())</script> Inclinique Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bottom Navigation for Mobile & Tablet -->
+    <nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white py-3 px-6 flex justify-between items-center lg:hidden z-40">
+        <a href="index.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-home text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Beranda</span>
+        </a>
+        <a href="cart.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-shopping-cart text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Keranjang</span>
+        </a>
+        <a href="#" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-heart text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Favorit</span>
+        </a>
+        <a href="#" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-user text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Masuk</span>
+        </a>
+    </nav>
+
+    <script>
+        // Data produk untuk pencarian
+        const products = [
+            {
+                id: 1,
+                name: "Hydrating Serum",
+                description: "Serum dengan Hyaluronic Acid untuk kulit lembap maksimal",
+                price: "Rp 189.000",
+                image: "https://images.unsplash.com/photo-1556228578-9f6ac5e4d0d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+                category: "Serum"
+            },
+            {
+                id: 2,
+                name: "Vitamin C Cream",
+                description: "Krim pagi dengan Vitamin C untuk kulit cerah dan terlindungi",
+                price: "Rp 225.000",
+                image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+                category: "Pelembap"
+            },
+            {
+                id: 3,
+                name: "Gentle Cleanser",
+                description: "Pembersih wajah lembut untuk kulit sensitif",
+                price: "Rp 145.000",
+                image: "https://images.unsplash.com/photo-1570194065650-4222e69b28d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+                category: "Pembersih"
+            }
+        ];
+
+        // JavaScript untuk interaktivitas
+        document.addEventListener('DOMContentLoaded', function() {
+            // Search functionality
+            const searchToggleMobile = document.getElementById('search-toggle-mobile');
+            const searchToggleDesktop = document.getElementById('search-toggle-desktop');
+            const closeSearch = document.getElementById('close-search');
+            const searchPopup = document.getElementById('search-popup');
+            const searchOverlay = document.getElementById('search-overlay');
+            const searchInput = document.getElementById('search-input');
+            const searchResults = document.getElementById('search-results');
+            const searchEmpty = document.getElementById('search-empty');
+            const searchLoading = document.getElementById('search-loading');
+            const searchNoResults = document.getElementById('search-no-results');
+            const searchResultsContainer = document.getElementById('search-results-container');
+            const productTemplate = document.getElementById('product-template');
+
+            function openSearch() {
+                searchPopup.classList.add('open');
+                searchOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                // Focus pada input search
+                setTimeout(() => {
+                    searchInput.focus();
+                }, 300);
+            }
+
+            function closeSearchFunc() {
+                searchPopup.classList.remove('open');
+                searchOverlay.classList.remove('open');
+                document.body.style.overflow = 'auto';
+                // Reset pencarian
+                searchInput.value = '';
+                showEmptyState();
+            }
+
+            // Event listeners untuk search
+            if (searchToggleMobile) {
+                searchToggleMobile.addEventListener('click', openSearch);
+            }
+            if (searchToggleDesktop) {
+                searchToggleDesktop.addEventListener('click', openSearch);
+            }
+            if (closeSearch) {
+                closeSearch.addEventListener('click', closeSearchFunc);
+            }
+            if (searchOverlay) {
+                searchOverlay.addEventListener('click', closeSearchFunc);
+            }
+
+            // Fungsi untuk menampilkan state kosong
+            function showEmptyState() {
+                searchEmpty.classList.remove('hidden');
+                searchLoading.classList.add('hidden');
+                searchNoResults.classList.add('hidden');
+                searchResultsContainer.classList.add('hidden');
+            }
+
+            // Fungsi untuk menampilkan loading
+            function showLoading() {
+                searchEmpty.classList.add('hidden');
+                searchLoading.classList.remove('hidden');
+                searchNoResults.classList.add('hidden');
+                searchResultsContainer.classList.add('hidden');
+            }
+
+            // Fungsi untuk menampilkan hasil
+            function showResults(filteredProducts) {
+                searchEmpty.classList.add('hidden');
+                searchLoading.classList.add('hidden');
+                
+                if (filteredProducts.length === 0) {
+                    searchNoResults.classList.remove('hidden');
+                    searchResultsContainer.classList.add('hidden');
+                } else {
+                    searchNoResults.classList.add('hidden');
+                    searchResultsContainer.classList.remove('hidden');
+                    
+                    // Clear previous results
+                    searchResultsContainer.innerHTML = '';
+                    
+                    // Add new results
+                    filteredProducts.forEach(product => {
+                        const productElement = productTemplate.content.cloneNode(true);
+                        
+                        // Set product data
+                        productElement.querySelector('img').src = product.image;
+                        productElement.querySelector('img').alt = product.name;
+                        productElement.querySelector('h3').textContent = product.name;
+                        productElement.querySelector('p').textContent = product.description;
+                        productElement.querySelector('.font-bold').textContent = product.price;
+                        
+                        // Add to cart functionality
+                        const addToCartBtn = productElement.querySelector('button');
+                        addToCartBtn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            
+                            const icon = this.querySelector('i');
+                            const originalClass = icon.className;
+                            
+                            icon.className = 'fas fa-check';
+                            this.style.backgroundColor = '#10B981';
+                            
+                            setTimeout(() => {
+                                icon.className = originalClass;
+                                this.style.backgroundColor = '#FA812F';
+                            }, 1500);
+                            
+                            alert(`Produk ${product.name} berhasil ditambahkan ke keranjang!`);
+                        });
+                        
+                        searchResultsContainer.appendChild(productElement);
+                    });
+                }
+            }
+
+            // Fungsi untuk melakukan pencarian
+            function performSearch(query) {
+                if (query.length < 2) {
+                    showEmptyState();
+                    return;
+                }
+
+                showLoading();
+
+                // Simulasi delay pencarian
+                setTimeout(() => {
+                    const filteredProducts = products.filter(product => 
+                        product.name.toLowerCase().includes(query.toLowerCase()) ||
+                        product.description.toLowerCase().includes(query.toLowerCase()) ||
+                        product.category.toLowerCase().includes(query.toLowerCase())
+                    );
+                    
+                    showResults(filteredProducts);
+                }, 500);
+            }
+
+            // Event listener untuk input search
+            if (searchInput) {
+                let searchTimeout;
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    const query = this.value.trim();
+                    
+                    searchTimeout = setTimeout(() => {
+                        performSearch(query);
+                    }, 300);
+                });
+            }
+
+            // Sidebar toggle functionality
+            const menuToggle = document.getElementById('menu-toggle');
+            const closeSidebar = document.getElementById('close-sidebar');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            
+            function openSidebar() {
+                sidebar.classList.add('open');
+                sidebarOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeSidebarFunc() {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('open');
+                document.body.style.overflow = 'auto';
+            }
+            
+            if (menuToggle) {
+                menuToggle.addEventListener('click', openSidebar);
+            }
+            if (closeSidebar) {
+                closeSidebar.addEventListener('click', closeSidebarFunc);
+            }
+            if (sidebarOverlay) {
+                sidebarOverlay.addEventListener('click', closeSidebarFunc);
+            }
+            
+            // Order tracking functionality
+            const trackOrderBtn = document.getElementById('track-order-btn');
+            const trackingResults = document.getElementById('tracking-results');
+            const noResults = document.getElementById('no-results');
+            const tryAgainBtn = document.getElementById('try-again-btn');
+            const orderNumberInput = document.getElementById('order-number');
+            const emailInput = document.getElementById('email');
+            
+            // Sample order data for demo
+            const sampleOrders = {
+                'INCL-2024-7890': {
+                    status: 'shipped',
+                    date: '15 Maret 2024',
+                    total: 'Rp 749.500',
+                    items: '3 item',
+                    email: 'sarah.wijaya@email.com'
+                },
+                'INCL-2024-1234': {
+                    status: 'processing',
+                    date: '14 Maret 2024',
+                    total: 'Rp 425.000',
+                    items: '2 item',
+                    email: 'test@email.com'
+                },
+                'INCL-2024-5678': {
+                    status: 'delivered',
+                    date: '10 Maret 2024',
+                    total: 'Rp 890.000',
+                    items: '4 item',
+                    email: 'customer@email.com'
+                }
+            };
+            
+            // Track order button functionality
+            if (trackOrderBtn) {
+                trackOrderBtn.addEventListener('click', function() {
+                    const orderNumber = orderNumberInput.value.trim().toUpperCase();
+                    const email = emailInput.value.trim().toLowerCase();
+                    
+                    // Show loading state
+                    const originalText = this.textContent;
+                    this.textContent = 'Mencari...';
+                    this.disabled = true;
+                    
+                    // Simulate API call
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                        this.disabled = false;
+                        
+                        // Check if order exists
+                        if (sampleOrders[orderNumber] && sampleOrders[orderNumber].email === email) {
+                            // Show tracking results
+                            trackingResults.classList.remove('hidden');
+                            noResults.classList.add('hidden');
+                            
+                            // Update order details
+                            document.getElementById('result-order-number').textContent = orderNumber;
+                            document.getElementById('order-date').textContent = sampleOrders[orderNumber].date;
+                            document.getElementById('order-total').textContent = sampleOrders[orderNumber].total;
+                            document.getElementById('item-count').textContent = sampleOrders[orderNumber].items;
+                            
+                            // Update status badge
+                            const statusBadge = document.getElementById('order-status');
+                            statusBadge.className = 'order-status-badge ';
+                            
+                            if (sampleOrders[orderNumber].status === 'processing') {
+                                statusBadge.classList.add('status-processing');
+                                statusBadge.textContent = 'Diproses';
+                            } else if (sampleOrders[orderNumber].status === 'shipped') {
+                                statusBadge.classList.add('status-shipped');
+                                statusBadge.textContent = 'Dikirim';
+                            } else if (sampleOrders[orderNumber].status === 'delivered') {
+                                statusBadge.classList.add('status-delivered');
+                                statusBadge.textContent = 'Terkirim';
+                            }
+                            
+                            // Scroll to results
+                            trackingResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        } else {
+                            // Show no results message
+                            trackingResults.classList.add('hidden');
+                            noResults.classList.remove('hidden');
+                        }
+                    }, 1500);
+                });
+            }
+            
+            // Try again button functionality
+            if (tryAgainBtn) {
+                tryAgainBtn.addEventListener('click', function() {
+                    noResults.classList.add('hidden');
+                    orderNumberInput.focus();
+                });
+            }
+            
+            // Allow pressing Enter to track order
+            if (orderNumberInput) {
+                orderNumberInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        trackOrderBtn.click();
+                    }
+                });
+            }
+            
+            if (emailInput) {
+                emailInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        trackOrderBtn.click();
+                    }
+                });
+            }
+
+            // Simulasi login/logout untuk demo
+            const loginButton = document.querySelector('.bottom-nav a:nth-child(4)');
+            let isLoggedIn = false;
+            
+            if (loginButton) {
+                loginButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    isLoggedIn = !isLoggedIn;
+                    
+                    if (isLoggedIn) {
+                        this.innerHTML = '<i class="fas fa-user text-2xl mb-1"></i><span class="text-xs font-medium">Profil</span>';
+                        this.classList.add('logged-in');
+                    } else {
+                        this.innerHTML = '<i class="fas fa-user text-2xl mb-1"></i><span class="text-xs font-medium">Masuk</span>';
+                        this.classList.remove('logged-in');
+                    }
+                });
+            }
+
+            // Smooth scroll untuk anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Handle window resize
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                document.body.classList.add('resize-animation-stopper');
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    document.body.classList.remove('resize-animation-stopper');
+                }, 400);
+            });
+
+            // Tambahkan style untuk resize animation stopper
+            const style = document.createElement('style');
+            style.textContent = `
+                .resize-animation-stopper * {
+                    animation: none !important;
+                    transition: none !important;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+
+</body>
+</html>

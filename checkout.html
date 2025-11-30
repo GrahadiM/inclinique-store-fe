@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Inclinique Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #FEF3E2 0%, #FA812F 100%);
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        .sidebar-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .sidebar-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Search Popup Styles */
+        .search-popup {
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        .search-popup.open {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .search-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .search-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Custom colors */
+        .bg-primary-light {
+            background-color: #FFECC0;
+        }
+        .bg-primary-yellow {
+            background-color: #FAB12F;
+        }
+        .bg-primary-orange {
+            background-color: #FA812F;
+        }
+        .bg-primary-red {
+            background-color: #DD0303;
+        }
+        .bg-primary-green {
+            background-color: #28A745;
+        }
+        .bg-primary-blue {
+            background-color: #007BFF;
+        }
+        .bg-primary-purple {
+            background-color: #6F42C1;
+        }
+        .bg-primary-pink {
+            background-color: #E83E8C;
+        }
+        .bg-primary-indigo {
+            background-color: #6610F2;
+        }
+        .bg-primary-teal {
+            background-color: #20C997;
+        }
+        .bg-primary-cyan {
+            background-color: #17A2B8;
+        }
+        .text-primary-yellow {
+            color: #FAB12F;
+        }
+        .text-primary-orange {
+            color: #FA812F;
+        }
+        .text-primary-red {
+            color: #DD0303;
+        }
+        .border-primary-orange {
+            border-color: #FA812F;
+        }
+        .hover\:bg-primary-orange:hover {
+            background-color: #FA812F;
+        }
+        .hover\:text-primary-orange:hover {
+            color: #FA812F;
+        }
+
+        /* Custom button styles */
+        .btn-block {
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+        
+        /* Checkout specific styles */
+        .step-indicator {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+        .step-indicator.active {
+            background-color: #FA812F;
+            color: white;
+        }
+        .step-indicator.inactive {
+            background-color: #E5E7EB;
+            color: #6B7280;
+        }
+        .step-indicator.completed {
+            background-color: #10B981;
+            color: white;
+        }
+        .step-line {
+            flex: 1;
+            height: 2px;
+            background-color: #E5E7EB;
+            margin: 0 12px;
+        }
+        .step-line.active {
+            background-color: #FA812F;
+        }
+        .step-line.completed {
+            background-color: #10B981;
+        }
+        .payment-method {
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .payment-method:hover {
+            border-color: #FA812F;
+        }
+        .payment-method.selected {
+            border-color: #FA812F;
+            background-color: #FFF7ED;
+        }
+        .address-card {
+            border: 2px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .address-card:hover {
+            border-color: #FA812F;
+        }
+        .address-card.selected {
+            border-color: #FA812F;
+            background-color: #FFF7ED;
+        }
+    </style>
+</head>
+<body class="font-sans">
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="w-full lg:max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <h1 class="text-2xl font-bold text-primary-orange">Inclinique<span class="text-primary-red"> Store</span></h1>
+            </div>
+            
+            <!-- Desktop Navigation (hanya untuk layar besar) -->
+            <nav class="hidden lg:flex space-x-8">
+                <a href="index.html" class="text-gray-700 hover:text-primary-orange font-medium">HOME</a>
+                <a href="product.html" class="text-gray-700 hover:text-primary-orange font-medium">SHOP ALL</a>
+                <a href="news.html" class="text-gray-700 hover:text-primary-orange font-medium">BEAUTY INSIDER</a>
+                <a href="about.html" class="text-gray-700 hover:text-primary-orange font-medium">ABOUT US</a>
+                <a href="career.html" class="text-gray-700 hover:text-primary-orange font-medium">CAREER</a>
+            </nav>
+            
+            <!-- Mobile & Tablet Header Icons (untuk layar di bawah lg) -->
+            <div class="flex items-center space-x-4 lg:hidden">
+                <button id="search-toggle-mobile" class="text-gray-700 hover:text-primary-orange">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="cart.html" class="text-gray-700 hover:text-primary-orange relative">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-primary-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                </a>
+                <!-- Hamburger Menu Button -->
+                <button id="menu-toggle" class="text-gray-700">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Desktop Header Icons (hanya untuk layar besar) -->
+            <div class="hidden lg:flex items-center space-x-4">
+                <button id="search-toggle-desktop" class="text-gray-700 hover:text-primary-orange">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="cart.html" class="text-gray-700 hover:text-primary-orange relative">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-primary-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                </a>
+                <button class="text-gray-700 hover:text-primary-orange">
+                    <i class="fas fa-user"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Popup -->
+    <div id="search-overlay" class="search-overlay fixed inset-0 bg-black bg-opacity-50 z-50"></div>
+    <div id="search-popup" class="search-popup fixed top-0 left-0 right-0 bg-white z-50 p-6 shadow-lg">
+        <div class="w-full lg:max-w-7xl mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-primary-orange">Cari Produk</h2>
+                <button id="close-search" class="text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="relative mb-6">
+                <input 
+                    type="text" 
+                    id="search-input"
+                    placeholder="Ketik nama produk yang dicari..."
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange focus:ring-opacity-20"
+                >
+                <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-primary-orange">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            
+            <div id="search-results" class="max-h-96 overflow-y-auto">
+                <!-- Hasil pencarian akan muncul di sini -->
+                <div id="search-empty" class="text-center py-8 text-gray-500">
+                    <i class="fas fa-search text-4xl mb-4 opacity-50"></i>
+                    <p>Ketik nama produk untuk memulai pencarian</p>
+                </div>
+                
+                <div id="search-loading" class="hidden text-center py-8">
+                    <i class="fas fa-spinner fa-spin text-2xl text-primary-orange mb-4"></i>
+                    <p>Mencari produk...</p>
+                </div>
+                
+                <div id="search-no-results" class="hidden text-center py-8 text-gray-500">
+                    <i class="fas fa-times-circle text-4xl mb-4 opacity-50"></i>
+                    <p>Produk tidak ditemukan</p>
+                    <p class="text-sm">Coba gunakan kata kunci yang berbeda</p>
+                </div>
+                
+                <div id="search-results-container" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Template untuk hasil pencarian -->
+                    <template id="product-template">
+                        <div class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <div class="flex items-start space-x-4">
+                                <img class="w-16 h-16 object-cover rounded-lg" src="" alt="">
+                                <div class="flex-1">
+                                    <h3 class="font-semibold text-gray-800 mb-1"></h3>
+                                    <p class="text-sm text-gray-600 mb-2"></p>
+                                    <div class="space-y-2">
+                                        <span class="font-bold text-primary-orange text-lg block"></span>
+                                        <button class="btn-block bg-primary-orange text-white py-2 px-4 rounded-lg font-medium hover:bg-primary-red transition duration-300 flex items-center justify-center space-x-2">
+                                            <!-- <i class="fas fa-shopping-cart"></i> -->
+                                            <span>+ Keranjang</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Menu for Mobile & Tablet -->
+    <div id="sidebar-overlay" class="sidebar-overlay fixed inset-0 bg-black bg-opacity-50 z-50"></div>
+    <div id="sidebar" class="sidebar fixed top-0 left-0 h-full w-64 bg-white z-50 p-6">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-xl font-bold text-primary-orange">Inclinique<span class="text-primary-red"> Store</span></h2>
+            <button id="close-sidebar" class="text-gray-700">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <nav class="space-y-6">
+            <a href="index.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
+                <i class="fas fa-home mr-3"></i>HOME
+            </a>
+            <a href="product.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
+                <i class="fas fa-shopping-bag mr-3"></i>SHOP ALL
+            </a>
+            <a href="news.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
+                <i class="fas fa-blog mr-3"></i>BEAUTY INSIDER
+            </a>
+            <a href="about.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
+                <i class="fas fa-info-circle mr-3"></i>ABOUT US
+            </a>
+            <a href="career.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
+                <i class="fas fa-envelope mr-3"></i>CAREER
+            </a>
+            <a href="#" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
+                <i class="fas fa-search mr-3"></i>Pencarian
+            </a>
+            <a href="#" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
+                <i class="fas fa-user mr-3"></i>Akun Saya
+            </a>
+        </nav>
+        
+        <div class="mt-8 pt-6 border-t border-gray-200">
+            <h3 class="font-semibold text-gray-700 mb-4">Kategori Produk</h3>
+            <div class="space-y-3">
+                <a href="#" class="block text-gray-600 hover:text-primary-orange">Pembersih Wajah</a>
+                <a href="#" class="block text-gray-600 hover:text-primary-orange">Pelembap</a>
+                <a href="#" class="block text-gray-600 hover:text-primary-orange">Serum</a>
+                <a href="#" class="block text-gray-600 hover:text-primary-orange">Tabir Surya</a>
+                <a href="#" class="block text-gray-600 hover:text-primary-orange">Perawatan Khusus</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Breadcrumb -->
+    <section class="bg-gray-50 py-4">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <nav class="flex" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    <li class="inline-flex items-center">
+                        <a href="index.html" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary-orange">
+                            <i class="fas fa-home mr-2"></i>
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
+                            <a href="cart.html" class="ml-1 text-sm font-medium text-gray-700 hover:text-primary-orange md:ml-2">Keranjang</a>
+                        </div>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
+                            <span class="ml-1 text-sm font-medium text-primary-orange md:ml-2">Checkout</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Checkout Section -->
+    <section class="py-8 bg-white">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Checkout</h1>
+            <p class="text-gray-600 mb-8">Lengkapi informasi berikut untuk menyelesaikan pesanan Anda</p>
+            
+            <!-- Checkout Steps -->
+            <div class="mb-12">
+                <div class="flex items-center justify-between max-w-2xl mx-auto">
+                    <!-- Step 1 -->
+                    <div class="flex items-center">
+                        <div class="step-indicator completed">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="text-sm font-medium text-gray-900">Keranjang</div>
+                    </div>
+                    <div class="step-line completed"></div>
+                    
+                    <!-- Step 2 -->
+                    <div class="flex items-center">
+                        <div class="step-indicator active">2</div>
+                        <div class="text-sm font-medium text-gray-900">Checkout</div>
+                    </div>
+                    <div class="step-line"></div>
+                    
+                    <!-- Step 3 -->
+                    <div class="flex items-center">
+                        <div class="step-indicator inactive">3</div>
+                        <div class="text-sm font-medium text-gray-500">Selesai</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Checkout Form -->
+                <div class="lg:w-2/3">
+                    <!-- Shipping Address -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                        <h2 class="text-xl font-bold text-gray-800 mb-4">Alamat Pengiriman</h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <!-- Address Card 1 -->
+                            <div class="address-card selected">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-semibold text-gray-800">Rumah</h3>
+                                    <span class="bg-primary-orange text-white text-xs px-2 py-1 rounded">Utama</span>
+                                </div>
+                                <p class="text-gray-600 text-sm mb-2">Sarah Wijaya</p>
+                                <p class="text-gray-600 text-sm mb-2">+62 812 3456 7890</p>
+                                <p class="text-gray-600 text-sm">Jl. Merdeka No. 123, RT 05/RW 02, Kel. Menteng, Kec. Menteng, Jakarta Pusat 10310</p>
+                            </div>
+                            
+                            <!-- Address Card 2 -->
+                            <div class="address-card">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-semibold text-gray-800">Kantor</h3>
+                                </div>
+                                <p class="text-gray-600 text-sm mb-2">Sarah Wijaya</p>
+                                <p class="text-gray-600 text-sm mb-2">+62 812 3456 7890</p>
+                                <p class="text-gray-600 text-sm">Gedung Perkantoran Plaza Senayan, Lt. 15, Jl. Asia Afrika No. 8, Jakarta Selatan 10270</p>
+                            </div>
+                        </div>
+                        
+                        <button class="text-primary-orange font-medium flex items-center">
+                            <i class="fas fa-plus mr-2"></i> Tambah Alamat Baru
+                        </button>
+                    </div>
+                    
+                    <!-- Shipping Method -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                        <h2 class="text-xl font-bold text-gray-800 mb-4">Metode Pengiriman</h2>
+                        
+                        <div class="space-y-4">
+                            <!-- Shipping Option 1 -->
+                            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                                <div class="flex items-center">
+                                    <input type="radio" name="shipping" id="regular" class="h-4 w-4 text-primary-orange border-gray-300 focus:ring-primary-orange" checked>
+                                    <label for="regular" class="ml-3 block text-sm font-medium text-gray-700">
+                                        <span class="font-semibold">Reguler</span>
+                                        <span class="text-gray-500 block">Estimasi 3-5 hari kerja</span>
+                                    </label>
+                                </div>
+                                <span class="text-sm font-semibold text-gray-900">Rp 15.000</span>
+                            </div>
+                            
+                            <!-- Shipping Option 2 -->
+                            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                                <div class="flex items-center">
+                                    <input type="radio" name="shipping" id="express" class="h-4 w-4 text-primary-orange border-gray-300 focus:ring-primary-orange">
+                                    <label for="express" class="ml-3 block text-sm font-medium text-gray-700">
+                                        <span class="font-semibold">Express</span>
+                                        <span class="text-gray-500 block">Estimasi 1-2 hari kerja</span>
+                                    </label>
+                                </div>
+                                <span class="text-sm font-semibold text-gray-900">Rp 30.000</span>
+                            </div>
+                            
+                            <!-- Shipping Option 3 -->
+                            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                                <div class="flex items-center">
+                                    <input type="radio" name="shipping" id="same-day" class="h-4 w-4 text-primary-orange border-gray-300 focus:ring-primary-orange">
+                                    <label for="same-day" class="ml-3 block text-sm font-medium text-gray-700">
+                                        <span class="font-semibold">Same Day</span>
+                                        <span class="text-gray-500 block">Dikirim hari ini</span>
+                                    </label>
+                                </div>
+                                <span class="text-sm font-semibold text-gray-900">Rp 50.000</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Payment Method -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                        <h2 class="text-xl font-bold text-gray-800 mb-4">Metode Pembayaran</h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <!-- Payment Method 1 -->
+                            <div class="payment-method selected">
+                                <div class="flex items-center mb-3">
+                                    <input type="radio" name="payment" id="bank-transfer" class="h-4 w-4 text-primary-orange border-gray-300 focus:ring-primary-orange" checked>
+                                    <label for="bank-transfer" class="ml-2 block text-sm font-medium text-gray-700">Transfer Bank</label>
+                                </div>
+                                <div class="flex space-x-3">
+                                    <div class="bg-white p-2 rounded border border-gray-200">
+                                        <i class="fab fa-cc-visa text-2xl text-blue-800"></i>
+                                    </div>
+                                    <div class="bg-white p-2 rounded border border-gray-200">
+                                        <i class="fab fa-cc-mastercard text-2xl text-red-600"></i>
+                                    </div>
+                                    <div class="bg-white p-2 rounded border border-gray-200">
+                                        <i class="fas fa-university text-2xl text-green-600"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Payment Method 2 -->
+                            <div class="payment-method">
+                                <div class="flex items-center mb-3">
+                                    <input type="radio" name="payment" id="e-wallet" class="h-4 w-4 text-primary-orange border-gray-300 focus:ring-primary-orange">
+                                    <label for="e-wallet" class="ml-2 block text-sm font-medium text-gray-700">E-Wallet</label>
+                                </div>
+                                <div class="flex space-x-3">
+                                    <div class="bg-white p-2 rounded border border-gray-200">
+                                        <i class="fas fa-mobile-alt text-2xl text-blue-500"></i>
+                                    </div>
+                                    <div class="bg-white p-2 rounded border border-gray-200">
+                                        <i class="fab fa-cc-paypal text-2xl text-blue-500"></i>
+                                    </div>
+                                    <div class="bg-white p-2 rounded border border-gray-200">
+                                        <i class="fas fa-wallet text-2xl text-purple-500"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Payment Method 3 -->
+                            <div class="payment-method">
+                                <div class="flex items-center mb-3">
+                                    <input type="radio" name="payment" id="cod" class="h-4 w-4 text-primary-orange border-gray-300 focus:ring-primary-orange">
+                                    <label for="cod" class="ml-2 block text-sm font-medium text-gray-700">COD (Bayar di Tempat)</label>
+                                </div>
+                                <p class="text-xs text-gray-500">Bayar ketika pesanan sampai</p>
+                            </div>
+                            
+                            <!-- Payment Method 4 -->
+                            <div class="payment-method">
+                                <div class="flex items-center mb-3">
+                                    <input type="radio" name="payment" id="credit-card" class="h-4 w-4 text-primary-orange border-gray-300 focus:ring-primary-orange">
+                                    <label for="credit-card" class="ml-2 block text-sm font-medium text-gray-700">Kartu Kredit</label>
+                                </div>
+                                <div class="flex space-x-3">
+                                    <div class="bg-white p-2 rounded border border-gray-200">
+                                        <i class="fab fa-cc-visa text-2xl text-blue-800"></i>
+                                    </div>
+                                    <div class="bg-white p-2 rounded border border-gray-200">
+                                        <i class="fab fa-cc-mastercard text-2xl text-red-600"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Credit Card Form (shown when credit card is selected) -->
+                        <div id="credit-card-form" class="hidden bg-gray-50 p-4 rounded-lg mt-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="card-number" class="block text-sm font-medium text-gray-700 mb-1">Nomor Kartu</label>
+                                    <input type="text" id="card-number" placeholder="1234 5678 9012 3456" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-orange focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label for="card-name" class="block text-sm font-medium text-gray-700 mb-1">Nama di Kartu</label>
+                                    <input type="text" id="card-name" placeholder="Sarah Wijaya" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-orange focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label for="expiry-date" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Kadaluarsa</label>
+                                    <input type="text" id="expiry-date" placeholder="MM/YY" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-orange focus:border-transparent">
+                                </div>
+                                <div>
+                                    <label for="cvv" class="block text-sm font-medium text-gray-700 mb-1">CVV</label>
+                                    <input type="text" id="cvv" placeholder="123" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-orange focus:border-transparent">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Order Notes -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <h2 class="text-xl font-bold text-gray-800 mb-4">Catatan Pesanan (Opsional)</h2>
+                        <textarea 
+                            id="order-notes" 
+                            rows="3" 
+                            placeholder="Contoh: Tolong dibungkus dengan rapi, atau tambahkan instruksi khusus untuk kurir..."
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-orange focus:border-transparent"
+                        ></textarea>
+                    </div>
+                </div>
+                
+                <!-- Order Summary -->
+                <div class="lg:w-1/3">
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-24">
+                        <h2 class="text-xl font-bold text-gray-800 mb-4">Ringkasan Pesanan</h2>
+                        
+                        <!-- Order Items -->
+                        <div class="mb-6">
+                            <h3 class="font-semibold text-gray-700 mb-3">Produk (3)</h3>
+                            <div class="space-y-4">
+                                <!-- Item 1 -->
+                                <div class="flex items-center">
+                                    <img src="https://cdn.scarlett.id/product/b940e111-cd95-4e6c-b83c-83e38b060def_SLIDE_4.jpg" alt="Scarlett 4in1 Bodycare" class="w-12 h-12 object-cover rounded-lg">
+                                    <div class="ml-3 flex-1">
+                                        <h4 class="text-sm font-medium text-gray-800">Scarlett 4in1 Bodycare</h4>
+                                        <div class="flex justify-between text-xs text-gray-500">
+                                            <span>1 x Rp 213.000</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Item 2 -->
+                                <div class="flex items-center">
+                                    <img src="https://images.unsplash.com/photo-1556228578-9f6ac5e4d0d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Hydrating Serum" class="w-12 h-12 object-cover rounded-lg">
+                                    <div class="ml-3 flex-1">
+                                        <h4 class="text-sm font-medium text-gray-800">Hydrating Serum</h4>
+                                        <div class="flex justify-between text-xs text-gray-500">
+                                            <span>2 x Rp 189.000</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Item 3 -->
+                                <div class="flex items-center">
+                                    <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Vitamin C Cream" class="w-12 h-12 object-cover rounded-lg">
+                                    <div class="ml-3 flex-1">
+                                        <h4 class="text-sm font-medium text-gray-800">Vitamin C Cream</h4>
+                                        <div class="flex justify-between text-xs text-gray-500">
+                                            <span>1 x Rp 225.000</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Order Summary -->
+                        <div class="space-y-3 mb-6">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Subtotal</span>
+                                <span class="font-medium">Rp 816.000</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Diskon</span>
+                                <span class="font-medium text-green-600">- Rp 81.500</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Biaya Pengiriman</span>
+                                <span class="font-medium">Rp 15.000</span>
+                            </div>
+                            <div class="border-t border-gray-200 pt-3 mt-3">
+                                <div class="flex justify-between">
+                                    <span class="text-lg font-bold text-gray-800">Total</span>
+                                    <span class="text-lg font-bold text-primary-red">Rp 749.500</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Promo Code -->
+                        <div class="mb-6">
+                            <label for="promo-code" class="block text-sm font-medium text-gray-700 mb-2">Kode Promo</label>
+                            <div class="flex">
+                                <input type="text" id="promo-code" placeholder="Masukkan kode promo" class="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:border-primary-orange">
+                                <button class="bg-primary-orange text-white px-4 py-2 rounded-r-lg font-medium hover:bg-primary-red transition duration-300">Terapkan</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Terms and Conditions -->
+                        <div class="mb-6">
+                            <div class="flex items-start">
+                                <input type="checkbox" id="terms" class="h-4 w-4 text-primary-orange border-gray-300 rounded focus:ring-primary-orange mt-1">
+                                <label for="terms" class="ml-2 text-sm text-gray-600">
+                                    Saya setuju dengan <a href="#" class="text-primary-orange hover:underline">Syarat & Ketentuan</a> dan <a href="#" class="text-primary-orange hover:underline">Kebijakan Privasi</a> Inclinique Store
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Checkout Button -->
+                        <button id="place-order-btn" class="w-full bg-primary-orange text-white py-3 rounded-lg font-bold hover:bg-primary-red transition duration-300 mb-4">
+                            Bayar Sekarang
+                        </button>
+                        
+                        <!-- Security Info -->
+                        <div class="text-center">
+                            <div class="flex justify-center space-x-2 text-sm text-gray-500 mb-2">
+                                <i class="fas fa-lock"></i>
+                                <span>Pembayaran Aman & Terenkripsi</span>
+                            </div>
+                            <div class="flex justify-center space-x-4">
+                                <i class="fab fa-cc-visa text-xl text-blue-800"></i>
+                                <i class="fab fa-cc-mastercard text-xl text-red-600"></i>
+                                <i class="fab fa-cc-paypal text-xl text-blue-500"></i>
+                                <i class="fas fa-university text-xl text-green-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Customer Support -->
+                    <div class="mt-6 bg-primary-light p-4 rounded-lg">
+                        <div class="flex items-start">
+                            <i class="fas fa-headset text-primary-orange text-xl mt-1 mr-3"></i>
+                            <div>
+                                <h3 class="font-semibold text-gray-800 mb-1">Butuh Bantuan?</h3>
+                                <p class="text-sm text-gray-600 mb-2">Tim customer service kami siap membantu Anda.</p>
+                                <a href="#" class="text-primary-orange text-sm font-medium flex items-center">
+                                    <i class="fas fa-phone-alt mr-2"></i> +62 857 6711 3554
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12 lg:pb-12 pb-[120px]">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Inclinique<span class="text-primary-red"> Store</span></h3>
+                    <p class="text-gray-400 mb-4">Rangkaian skincare terbaik dengan formula yang aman dan efektif untuk semua jenis kulit.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Produk</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Pembersih</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Pelembap</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Serum</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Tabir Surya</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Perawatan Khusus</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Bantuan</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Kontak Kami</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Pengiriman</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Pengembalian</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Kebijakan Privasi</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Kontak</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-3"></i>
+                            <span>Jl. Skincare No. 123, Jakarta</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-3"></i>
+                            <span>+62 857 6711 3554</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3"></i>
+                            <span>info@incliniquestore.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; <script>document.write(new Date().getFullYear())</script> Inclinique Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bottom Navigation for Mobile & Tablet -->
+    <nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white py-3 px-6 flex justify-between items-center lg:hidden z-40">
+        <a href="index.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-home text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Beranda</span>
+        </a>
+        <a href="cart.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-shopping-cart text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Keranjang</span>
+        </a>
+        <a href="#" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-heart text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Favorit</span>
+        </a>
+        <a href="#" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-user text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Masuk</span>
+        </a>
+    </nav>
+
+    <script>
+        // Data produk untuk pencarian
+        const products = [
+            {
+                id: 1,
+                name: "Hydrating Serum",
+                description: "Serum dengan Hyaluronic Acid untuk kulit lembap maksimal",
+                price: "Rp 189.000",
+                image: "https://images.unsplash.com/photo-1556228578-9f6ac5e4d0d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+                category: "Serum"
+            },
+            {
+                id: 2,
+                name: "Vitamin C Cream",
+                description: "Krim pagi dengan Vitamin C untuk kulit cerah dan terlindungi",
+                price: "Rp 225.000",
+                image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+                category: "Pelembap"
+            },
+            {
+                id: 3,
+                name: "Gentle Cleanser",
+                description: "Pembersih wajah lembut untuk kulit sensitif",
+                price: "Rp 145.000",
+                image: "https://images.unsplash.com/photo-1570194065650-4222e69b28d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+                category: "Pembersih"
+            }
+        ];
+
+        // JavaScript untuk interaktivitas
+        document.addEventListener('DOMContentLoaded', function() {
+            // Search functionality
+            const searchToggleMobile = document.getElementById('search-toggle-mobile');
+            const searchToggleDesktop = document.getElementById('search-toggle-desktop');
+            const closeSearch = document.getElementById('close-search');
+            const searchPopup = document.getElementById('search-popup');
+            const searchOverlay = document.getElementById('search-overlay');
+            const searchInput = document.getElementById('search-input');
+            const searchResults = document.getElementById('search-results');
+            const searchEmpty = document.getElementById('search-empty');
+            const searchLoading = document.getElementById('search-loading');
+            const searchNoResults = document.getElementById('search-no-results');
+            const searchResultsContainer = document.getElementById('search-results-container');
+            const productTemplate = document.getElementById('product-template');
+
+            function openSearch() {
+                searchPopup.classList.add('open');
+                searchOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                // Focus pada input search
+                setTimeout(() => {
+                    searchInput.focus();
+                }, 300);
+            }
+
+            function closeSearchFunc() {
+                searchPopup.classList.remove('open');
+                searchOverlay.classList.remove('open');
+                document.body.style.overflow = 'auto';
+                // Reset pencarian
+                searchInput.value = '';
+                showEmptyState();
+            }
+
+            // Event listeners untuk search
+            if (searchToggleMobile) {
+                searchToggleMobile.addEventListener('click', openSearch);
+            }
+            if (searchToggleDesktop) {
+                searchToggleDesktop.addEventListener('click', openSearch);
+            }
+            if (closeSearch) {
+                closeSearch.addEventListener('click', closeSearchFunc);
+            }
+            if (searchOverlay) {
+                searchOverlay.addEventListener('click', closeSearchFunc);
+            }
+
+            // Fungsi untuk menampilkan state kosong
+            function showEmptyState() {
+                searchEmpty.classList.remove('hidden');
+                searchLoading.classList.add('hidden');
+                searchNoResults.classList.add('hidden');
+                searchResultsContainer.classList.add('hidden');
+            }
+
+            // Fungsi untuk menampilkan loading
+            function showLoading() {
+                searchEmpty.classList.add('hidden');
+                searchLoading.classList.remove('hidden');
+                searchNoResults.classList.add('hidden');
+                searchResultsContainer.classList.add('hidden');
+            }
+
+            // Fungsi untuk menampilkan hasil
+            function showResults(filteredProducts) {
+                searchEmpty.classList.add('hidden');
+                searchLoading.classList.add('hidden');
+                
+                if (filteredProducts.length === 0) {
+                    searchNoResults.classList.remove('hidden');
+                    searchResultsContainer.classList.add('hidden');
+                } else {
+                    searchNoResults.classList.add('hidden');
+                    searchResultsContainer.classList.remove('hidden');
+                    
+                    // Clear previous results
+                    searchResultsContainer.innerHTML = '';
+                    
+                    // Add new results
+                    filteredProducts.forEach(product => {
+                        const productElement = productTemplate.content.cloneNode(true);
+                        
+                        // Set product data
+                        productElement.querySelector('img').src = product.image;
+                        productElement.querySelector('img').alt = product.name;
+                        productElement.querySelector('h3').textContent = product.name;
+                        productElement.querySelector('p').textContent = product.description;
+                        productElement.querySelector('.font-bold').textContent = product.price;
+                        
+                        // Add to cart functionality
+                        const addToCartBtn = productElement.querySelector('button');
+                        addToCartBtn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            
+                            const icon = this.querySelector('i');
+                            const originalClass = icon.className;
+                            
+                            icon.className = 'fas fa-check';
+                            this.style.backgroundColor = '#10B981';
+                            
+                            setTimeout(() => {
+                                icon.className = originalClass;
+                                this.style.backgroundColor = '#FA812F';
+                            }, 1500);
+                            
+                            alert(`Produk ${product.name} berhasil ditambahkan ke keranjang!`);
+                        });
+                        
+                        searchResultsContainer.appendChild(productElement);
+                    });
+                }
+            }
+
+            // Fungsi untuk melakukan pencarian
+            function performSearch(query) {
+                if (query.length < 2) {
+                    showEmptyState();
+                    return;
+                }
+
+                showLoading();
+
+                // Simulasi delay pencarian
+                setTimeout(() => {
+                    const filteredProducts = products.filter(product => 
+                        product.name.toLowerCase().includes(query.toLowerCase()) ||
+                        product.description.toLowerCase().includes(query.toLowerCase()) ||
+                        product.category.toLowerCase().includes(query.toLowerCase())
+                    );
+                    
+                    showResults(filteredProducts);
+                }, 500);
+            }
+
+            // Event listener untuk input search
+            if (searchInput) {
+                let searchTimeout;
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    const query = this.value.trim();
+                    
+                    searchTimeout = setTimeout(() => {
+                        performSearch(query);
+                    }, 300);
+                });
+            }
+
+            // Sidebar toggle functionality
+            const menuToggle = document.getElementById('menu-toggle');
+            const closeSidebar = document.getElementById('close-sidebar');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            
+            function openSidebar() {
+                sidebar.classList.add('open');
+                sidebarOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeSidebarFunc() {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('open');
+                document.body.style.overflow = 'auto';
+            }
+            
+            if (menuToggle) {
+                menuToggle.addEventListener('click', openSidebar);
+            }
+            if (closeSidebar) {
+                closeSidebar.addEventListener('click', closeSidebarFunc);
+            }
+            if (sidebarOverlay) {
+                sidebarOverlay.addEventListener('click', closeSidebarFunc);
+            }
+            
+            // Checkout functionality
+            const addressCards = document.querySelectorAll('.address-card');
+            const paymentMethods = document.querySelectorAll('.payment-method');
+            const creditCardRadio = document.getElementById('credit-card');
+            const creditCardForm = document.getElementById('credit-card-form');
+            const placeOrderBtn = document.getElementById('place-order-btn');
+            const termsCheckbox = document.getElementById('terms');
+            
+            // Address selection
+            addressCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    addressCards.forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Payment method selection
+            paymentMethods.forEach(method => {
+                method.addEventListener('click', function() {
+                    paymentMethods.forEach(m => m.classList.remove('selected'));
+                    this.classList.add('selected');
+                    
+                    // Check if credit card is selected
+                    const radio = this.querySelector('input[type="radio"]');
+                    if (radio && radio.id === 'credit-card') {
+                        creditCardForm.classList.remove('hidden');
+                    } else {
+                        creditCardForm.classList.add('hidden');
+                    }
+                });
+            });
+            
+            // Credit card radio button
+            if (creditCardRadio) {
+                creditCardRadio.addEventListener('change', function() {
+                    if (this.checked) {
+                        creditCardForm.classList.remove('hidden');
+                    } else {
+                        creditCardForm.classList.add('hidden');
+                    }
+                });
+            }
+            
+            // Place order button
+            if (placeOrderBtn) {
+                placeOrderBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    if (!termsCheckbox.checked) {
+                        alert('Anda harus menyetujui Syarat & Ketentuan sebelum melanjutkan.');
+                        return;
+                    }
+                    
+                    // Show loading state
+                    const originalText = this.textContent;
+                    this.textContent = 'Memproses...';
+                    this.disabled = true;
+                    
+                    // Simulate processing
+                    setTimeout(() => {
+                        // Redirect to order confirmation page
+                        window.location.href = 'order-confirmation.html';
+                    }, 2000);
+                });
+            }
+            
+            // Simulasi login/logout untuk demo
+            const loginButton = document.querySelector('.bottom-nav a:nth-child(4)');
+            let isLoggedIn = false;
+            
+            if (loginButton) {
+                loginButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    isLoggedIn = !isLoggedIn;
+                    
+                    if (isLoggedIn) {
+                        this.innerHTML = '<i class="fas fa-user text-2xl mb-1"></i><span class="text-xs font-medium">Profil</span>';
+                        this.classList.add('logged-in');
+                    } else {
+                        this.innerHTML = '<i class="fas fa-user text-2xl mb-1"></i><span class="text-xs font-medium">Masuk</span>';
+                        this.classList.remove('logged-in');
+                    }
+                });
+            }
+
+            // Smooth scroll untuk anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Handle window resize
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                document.body.classList.add('resize-animation-stopper');
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    document.body.classList.remove('resize-animation-stopper');
+                }, 400);
+            });
+
+            // Tambahkan style untuk resize animation stopper
+            const style = document.createElement('style');
+            style.textContent = `
+                .resize-animation-stopper * {
+                    animation: none !important;
+                    transition: none !important;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+
+</body>
+</html>
