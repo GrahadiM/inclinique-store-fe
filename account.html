@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Semua style CSS dari script asli tetap sama */
         .hero-gradient {
             background: linear-gradient(135deg, #FEF3E2 0%, #FA812F 100%);
         }
@@ -46,6 +47,26 @@
             transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
         }
         .search-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Modal Popup Styles */
+        .modal {
+            transform: scale(0.9);
+            opacity: 0;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        .modal.open {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .modal-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .modal-overlay.open {
             opacity: 1;
             visibility: visible;
         }
@@ -352,6 +373,153 @@
         </div>
     </div>
 
+    <!-- Modal Popup for Account Security -->
+    <div id="modal-overlay" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 z-50" aria-hidden="true"></div>
+    
+    <!-- Change Password Modal -->
+    <div id="change-password-modal" class="modal fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="change-password-title">
+        <div class="bg-white rounded-xl shadow-lg w-full max-w-md">
+            <div class="flex justify-between items-center p-6 border-b border-gray-200">
+                <h3 id="change-password-title" class="text-xl font-bold text-gray-800">Ubah Password</h3>
+                <button id="close-change-password" class="text-gray-500 hover:text-gray-700 transition-colors" aria-label="Close Modal">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <form id="change-password-form">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="current-password" class="block text-sm font-medium text-gray-700 mb-2">Password Saat Ini</label>
+                            <input type="password" id="current-password" class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange transition-colors" required>
+                        </div>
+                        <div>
+                            <label for="new-password" class="block text-sm font-medium text-gray-700 mb-2">Password Baru</label>
+                            <input type="password" id="new-password" class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange transition-colors" required>
+                        </div>
+                        <div>
+                            <label for="confirm-password" class="block text-sm font-medium text-gray-700 mb-2">Konfirmasi Password Baru</label>
+                            <input type="password" id="confirm-password" class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange transition-colors" required>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex justify-end space-x-3">
+                        <button type="button" id="cancel-change-password" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-100 transition-colors">
+                            Batal
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-primary-orange text-white rounded-lg font-medium hover:bg-orange-600 transition-colors">
+                            Simpan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Two-Factor Authentication Modal -->
+    <div id="two-factor-modal" class="modal fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="two-factor-title">
+        <div class="bg-white rounded-xl shadow-lg w-full max-w-md">
+            <div class="flex justify-between items-center p-6 border-b border-gray-200">
+                <h3 id="two-factor-title" class="text-xl font-bold text-gray-800">Two-Factor Authentication</h3>
+                <button id="close-two-factor" class="text-gray-500 hover:text-gray-700 transition-colors" aria-label="Close Modal">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <p class="text-gray-600">Aktifkan Two-Factor Authentication untuk meningkatkan keamanan akun Anda.</p>
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div>
+                            <p class="font-medium text-gray-800">Status</p>
+                            <p class="text-sm text-gray-600">Tidak aktif</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="two-factor-toggle" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-orange"></div>
+                        </label>
+                    </div>
+                    <div id="two-factor-setup" class="hidden space-y-4">
+                        <p class="text-sm text-gray-600">Scan QR code dengan aplikasi authenticator Anda:</p>
+                        <div class="bg-gray-100 p-4 rounded-lg text-center">
+                            <div class="w-48 h-48 bg-white mx-auto flex items-center justify-center">
+                                <p class="text-gray-500">QR Code akan muncul di sini</p>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="verification-code" class="block text-sm font-medium text-gray-700 mb-2">Kode Verifikasi</label>
+                            <input type="text" id="verification-code" class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange transition-colors" placeholder="Masukkan kode 6 digit">
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-end space-x-3">
+                    <button id="cancel-two-factor" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-100 transition-colors">
+                        Batal
+                    </button>
+                    <button id="save-two-factor" class="px-4 py-2 bg-primary-orange text-white rounded-lg font-medium hover:bg-orange-600 transition-colors">
+                        Simpan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Active Sessions Modal -->
+    <div id="sessions-modal" class="modal fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="sessions-title">
+        <div class="bg-white rounded-xl shadow-lg w-full max-w-md">
+            <div class="flex justify-between items-center p-6 border-b border-gray-200">
+                <h3 id="sessions-title" class="text-xl font-bold text-gray-800">Sesi Aktif</h3>
+                <button id="close-sessions" class="text-gray-500 hover:text-gray-700 transition-colors" aria-label="Close Modal">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <p class="text-gray-600">Perangkat yang saat ini login ke akun Anda:</p>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fas fa-desktop text-primary-orange text-xl mr-3"></i>
+                                <div>
+                                    <p class="font-medium text-gray-800">Windows Desktop - Chrome</p>
+                                    <p class="text-sm text-gray-600">Jakarta, Indonesia • Saat ini aktif</p>
+                                </div>
+                            </div>
+                            <span class="bg-green-100 text-green-600 px-2 py-1 rounded text-xs font-medium">Aktif</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fas fa-mobile-alt text-primary-orange text-xl mr-3"></i>
+                                <div>
+                                    <p class="font-medium text-gray-800">iPhone 13 - Safari</p>
+                                    <p class="text-sm text-gray-600">Jakarta, Indonesia • 2 jam lalu</p>
+                                </div>
+                            </div>
+                            <span class="bg-yellow-100 text-yellow-600 px-2 py-1 rounded text-xs font-medium">Tidak aktif</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <div class="flex">
+                            <i class="fas fa-exclamation-triangle text-yellow-500 mt-1 mr-3"></i>
+                            <div>
+                                <p class="font-medium text-yellow-800">Perhatian</p>
+                                <p class="text-sm text-yellow-700">Keluar dari semua sesi lainnya akan memerlukan login ulang di perangkat tersebut.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-end space-x-3">
+                    <button id="cancel-sessions" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-100 transition-colors">
+                        Tutup
+                    </button>
+                    <button id="logout-all-sessions" class="px-4 py-2 bg-primary-orange text-white rounded-lg font-medium hover:bg-orange-600 transition-colors">
+                        Keluar dari Semua Sesi Lainnya
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Profile Header -->
     <section class="py-8 bg-white border-b">
         <div class="w-full lg:max-w-7xl mx-auto px-4">
@@ -427,18 +595,18 @@
                         <div class="mt-8 pt-6 border-t border-gray-200">
                             <h3 class="font-semibold text-gray-700 mb-4">Butuh Bantuan?</h3>
                             <div class="space-y-3">
-                                <a href="contact.html" class="flex items-center text-gray-600 hover:text-primary-orange transition-colors">
+                                <button id="contact-cs" class="flex items-center text-gray-600 hover:text-primary-orange transition-colors w-full text-left">
                                     <i class="fas fa-headset mr-2"></i>
                                     Hubungi Customer Service
-                                </a>
-                                <a href="faq.html" class="flex items-center text-gray-600 hover:text-primary-orange transition-colors">
+                                </button>
+                                <button id="open-faq" class="flex items-center text-gray-600 hover:text-primary-orange transition-colors w-full text-left">
                                     <i class="fas fa-question-circle mr-2"></i>
                                     FAQ
-                                </a>
-                                <a href="consultation.html" class="flex items-center text-gray-600 hover:text-primary-orange transition-colors">
+                                </button>
+                                <button id="open-consultation" class="flex items-center text-gray-600 hover:text-primary-orange transition-colors w-full text-left">
                                     <i class="fas fa-comments mr-2"></i>
                                     Konsultasi Gratis
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -574,7 +742,7 @@
                                         <img src="https://images.unsplash.com/photo-1556228578-9f6ac5e4d0d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
                                              alt="Brightening Vitamin C Serum" 
                                              class="w-full h-48 object-cover">
-                                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-100">
+                                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 wishlist-btn">
                                             <i class="far fa-heart text-gray-600"></i>
                                         </button>
                                     </div>
@@ -583,7 +751,7 @@
                                         <p class="text-gray-600 text-sm mb-3">Cocok untuk kulit kombinasi</p>
                                         <div class="flex items-center justify-between">
                                             <span class="font-bold text-primary-orange">Rp 249.000</span>
-                                            <button class="bg-primary-orange text-white px-3 py-1 rounded text-sm hover:bg-orange-600 transition-colors">+ Keranjang</button>
+                                            <button class="bg-primary-orange text-white px-3 py-1 rounded text-sm hover:bg-orange-600 transition-colors add-to-cart-btn">+ Keranjang</button>
                                         </div>
                                     </div>
                                 </div>
@@ -594,7 +762,7 @@
                                         <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
                                              alt="Gentle Foaming Cleanser" 
                                              class="w-full h-48 object-cover">
-                                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-100">
+                                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 wishlist-btn">
                                             <i class="far fa-heart text-gray-600"></i>
                                         </button>
                                     </div>
@@ -603,7 +771,7 @@
                                         <p class="text-gray-600 text-sm mb-3">Untuk kulit sensitif</p>
                                         <div class="flex items-center justify-between">
                                             <span class="font-bold text-primary-orange">Rp 129.000</span>
-                                            <button class="bg-primary-orange text-white px-3 py-1 rounded text-sm hover:bg-orange-600 transition-colors">+ Keranjang</button>
+                                            <button class="bg-primary-orange text-white px-3 py-1 rounded text-sm hover:bg-orange-600 transition-colors add-to-cart-btn">+ Keranjang</button>
                                         </div>
                                     </div>
                                 </div>
@@ -614,7 +782,7 @@
                                         <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
                                              alt="Soothing Aloe Vera Gel" 
                                              class="w-full h-48 object-cover">
-                                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-100">
+                                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 wishlist-btn">
                                             <i class="far fa-heart text-gray-600"></i>
                                         </button>
                                     </div>
@@ -623,7 +791,7 @@
                                         <p class="text-gray-600 text-sm mb-3">Menenangkan kulit sensitif</p>
                                         <div class="flex items-center justify-between">
                                             <span class="font-bold text-primary-orange">Rp 189.000</span>
-                                            <button class="bg-primary-orange text-white px-3 py-1 rounded text-sm hover:bg-orange-600 transition-colors">+ Keranjang</button>
+                                            <button class="bg-primary-orange text-white px-3 py-1 rounded text-sm hover:bg-orange-600 transition-colors add-to-cart-btn">+ Keranjang</button>
                                         </div>
                                     </div>
                                 </div>
@@ -780,7 +948,7 @@
                     </div>
                     
                     <!-- Skin Profile Tab -->
-                                        <div id="skin-profile" class="tab-content">
+                    <div id="skin-profile" class="tab-content">
                         <div class="bg-white rounded-xl shadow-sm p-6">
                             <div class="flex justify-between items-start mb-6">
                                 <h2 class="text-2xl font-bold text-gray-800">Profil Kulit Saya</h2>
@@ -802,7 +970,7 @@
                                         <p class="text-sm opacity-90">Skor Keseluruhan</p>
                                     </div>
                                     <div class="text-center">
-                                        <p class="text-3xl font-bold">Kombinasi</p>
+                                        <p class="text-3xl font-bold skin-type-dominant">Kombinasi</p>
                                         <p class="text-sm opacity-90">Tipe Kulit Dominan</p>
                                     </div>
                                     <div class="text-center">
@@ -1015,7 +1183,7 @@
                                         </div>
                                     </div>
 
-                                    <button class="w-full mt-6 bg-primary-orange text-white py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors flex items-center justify-center">
+                                    <button class="w-full mt-6 bg-primary-orange text-white py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors flex items-center justify-center update-analysis-btn">
                                         <i class="fas fa-sync-alt mr-2"></i>
                                         Perbarui Analisis Kulit
                                     </button>
@@ -1297,7 +1465,7 @@
                                         <img src="https://images.unsplash.com/photo-1556228578-9f6ac5e4d0d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
                                              alt="Brightening Vitamin C Serum" 
                                              class="w-full h-48 object-cover">
-                                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-100">
+                                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 wishlist-btn">
                                             <i class="fas fa-heart text-primary-red"></i>
                                         </button>
                                     </div>
@@ -1306,7 +1474,7 @@
                                         <p class="text-gray-600 text-sm mb-3">Serum dengan 15% vitamin C untuk kulit cerah</p>
                                         <div class="flex items-center justify-between">
                                             <span class="font-bold text-primary-orange">Rp 249.000</span>
-                                            <button class="bg-primary-orange text-white px-3 py-1 rounded text-sm hover:bg-orange-600 transition-colors">+ Keranjang</button>
+                                            <button class="bg-primary-orange text-white px-3 py-1 rounded text-sm hover:bg-orange-600 transition-colors add-to-cart-btn">+ Keranjang</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1317,7 +1485,7 @@
                                         <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
                                              alt="Hydrating Toner" 
                                              class="w-full h-48 object-cover">
-                                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-100">
+                                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 wishlist-btn">
                                             <i class="fas fa-heart text-primary-red"></i>
                                         </button>
                                         <span class="absolute top-3 left-3 bg-primary-red text-white text-xs px-2 py-1 rounded">BESTSELLER</span>
@@ -1327,7 +1495,7 @@
                                         <p class="text-gray-600 text-sm mb-3">Toner melembapkan dengan hyaluronic acid</p>
                                         <div class="flex items-center justify-between">
                                             <span class="font-bold text-primary-orange">Rp 149.000</span>
-                                            <button class="bg-primary-orange text-white px-3 py-1 rounded text-sm hover:bg-orange-600 transition-colors">+ Keranjang</button>
+                                            <button class="bg-primary-orange text-white px-3 py-1 rounded text-sm hover:bg-orange-600 transition-colors add-to-cart-btn">+ Keranjang</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1338,7 +1506,7 @@
                                         <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" 
                                              alt="Repair Night Cream" 
                                              class="w-full h-48 object-cover">
-                                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-100">
+                                        <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 wishlist-btn">
                                             <i class="fas fa-heart text-primary-red"></i>
                                         </button>
                                     </div>
@@ -1347,7 +1515,7 @@
                                         <p class="text-gray-600 text-sm mb-3">Krim malam dengan retinol untuk peremajaan kulit</p>
                                         <div class="flex items-center justify-between">
                                             <span class="font-bold text-primary-orange">Rp 329.000</span>
-                                            <button class="bg-primary-orange text-white px-3 py-1 rounded text-sm hover:bg-orange-600 transition-colors">+ Keranjang</button>
+                                            <button class="bg-primary-orange text-white px-3 py-1 rounded text-sm hover:bg-orange-600 transition-colors add-to-cart-btn">+ Keranjang</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1473,7 +1641,7 @@
                                 <div>
                                     <h3 class="text-xl font-bold text-gray-800 mb-4">Keamanan Akun</h3>
                                     <div class="space-y-4">
-                                        <button class="w-full text-left p-4 border border-gray-200 rounded-lg hover:border-primary-orange transition-colors">
+                                        <button id="change-password-btn" class="w-full text-left p-4 border border-gray-200 rounded-lg hover:border-primary-orange transition-colors">
                                             <div class="flex items-center justify-between">
                                                 <div>
                                                     <p class="font-medium text-gray-800">Ubah Password</p>
@@ -1483,7 +1651,7 @@
                                             </div>
                                         </button>
                                         
-                                        <button class="w-full text-left p-4 border border-gray-200 rounded-lg hover:border-primary-orange transition-colors">
+                                        <button id="two-factor-btn" class="w-full text-left p-4 border border-gray-200 rounded-lg hover:border-primary-orange transition-colors">
                                             <div class="flex items-center justify-between">
                                                 <div>
                                                     <p class="font-medium text-gray-800">Two-Factor Authentication</p>
@@ -1493,7 +1661,7 @@
                                             </div>
                                         </button>
                                         
-                                        <button class="w-full text-left p-4 border border-gray-200 rounded-lg hover:border-primary-orange transition-colors">
+                                        <button id="sessions-btn" class="w-full text-left p-4 border border-gray-200 rounded-lg hover:border-primary-orange transition-colors">
                                             <div class="flex items-center justify-between">
                                                 <div>
                                                     <p class="font-medium text-gray-800">Sesi Aktif</p>
@@ -1764,7 +1932,7 @@
             });
 
             // Add to cart buttons
-            const addToCartButtons = document.querySelectorAll('button:contains("+ Keranjang")');
+            const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
             
             addToCartButtons.forEach(button => {
                 button.addEventListener('click', function() {
@@ -1787,16 +1955,17 @@
             });
 
             // Wishlist toggle
-            const wishlistButtons = document.querySelectorAll('.fa-heart');
+            const wishlistButtons = document.querySelectorAll('.wishlist-btn');
             
             wishlistButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    if (this.classList.contains('far')) {
-                        this.classList.remove('far');
-                        this.classList.add('fas', 'text-primary-red');
+                    const icon = this.querySelector('i');
+                    if (icon.classList.contains('far')) {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas', 'text-primary-red');
                     } else {
-                        this.classList.remove('fas', 'text-primary-red');
-                        this.classList.add('far');
+                        icon.classList.remove('fas', 'text-primary-red');
+                        icon.classList.add('far');
                     }
                 });
             });
@@ -1896,29 +2065,31 @@
             });
 
             // Update Skin Analysis
-            const updateAnalysisBtn = document.querySelector('.bg-primary-orange');
-            updateAnalysisBtn.addEventListener('click', function() {
-                // Simulate analysis update
-                this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Menganalisis...';
-                
-                setTimeout(() => {
-                    this.innerHTML = '<i class="fas fa-check mr-2"></i>Analisis Diperbarui';
+            const updateAnalysisBtn = document.querySelector('.update-analysis-btn');
+            if (updateAnalysisBtn) {
+                updateAnalysisBtn.addEventListener('click', function() {
+                    // Simulate analysis update
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Menganalisis...';
                     
-                    // Update last updated date
-                    const now = new Date();
-                    document.querySelector('.font-medium.text-primary-orange').textContent = 
-                        now.toLocaleDateString('id-ID', { 
-                            day: 'numeric', 
-                            month: 'long', 
-                            year: 'numeric' 
-                        });
-                    
-                    // Reset button after 2 seconds
                     setTimeout(() => {
-                        this.innerHTML = '<i class="fas fa-sync-alt mr-2"></i>Perbarui Analisis Kulit';
+                        this.innerHTML = '<i class="fas fa-check mr-2"></i>Analisis Diperbarui';
+                        
+                        // Update last updated date
+                        const now = new Date();
+                        document.querySelector('.font-medium.text-primary-orange').textContent = 
+                            now.toLocaleDateString('id-ID', { 
+                                day: 'numeric', 
+                                month: 'long', 
+                                year: 'numeric' 
+                            });
+                        
+                        // Reset button after 2 seconds
+                        setTimeout(() => {
+                            this.innerHTML = '<i class="fas fa-sync-alt mr-2"></i>Perbarui Analisis Kulit';
+                        }, 2000);
                     }, 2000);
-                }, 2000);
-            });
+                });
+            }
 
             // Routine Step Interactions
             const routineSteps = document.querySelectorAll('.routine-step');
@@ -1928,11 +2099,145 @@
                 });
             });
 
+            // Modal functionality
+            const modalOverlay = document.getElementById('modal-overlay');
+            const changePasswordModal = document.getElementById('change-password-modal');
+            const twoFactorModal = document.getElementById('two-factor-modal');
+            const sessionsModal = document.getElementById('sessions-modal');
+            
+            // Open modal functions
+            function openModal(modal) {
+                modal.classList.add('open');
+                modalOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            // Close modal functions
+            function closeModal(modal) {
+                modal.classList.remove('open');
+                modalOverlay.classList.remove('open');
+                document.body.style.overflow = 'auto';
+            }
+            
+            // Close all modals when clicking overlay
+            modalOverlay.addEventListener('click', function() {
+                closeModal(changePasswordModal);
+                closeModal(twoFactorModal);
+                closeModal(sessionsModal);
+            });
+            
+            // Change Password Modal
+            const changePasswordBtn = document.getElementById('change-password-btn');
+            const closeChangePassword = document.getElementById('close-change-password');
+            const cancelChangePassword = document.getElementById('cancel-change-password');
+            
+            if (changePasswordBtn) {
+                changePasswordBtn.addEventListener('click', function() {
+                    openModal(changePasswordModal);
+                });
+            }
+            
+            if (closeChangePassword) {
+                closeChangePassword.addEventListener('click', function() {
+                    closeModal(changePasswordModal);
+                });
+            }
+            
+            if (cancelChangePassword) {
+                cancelChangePassword.addEventListener('click', function() {
+                    closeModal(changePasswordModal);
+                });
+            }
+            
+            // Two-Factor Authentication Modal
+            const twoFactorBtn = document.getElementById('two-factor-btn');
+            const closeTwoFactor = document.getElementById('close-two-factor');
+            const cancelTwoFactor = document.getElementById('cancel-two-factor');
+            const twoFactorToggle = document.getElementById('two-factor-toggle');
+            const twoFactorSetup = document.getElementById('two-factor-setup');
+            
+            if (twoFactorBtn) {
+                twoFactorBtn.addEventListener('click', function() {
+                    openModal(twoFactorModal);
+                });
+            }
+            
+            if (closeTwoFactor) {
+                closeTwoFactor.addEventListener('click', function() {
+                    closeModal(twoFactorModal);
+                });
+            }
+            
+            if (cancelTwoFactor) {
+                cancelTwoFactor.addEventListener('click', function() {
+                    closeModal(twoFactorModal);
+                });
+            }
+            
+            if (twoFactorToggle) {
+                twoFactorToggle.addEventListener('change', function() {
+                    if (this.checked) {
+                        twoFactorSetup.classList.remove('hidden');
+                    } else {
+                        twoFactorSetup.classList.add('hidden');
+                    }
+                });
+            }
+            
+            // Sessions Modal
+            const sessionsBtn = document.getElementById('sessions-btn');
+            const closeSessions = document.getElementById('close-sessions');
+            const cancelSessions = document.getElementById('cancel-sessions');
+            
+            if (sessionsBtn) {
+                sessionsBtn.addEventListener('click', function() {
+                    openModal(sessionsModal);
+                });
+            }
+            
+            if (closeSessions) {
+                closeSessions.addEventListener('click', function() {
+                    closeModal(sessionsModal);
+                });
+            }
+            
+            if (cancelSessions) {
+                cancelSessions.addEventListener('click', function() {
+                    closeModal(sessionsModal);
+                });
+            }
+            
+            // Help buttons
+            const contactCS = document.getElementById('contact-cs');
+            const openFAQ = document.getElementById('open-faq');
+            const openConsultation = document.getElementById('open-consultation');
+            
+            if (contactCS) {
+                contactCS.addEventListener('click', function() {
+                    alert('Hubungi Customer Service kami di:\n\nTelepon: +62 857 6711 3554\nEmail: support@incliniquestore.com\nJam Operasional: 08.00 - 22.00 WIB');
+                });
+            }
+            
+            if (openFAQ) {
+                openFAQ.addEventListener('click', function() {
+                    alert('Membuka halaman FAQ. Fitur ini akan mengarahkan ke halaman FAQ lengkap.');
+                });
+            }
+            
+            if (openConsultation) {
+                openConsultation.addEventListener('click', function() {
+                    alert('Membuka halaman Konsultasi Gratis. Fitur ini akan mengarahkan ke halaman konsultasi dengan ahli skincare kami.');
+                });
+            }
+            
             // Close search on escape key
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     closeSearchFunc();
                     closeSidebarFunc();
+                    closeModal(changePasswordModal);
+                    closeModal(twoFactorModal);
+                    closeModal(sessionsModal);
                 }
             });
         });
