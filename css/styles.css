@@ -1,0 +1,191 @@
+/* ===== VARIABLES & BASE STYLES ===== */
+:root {
+  --color-primary-light: #FFECC0;
+  --color-primary-yellow: #FAB12F;
+  --color-primary-orange: #FA812F;
+  --color-primary-red: #DD0303;
+  --color-gray-100: #F3F4F6;
+  --color-gray-200: #E5E7EB;
+  --color-gray-300: #D1D5DB;
+  --color-gray-500: #6B7280;
+  --color-gray-600: #4B5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1F2937;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+  --shadow-bottom: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  --transition-base: 0.3s ease;
+  --transition-smooth: 0.3s ease-in-out;
+}
+
+/* ===== UTILITY CLASSES ===== */
+/* Background Colors */
+.bg-primary-light { background-color: var(--color-primary-light); }
+.bg-primary-yellow { background-color: var(--color-primary-yellow); }
+.bg-primary-orange { background-color: var(--color-primary-orange); }
+.bg-primary-red { background-color: var(--color-primary-red); }
+
+/* Text Colors */
+.text-primary-yellow { color: var(--color-primary-yellow); }
+.text-primary-orange { color: var(--color-primary-orange); }
+.text-primary-red { color: var(--color-primary-red); }
+
+/* Border Colors */
+.border-primary-orange { border-color: var(--color-primary-orange); }
+
+/* Hover States */
+.hover\:bg-primary-orange:hover { background-color: var(--color-primary-orange); }
+.hover\:text-primary-orange:hover { color: var(--color-primary-orange); }
+
+/* ===== COMPONENT STYLES ===== */
+/* Hero Section */
+.hero-gradient {
+  background: linear-gradient(135deg, #FEF3E2 0%, var(--color-primary-orange) 100%);
+}
+
+/* Product Cards */
+.product-card {
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Skin Type Buttons */
+.skin-type-btn.active {
+  background-color: var(--color-primary-orange);
+  color: white;
+}
+
+/* Sidebar Components */
+.sidebar,
+.filter-sidebar {
+  transform: translateX(-100%);
+  transition: transform var(--transition-smooth);
+}
+
+.sidebar.open,
+.filter-sidebar.open {
+  transform: translateX(0);
+}
+
+.sidebar-overlay,
+.search-overlay {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-smooth), visibility var(--transition-smooth);
+}
+
+.sidebar-overlay.open,
+.search-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Search Popup */
+.search-popup {
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: transform var(--transition-smooth), opacity var(--transition-smooth);
+}
+
+.search-popup.open {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+  box-shadow: var(--shadow-bottom);
+}
+
+/* Buttons */
+.btn-block {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+/* Product Detail Components */
+.product-thumbnail {
+  transition: all var(--transition-base);
+  cursor: pointer;
+}
+
+.product-thumbnail.active {
+  border: 2px solid var(--color-primary-orange);
+}
+
+.quantity-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-gray-300);
+  background-color: white;
+  cursor: pointer;
+  transition: background-color var(--transition-base);
+}
+
+.quantity-btn:hover {
+  background-color: var(--color-gray-100);
+}
+
+/* Tab Components */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.tab-button.active {
+  color: var(--color-primary-orange);
+  border-bottom: 2px solid var(--color-primary-orange);
+}
+
+/* Pagination */
+.pagination-btn {
+  transition: all var(--transition-base);
+}
+
+.pagination-btn:hover:not(.active) {
+  background-color: #FEF3E2;
+}
+
+.pagination-btn.active {
+  background-color: var(--color-primary-orange);
+  color: white;
+}
+
+/* ===== RESPONSIVE STYLES ===== */
+@media (max-width: 1023px) {
+  .filter-sidebar {
+    transform: translateX(-100%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 60;
+    overflow-y: auto;
+  }
+  
+  .filter-sidebar.open {
+    transform: translateX(0);
+  }
+}
+
+/* ===== ADDITIONAL UTILITY CLASSES ===== */
+/* Extended color palette for future use */
+.bg-primary-green { background-color: #28A745; }
+.bg-primary-blue { background-color: #007BFF; }
+.bg-primary-purple { background-color: #6F42C1; }
+.bg-primary-pink { background-color: #E83E8C; }
+.bg-primary-indigo { background-color: #6610F2; }
+.bg-primary-teal { background-color: #20C997; }
+.bg-primary-cyan { background-color: #17A2B8; }

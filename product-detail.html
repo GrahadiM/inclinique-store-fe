@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydrating Serum - Detail Produk | Inclinique Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #FEF3E2 0%, #FA812F 100%);
+        }
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar.open {
+            transform: translateX(0);
+        }
+        .sidebar-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .sidebar-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Search Popup Styles */
+        .search-popup {
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        .search-popup.open {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .search-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .search-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Custom colors */
+        .bg-primary-light {
+            background-color: #FFECC0;
+        }
+        .bg-primary-yellow {
+            background-color: #FAB12F;
+        }
+        .bg-primary-orange {
+            background-color: #FA812F;
+        }
+        .bg-primary-red {
+            background-color: #DD0303;
+        }
+        .bg-primary-green {
+            background-color: #28A745;
+        }
+        .bg-primary-blue {
+            background-color: #007BFF;
+        }
+        .bg-primary-purple {
+            background-color: #6F42C1;
+        }
+        .bg-primary-pink {
+            background-color: #E83E8C;
+        }
+        .bg-primary-indigo {
+            background-color: #6610F2;
+        }
+        .bg-primary-teal {
+            background-color: #20C997;
+        }
+        .bg-primary-cyan {
+            background-color: #17A2B8;
+        }
+        .bg-primary-red {
+            background-color: #DD0303;
+        }
+        .text-primary-yellow {
+            color: #FAB12F;
+        }
+        .text-primary-orange {
+            color: #FA812F;
+        }
+        .text-primary-red {
+            color: #DD0303;
+        }
+        .border-primary-orange {
+            border-color: #FA812F;
+        }
+        .hover\:bg-primary-orange:hover {
+            background-color: #FA812F;
+        }
+        .hover\:text-primary-orange:hover {
+            color: #FA812F;
+        }
+
+        /* Custom button styles */
+        .btn-block {
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Product detail styles */
+        .product-thumbnail {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .product-thumbnail.active {
+            border: 2px solid #FA812F;
+        }
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #D1D5DB;
+            background-color: white;
+            cursor: pointer;
+        }
+        .quantity-btn:hover {
+            background-color: #F3F4F6;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .tab-button.active {
+            color: #FA812F;
+            border-bottom: 2px solid #FA812F;
+        }
+    </style>
+</head>
+<body class="font-sans">
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="w-full lg:max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <h1 class="text-2xl font-bold text-primary-orange">Inclinique<span class="text-primary-red"> Store</span></h1>
+            </div>
+            
+            <!-- Desktop Navigation (hanya untuk layar besar) -->
+            <nav class="hidden lg:flex space-x-8">
+                <a href="index.html" class="text-gray-700 hover:text-primary-orange font-medium">HOME</a>
+                <a href="product.html" class="text-gray-700 hover:text-primary-orange font-medium">SHOP ALL</a>
+                <a href="#" class="text-gray-700 hover:text-primary-orange font-medium">BEAUTY INSIDER</a>
+                <a href="#" class="text-gray-700 hover:text-primary-orange font-medium">ABOUT US</a>
+                <a href="#" class="text-gray-700 hover:text-primary-orange font-medium">CAREER</a>
+            </nav>
+            
+            <!-- Mobile & Tablet Header Icons (untuk layar di bawah lg) -->
+            <div class="flex items-center space-x-4 lg:hidden">
+                <button id="search-toggle-mobile" class="text-gray-700 hover:text-primary-orange">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="text-gray-700 hover:text-primary-orange relative">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-primary-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                </button>
+                <!-- Hamburger Menu Button -->
+                <button id="menu-toggle" class="text-gray-700">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Desktop Header Icons (hanya untuk layar besar) -->
+            <div class="hidden lg:flex items-center space-x-4">
+                <button id="search-toggle-desktop" class="text-gray-700 hover:text-primary-orange">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="text-gray-700 hover:text-primary-orange relative">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-primary-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                </button>
+                <button class="text-gray-700 hover:text-primary-orange">
+                    <i class="fas fa-user"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Popup -->
+    <div id="search-overlay" class="search-overlay fixed inset-0 bg-black bg-opacity-50 z-50"></div>
+    <div id="search-popup" class="search-popup fixed top-0 left-0 right-0 bg-white z-50 p-6 shadow-lg">
+        <div class="w-full lg:max-w-7xl mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-primary-orange">Cari Produk</h2>
+                <button id="close-search" class="text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="relative mb-6">
+                <input 
+                    type="text" 
+                    id="search-input"
+                    placeholder="Ketik nama produk yang dicari..."
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary-orange focus:ring-2 focus:ring-primary-orange focus:ring-opacity-20"
+                >
+                <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-primary-orange">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            
+            <div id="search-results" class="max-h-96 overflow-y-auto">
+                <!-- Hasil pencarian akan muncul di sini -->
+                <div id="search-empty" class="text-center py-8 text-gray-500">
+                    <i class="fas fa-search text-4xl mb-4 opacity-50"></i>
+                    <p>Ketik nama produk untuk memulai pencarian</p>
+                </div>
+                
+                <div id="search-loading" class="hidden text-center py-8">
+                    <i class="fas fa-spinner fa-spin text-2xl text-primary-orange mb-4"></i>
+                    <p>Mencari produk...</p>
+                </div>
+                
+                <div id="search-no-results" class="hidden text-center py-8 text-gray-500">
+                    <i class="fas fa-times-circle text-4xl mb-4 opacity-50"></i>
+                    <p>Produk tidak ditemukan</p>
+                    <p class="text-sm">Coba gunakan kata kunci yang berbeda</p>
+                </div>
+                
+                <div id="search-results-container" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Template untuk hasil pencarian -->
+                    <template id="product-template">
+                        <div class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <div class="flex items-start space-x-4">
+                                <img class="w-16 h-16 object-cover rounded-lg" src="" alt="">
+                                <div class="flex-1">
+                                    <h3 class="font-semibold text-gray-800 mb-1"></h3>
+                                    <p class="text-sm text-gray-600 mb-2"></p>
+                                    <div class="space-y-2">
+                                        <span class="font-bold text-primary-orange text-lg block"></span>
+                                        <button class="btn-block bg-primary-orange text-white py-2 px-4 rounded-lg font-medium hover:bg-primary-red transition duration-300 flex items-center justify-center space-x-2">
+                                            <!-- <i class="fas fa-shopping-cart"></i> -->
+                                            <span>+ Keranjang</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Menu for Mobile & Tablet -->
+    <div id="sidebar-overlay" class="sidebar-overlay fixed inset-0 bg-black bg-opacity-50 z-50"></div>
+    <div id="sidebar" class="sidebar fixed top-0 left-0 h-full w-64 bg-white z-50 p-6">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-xl font-bold text-primary-orange">Inclinique<span class="text-primary-red"> Store</span></h2>
+            <button id="close-sidebar" class="text-gray-700">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <nav class="space-y-6">
+            <a href="index.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
+                <i class="fas fa-home mr-3"></i>HOME
+            </a>
+            <a href="product.html" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
+                <i class="fas fa-shopping-bag mr-3"></i>SHOP ALL
+            </a>
+            <a href="#" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
+                <i class="fas fa-blog mr-3"></i>BEAUTY INSIDER
+            </a>
+            <a href="#" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
+                <i class="fas fa-info-circle mr-3"></i>ABOUT US
+            </a>
+            <a href="#" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
+                <i class="fas fa-envelope mr-3"></i>CAREER
+            </a>
+            <a href="#" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
+                <i class="fas fa-search mr-3"></i>Pencarian
+            </a>
+            <a href="#" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
+                <i class="fas fa-user mr-3"></i>Akun Saya
+            </a>
+        </nav>
+        
+        <div class="mt-8 pt-6 border-t border-gray-200">
+            <h3 class="font-semibold text-gray-700 mb-4">Kategori Produk</h3>
+            <div class="space-y-3">
+                <a href="#" class="block text-gray-600 hover:text-primary-orange">Pembersih Wajah</a>
+                <a href="#" class="block text-gray-600 hover:text-primary-orange">Pelembap</a>
+                <a href="#" class="block text-gray-600 hover:text-primary-orange">Serum</a>
+                <a href="#" class="block text-gray-600 hover:text-primary-orange">Tabir Surya</a>
+                <a href="#" class="block text-gray-600 hover:text-primary-orange">Perawatan Khusus</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Breadcrumb -->
+    <section class="py-4 bg-gray-50">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <nav class="flex" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    <li class="inline-flex items-center">
+                        <a href="index.html" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary-orange">
+                            <i class="fas fa-home mr-2"></i>
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                            <a href="product.html" class="ml-1 text-sm font-medium text-gray-700 hover:text-primary-orange md:ml-2">Shop All</a>
+                        </div>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                            <span class="ml-1 text-sm font-medium text-primary-orange md:ml-2">Hydrating Serum</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Product Detail Section -->
+    <section class="py-8">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Product Images -->
+                <div>
+                    <div class="mb-4 rounded-lg overflow-hidden">
+                        <img id="main-product-image" src="https://images.unsplash.com/photo-1556228578-9f6ac5e4d0d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Hydrating Serum" class="w-full h-auto object-cover rounded-lg">
+                    </div>
+                    <div class="grid grid-cols-4 gap-4">
+                        <div class="product-thumbnail active border-2 border-primary-orange rounded-lg overflow-hidden cursor-pointer">
+                            <img src="https://images.unsplash.com/photo-1556228578-9f6ac5e4d0d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Hydrating Serum" class="w-full h-20 object-cover">
+                        </div>
+                        <div class="product-thumbnail border-2 border-transparent rounded-lg overflow-hidden cursor-pointer">
+                            <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Hydrating Serum Packaging" class="w-full h-20 object-cover">
+                        </div>
+                        <div class="product-thumbnail border-2 border-transparent rounded-lg overflow-hidden cursor-pointer">
+                            <img src="https://images.unsplash.com/photo-1570194065650-4222e69b28d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Hydrating Serum Ingredients" class="w-full h-20 object-cover">
+                        </div>
+                        <div class="product-thumbnail border-2 border-transparent rounded-lg overflow-hidden cursor-pointer">
+                            <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Hydrating Serum Usage" class="w-full h-20 object-cover">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Info -->
+                <div>
+                    <div class="mb-4">
+                        <span class="bg-primary-orange text-white text-xs font-semibold px-2.5 py-0.5 rounded">BESTSELLER</span>
+                    </div>
+                    
+                    <h1 class="text-3xl font-bold text-gray-800 mb-4">Hydrating Serum with Hyaluronic Acid</h1>
+                    
+                    <div class="flex items-center mb-4">
+                        <div class="flex text-yellow-400 text-sm">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="text-sm text-gray-500 ml-2">4.5 (128 reviews)</span>
+                        <span class="mx-2 text-gray-300">|</span>
+                        <span class="text-sm text-green-600 font-medium">Terjual 500+</span>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex items-baseline space-x-2">
+                            <span class="text-3xl font-bold text-primary-red">Rp 189.000</span>
+                            <span class="text-lg text-gray-500 line-through">Rp 225.000</span>
+                            <span class="text-sm font-medium text-green-600 bg-green-100 px-2 py-1 rounded">Hemat 16%</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-1">Termasuk pajak</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h3 class="font-semibold text-gray-700 mb-2">Deskripsi Singkat:</h3>
+                        <p class="text-gray-600">Serum dengan formula Hyaluronic Acid yang mampu menyerap hingga 1000x beratnya dalam air, memberikan hidrasi intensif dan menjaga kelembapan kulit sepanjang hari. Cocok untuk semua jenis kulit, terutama kulit kering dan dehidrasi.</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h3 class="font-semibold text-gray-700 mb-2">Manfaat:</h3>
+                        <ul class="text-gray-600 list-disc pl-5 space-y-1">
+                            <li>Melembapkan kulit secara intensif</li>
+                            <li>Mengurangi tampilan garis halus dan kerutan</li>
+                            <li>Memperbaiki skin barrier</li>
+                            <li>Memberikan kulit tampilan plump dan kenyal</li>
+                            <li>Tekstur ringan, tidak lengket</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h3 class="font-semibold text-gray-700 mb-2">Jenis Kulit:</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">Normal</span>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Kering</span>
+                            <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded">Dehidrasi</span>
+                            <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded">Sensitif</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h3 class="font-semibold text-gray-700 mb-2">Ukuran:</h3>
+                        <div class="flex space-x-3">
+                            <button class="border border-gray-300 px-4 py-2 rounded-lg hover:border-primary-orange hover:text-primary-orange font-medium">30ml</button>
+                            <button class="border border-primary-orange bg-primary-orange text-white px-4 py-2 rounded-lg font-medium">50ml</button>
+                            <button class="border border-gray-300 px-4 py-2 rounded-lg hover:border-primary-orange hover:text-primary-orange font-medium">100ml</button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-semibold text-gray-700">Jumlah:</h3>
+                            <span class="text-sm text-gray-500">Stok tersisa: 45</span>
+                        </div>
+                        <div class="flex items-center">
+                            <button id="decrease-qty" class="quantity-btn rounded-l-lg">-</button>
+                            <input type="text" id="quantity" value="1" class="w-12 h-10 text-center border-y border-gray-300 focus:outline-none">
+                            <button id="increase-qty" class="quantity-btn rounded-r-lg">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 mb-6">
+                        <button class="flex-1 bg-primary-orange text-white py-3 px-6 rounded-lg font-medium hover:bg-primary-red transition duration-300 flex items-center justify-center space-x-2">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>+ Keranjang</span>
+                        </button>
+                        <button class="flex-1 border border-primary-orange text-primary-orange py-3 px-6 rounded-lg font-medium hover:bg-primary-orange hover:text-white transition duration-300 flex items-center justify-center space-x-2">
+                            <i class="far fa-heart"></i>
+                            <span>Wishlist</span>
+                        </button>
+                    </div>
+                    
+                    <div class="border-t border-gray-200 pt-4">
+                        <div class="flex items-center text-sm text-gray-600 mb-2">
+                            <i class="fas fa-truck text-primary-orange mr-2"></i>
+                            <span>Gratis ongkir untuk pembelian di atas Rp 300.000</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600 mb-2">
+                            <i class="fas fa-shield-alt text-primary-orange mr-2"></i>
+                            <span>Garansi 100% uang kembali dalam 30 hari</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-undo text-primary-orange mr-2"></i>
+                            <span>Pengembalian mudah dalam 14 hari</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Tabs Section -->
+    <section class="py-8 bg-gray-50">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="border-b border-gray-200 mb-8">
+                <div class="flex flex-wrap -mb-px">
+                    <button class="tab-button active mr-8 py-4 px-1 font-medium text-lg border-b-2 border-transparent" data-tab="description">
+                        Deskripsi
+                    </button>
+                    <button class="tab-button mr-8 py-4 px-1 font-medium text-lg border-b-2 border-transparent" data-tab="ingredients">
+                        Bahan & Komposisi
+                    </button>
+                    <button class="tab-button mr-8 py-4 px-1 font-medium text-lg border-b-2 border-transparent" data-tab="how-to-use">
+                        Cara Penggunaan
+                    </button>
+                    <button class="tab-button py-4 px-1 font-medium text-lg border-b-2 border-transparent" data-tab="reviews">
+                        Ulasan (128)
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Description Tab -->
+            <div id="description" class="tab-content active">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Tentang Produk</h3>
+                        <p class="text-gray-600 mb-4">Hydrating Serum dengan Hyaluronic Acid kami diformulasikan khusus untuk memberikan hidrasi intensif pada kulit. Dengan kombinasi 3 jenis Hyaluronic Acid dengan berat molekul berbeda, serum ini mampu menembus berbagai lapisan kulit untuk melembapkan dari dalam.</p>
+                        <p class="text-gray-600 mb-4">Tekstur serum yang ringan dan cepat menyerap membuatnya cocok digunakan di bawah makeup atau skincare lainnya. Formula ini bebas minyak, non-comedogenic, dan telah diuji secara dermatologis sehingga aman untuk kulit sensitif.</p>
+                        
+                        <h4 class="font-semibold text-gray-800 mb-2">Keunggulan Produk:</h4>
+                        <ul class="text-gray-600 list-disc pl-5 space-y-2 mb-4">
+                            <li>Mengandung 3 jenis Hyaluronic Acid untuk hidrasi menyeluruh</li>
+                            <li>Tekstur ringan, tidak lengket, cepat menyerap</li>
+                            <li>Bebas minyak, paraben, dan pewangi buatan</li>
+                            <li>Non-comedogenic (tidak menyumbat pori)</li>
+                            <li>Cocok untuk semua jenis kulit</li>
+                            <li>Dapat digunakan pagi dan malam</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1556228579-6d0c0a866bc2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Skincare Routine" class="w-full rounded-lg">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ingredients Tab -->
+            <div id="ingredients" class="tab-content">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Bahan & Komposisi</h3>
+                <p class="text-gray-600 mb-6">Hydrating Serum kami diformulasikan dengan bahan-bahan pilihan yang aman dan efektif untuk memberikan hidrasi optimal pada kulit.</p>
+                
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-800 mb-3">Bahan Aktif Utama:</h4>
+                    <div class="space-y-3">
+                        <div class="bg-white p-4 rounded-lg border border-gray-200">
+                            <h5 class="font-medium text-gray-800 mb-1">Hyaluronic Acid (3 Jenis)</h5>
+                            <p class="text-sm text-gray-600">Memberikan hidrasi multi-level dengan menembus berbagai lapisan kulit. Mengikat hingga 1000x beratnya dalam air.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg border border-gray-200">
+                            <h5 class="font-medium text-gray-800 mb-1">Niacinamide (Vitamin B3)</h5>
+                            <p class="text-sm text-gray-600">Memperkuat skin barrier, mengurangi kemerahan, dan mencerahkan kulit.</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg border border-gray-200">
+                            <h5 class="font-medium text-gray-800 mb-1">Panthenol (Vitamin B5)</h5>
+                            <p class="text-sm text-gray-600">Melembapkan, menenangkan, dan membantu proses penyembuhan kulit.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-gray-800 mb-3">Daftar Lengkap Bahan:</h4>
+                    <p class="text-gray-600 text-sm mb-4">Aqua, Sodium Hyaluronate, Hyaluronic Acid, Hydrolyzed Hyaluronic Acid, Niacinamide, Panthenol, Glycerin, Propanediol, Sodium PCA, Allantoin, Xanthan Gum, Phenoxyethanol, Ethylhexylglycerin.</p>
+                    <p class="text-gray-600 text-sm"><span class="font-semibold">Bebas dari:</span> Paraben, Sulfat, Minyak Mineral, Pewangi Buatan, Pewarna, Alkohol.</p>
+                </div>
+            </div>
+            
+            <!-- How to Use Tab -->
+            <div id="how-to-use" class="tab-content">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Cara Penggunaan</h3>
+                <p class="text-gray-600 mb-6">Untuk hasil terbaik, ikuti langkah-langkah berikut dalam rutinitas skincare Anda:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-lg border border-gray-200 text-center">
+                        <div class="w-12 h-12 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-primary-orange font-bold">1</span>
+                        </div>
+                        <h4 class="font-semibold text-gray-800 mb-2">Bersihkan</h4>
+                        <p class="text-gray-600 text-sm">Mulai dengan kulit yang telah dibersihkan dan dikeringkan dengan lembut.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg border border-gray-200 text-center">
+                        <div class="w-12 h-12 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-primary-orange font-bold">2</span>
+                        </div>
+                        <h4 class="font-semibold text-gray-800 mb-2">Aplikasi Serum</h4>
+                        <p class="text-gray-600 text-sm">Ambil 2-3 tetes serum, ratakan ke seluruh wajah dan leher dengan gerakan memutar.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg border border-gray-200 text-center">
+                        <div class="w-12 h-12 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-primary-orange font-bold">3</span>
+                        </div>
+                        <h4 class="font-semibold text-gray-800 mb-2">Lanjutkan Perawatan</h4>
+                        <p class="text-gray-600 text-sm">Tunggu serum menyerap sempurna, lalu lanjutkan dengan pelembap dan tabir surya.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-primary-light p-6 rounded-lg">
+                    <h4 class="font-semibold text-gray-800 mb-2">Tips Penggunaan:</h4>
+                    <ul class="text-gray-600 list-disc pl-5 space-y-1">
+                        <li>Gunakan 2 kali sehari, pagi dan malam untuk hasil optimal</li>
+                        <li>Dapat digunakan sebelum pelembap untuk mengunci hidrasi</li>
+                        <li>Untuk kulit sangat kering, aplikasi serum pada kulit yang masih lembap setelah cleansing</li>
+                        <li>Dapat dicampur dengan foundation untuk makeup yang lebih dewy</li>
+                        <li>Simpan di tempat sejuk dan kering, hindari paparan sinar matahari langsung</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Reviews Tab -->
+            <div id="reviews" class="tab-content">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-1">
+                        <div class="bg-white p-6 rounded-lg border border-gray-200">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Rating & Ulasan</h3>
+                            
+                            <div class="flex items-center mb-4">
+                                <div class="text-4xl font-bold text-gray-800 mr-4">4.5</div>
+                                <div>
+                                    <div class="flex text-yellow-400 text-sm mb-1">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </div>
+                                    <p class="text-sm text-gray-600">Berdasarkan 128 ulasan</p>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-2 mb-6">
+                                <div class="flex items-center">
+                                    <span class="text-sm text-gray-600 w-16">5 bintang</span>
+                                    <div class="flex-1 bg-gray-200 rounded-full h-2 mx-2">
+                                        <div class="bg-yellow-400 h-2 rounded-full" style="width: 70%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600 w-8">70%</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-sm text-gray-600 w-16">4 bintang</span>
+                                    <div class="flex-1 bg-gray-200 rounded-full h-2 mx-2">
+                                        <div class="bg-yellow-400 h-2 rounded-full" style="width: 20%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600 w-8">20%</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-sm text-gray-600 w-16">3 bintang</span>
+                                    <div class="flex-1 bg-gray-200 rounded-full h-2 mx-2">
+                                        <div class="bg-yellow-400 h-2 rounded-full" style="width: 7%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600 w-8">7%</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-sm text-gray-600 w-16">2 bintang</span>
+                                    <div class="flex-1 bg-gray-200 rounded-full h-2 mx-2">
+                                        <div class="bg-yellow-400 h-2 rounded-full" style="width: 2%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600 w-8">2%</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-sm text-gray-600 w-16">1 bintang</span>
+                                    <div class="flex-1 bg-gray-200 rounded-full h-2 mx-2">
+                                        <div class="bg-yellow-400 h-2 rounded-full" style="width: 1%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600 w-8">1%</span>
+                                </div>
+                            </div>
+                            
+                            <button class="w-full bg-primary-orange text-white py-3 rounded-lg font-medium hover:bg-primary-red transition duration-300">
+                                Tulis Ulasan
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="lg:col-span-2">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Ulasan Pelanggan</h3>
+                        
+                        <div class="space-y-6">
+                            <!-- Review 1 -->
+                            <div class="bg-white p-6 rounded-lg border border-gray-200">
+                                <div class="flex items-start justify-between mb-4">
+                                    <div class="flex items-center">
+                                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Customer" class="w-10 h-10 rounded-full object-cover">
+                                        <div class="ml-3">
+                                            <h4 class="font-semibold text-gray-800">Sarah Wijaya</h4>
+                                            <div class="flex text-yellow-400 text-sm">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="text-sm text-gray-500">2 minggu lalu</span>
+                                </div>
+                                <p class="text-gray-600 mb-4">"Serum ini benar-benar mengubah kulit kering saya! Setelah 2 minggu pemakaian, kulit terasa lebih lembap dan kenyal. Teksturnya ringan dan cepat menyerap, tidak lengket sama sekali. Sangat cocok digunakan sebelum makeup."</p>
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <span class="mr-4">Jenis kulit: <span class="font-medium">Kering</span></span>
+                                    <span>Usia: <span class="font-medium">25-34</span></span>
+                                </div>
+                            </div>
+                            
+                            <!-- Review 2 -->
+                            <div class="bg-white p-6 rounded-lg border border-gray-200">
+                                <div class="flex items-start justify-between mb-4">
+                                    <div class="flex items-center">
+                                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Customer" class="w-10 h-10 rounded-full object-cover">
+                                        <div class="ml-3">
+                                            <h4 class="font-semibold text-gray-800">Budi Santoso</h4>
+                                            <div class="flex text-yellow-400 text-sm">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="text-sm text-gray-500">1 bulan lalu</span>
+                                </div>
+                                <p class="text-gray-600 mb-4">"Sebagai pria dengan kulit kombinasi, saya suka tekstur serum ini yang tidak berminyak. Kulit terasa lebih segar dan lembap sepanjang hari. Hanya saja, botolnya agak kecil untuk harga segini, tapi kualitasnya memang bagus."</p>
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <span class="mr-4">Jenis kulit: <span class="font-medium">Kombinasi</span></span>
+                                    <span>Usia: <span class="font-medium">18-24</span></span>
+                                </div>
+                            </div>
+                            
+                            <!-- Review 3 -->
+                            <div class="bg-white p-6 rounded-lg border border-gray-200">
+                                <div class="flex items-start justify-between mb-4">
+                                    <div class="flex items-center">
+                                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80" alt="Customer" class="w-10 h-10 rounded-full object-cover">
+                                        <div class="ml-3">
+                                            <h4 class="font-semibold text-gray-800">Dewi Lestari</h4>
+                                            <div class="flex text-yellow-400 text-sm">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star-half-alt"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="text-sm text-gray-500">3 minggu lalu</span>
+                                </div>
+                                <p class="text-gray-600 mb-4">"Kulit sensitif saya cocok dengan serum ini. Tidak menyebabkan iritasi atau breakout. Hasilnya kulit terasa lebih lembut dan lembap. Saya menggunakan serum ini setiap pagi dan malam, dan sudah menjadi bagian penting dari rutinitas skincare saya."</p>
+                                <div class="flex items-center text-sm text-gray-500">
+                                    <span class="mr-4">Jenis kulit: <span class="font-medium">Sensitif</span></span>
+                                    <span>Usia: <span class="font-medium">35-44</span></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 text-center">
+                            <button class="border border-primary-orange text-primary-orange px-6 py-2 rounded-lg font-medium hover:bg-primary-orange hover:text-white transition duration-300">
+                                Muat Lebih Banyak Ulasan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Products -->
+    <section class="py-16 bg-white">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800">PRODUK TERKAIT</h2>
+                <a href="product.html" class="text-primary-orange font-medium flex items-center hidden lg:flex">Lihat Semua <i class="fas fa-arrow-right ml-2"></i></a>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8">
+                <!-- Product 1 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-md product-card">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Vitamin C Cream" class="w-full aspect-square object-cover">
+                        <span class="absolute top-3 right-3 bg-white rounded-full p-1">
+                            <i class="far fa-heart text-gray-400 hover:text-primary-red"></i>
+                        </span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-sm text-gray-800 mb-1">Vitamin C Brightening Cream</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400 text-xs">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-xs text-gray-500 ml-1">(204)</span>
+                        </div>
+                        <div class="space-y-0 mb-1">
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-primary-red text-lg">Rp 225.000</span>
+                            </div>
+                        </div>
+                        <button class="btn-block bg-primary-orange text-white py-2 px-4 rounded-lg font-medium hover:bg-primary-red transition duration-300 flex items-center justify-center space-x-2 mt-3">
+                            <span>+ Keranjang</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-md product-card">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1570194065650-4222e69b28d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Gentle Cleanser" class="w-full aspect-square object-cover">
+                        <span class="absolute top-3 right-3 bg-white rounded-full p-1">
+                            <i class="far fa-heart text-gray-400 hover:text-primary-red"></i>
+                        </span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-sm text-gray-800 mb-1">Gentle Foaming Cleanser</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400 text-xs">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-xs text-gray-500 ml-1">(167)</span>
+                        </div>
+                        <div class="space-y-0 mb-1">
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-primary-red text-lg">Rp 145.000</span>
+                            </div>
+                        </div>
+                        <button class="btn-block bg-primary-orange text-white py-2 px-4 rounded-lg font-medium hover:bg-primary-red transition duration-300 flex items-center justify-center space-x-2 mt-3">
+                            <span>+ Keranjang</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-md product-card">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Night Repair" class="w-full aspect-square object-cover">
+                        <span class="absolute top-3 right-3 bg-white rounded-full p-1">
+                            <i class="far fa-heart text-gray-400 hover:text-primary-red"></i>
+                        </span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-sm text-gray-800 mb-1">Night Repair Cream</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400 text-xs">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-xs text-gray-500 ml-1">(89)</span>
+                        </div>
+                        <div class="space-y-0 mb-1">
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-primary-red text-lg">Rp 275.000</span>
+                            </div>
+                        </div>
+                        <button class="btn-block bg-primary-orange text-white py-2 px-4 rounded-lg font-medium hover:bg-primary-red transition duration-300 flex items-center justify-center space-x-2 mt-3">
+                            <span>+ Keranjang</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-md product-card">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Sunscreen" class="w-full aspect-square object-cover">
+                        <span class="absolute top-3 left-3 bg-primary-orange text-white text-xs px-2 py-1 rounded">BESTSELLER</span>
+                        <span class="absolute top-3 right-3 bg-white rounded-full p-1">
+                            <i class="far fa-heart text-gray-400 hover:text-primary-red"></i>
+                        </span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-sm text-gray-800 mb-1">Daily Sunscreen SPF 50+</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400 text-xs">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-xs text-gray-500 ml-1">(312)</span>
+                        </div>
+                        <div class="space-y-0 mb-1">
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-primary-red text-lg">Rp 165.000</span>
+                                <span class="text-gray-500 text-sm line-through">Rp 195.000</span>
+                            </div>
+                            <span class="text-xs text-green-600 font-medium">Hemat 15%</span>
+                        </div>
+                        <button class="btn-block bg-primary-orange text-white py-2 px-4 rounded-lg font-medium hover:bg-primary-red transition duration-300 flex items-center justify-center space-x-2 mt-3">
+                            <span>+ Keranjang</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mobile & Tablet View All Button -->
+            <div class="mt-8 text-center lg:hidden">
+                <a href="product.html" class="inline-block bg-primary-orange text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-red transition duration-300">Lihat Semua Produk</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-16 bg-primary-orange text-white">
+        <div class="w-full lg:max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-4">Dapatkan Tips Perawatan Kulit Eksklusif</h2>
+            <p class="max-w-2xl mx-auto mb-8">Berlangganan newsletter kami dan dapatkan tips perawatan kulit, promo spesial, dan informasi produk terbaru langsung di inbox Anda.</p>
+            
+            <div class="max-w-md mx-auto flex flex-col sm:flex-row">
+                <input type="email" placeholder="Alamat email Anda" class="flex-grow px-4 py-3 rounded-t-lg sm:rounded-l-lg sm:rounded-t-none text-gray-800 focus:outline-none">
+                <button class="bg-primary-red px-6 py-3 rounded-b-lg sm:rounded-r-lg sm:rounded-b-none font-medium hover:bg-red-800 transition duration-300">Berlangganan</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12 lg:pb-12 pb-[120px]">
+        <div class="w-full lg:max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Inclinique<span class="text-primary-red"> Store</span></h3>
+                    <p class="text-gray-400 mb-4">Rangkaian skincare terbaik dengan formula yang aman dan efektif untuk semua jenis kulit.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Produk</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Pembersih</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Pelembap</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Serum</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Tabir Surya</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Perawatan Khusus</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Bantuan</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Kontak Kami</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Pengiriman</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Pengembalian</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Kebijakan Privasi</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">Kontak</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-3"></i>
+                            <span>Jl. Skincare No. 123, Jakarta</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone mr-3"></i>
+                            <span>+62 857 6711 3554</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-3"></i>
+                            <span>info@incliniquestore.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; <script>document.write(new Date().getFullYear())</script> Inclinique Store. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bottom Navigation for Mobile & Tablet -->
+    <nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white py-3 px-6 flex justify-between items-center lg:hidden z-40">
+        <a href="index.html" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-home text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Beranda</span>
+        </a>
+        <a href="product.html" class="flex flex-col items-center text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-shopping-bag text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Belanja</span>
+        </a>
+        <a href="#" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-heart text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Favorit</span>
+        </a>
+        <a href="#" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-user text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Masuk</span>
+        </a>
+    </nav>
+
+    <script>
+        // Data produk untuk pencarian
+        const products = [
+            {
+                id: 1,
+                name: "Hydrating Serum",
+                description: "Serum dengan Hyaluronic Acid untuk kulit lembap maksimal",
+                price: "Rp 189.000",
+                image: "https://images.unsplash.com/photo-1556228578-9f6ac5e4d0d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+                category: "Serum"
+            },
+            {
+                id: 2,
+                name: "Vitamin C Cream",
+                description: "Krim pagi dengan Vitamin C untuk kulit cerah dan terlindungi",
+                price: "Rp 225.000",
+                image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+                category: "Pelembap"
+            },
+            {
+                id: 3,
+                name: "Gentle Cleanser",
+                description: "Pembersih wajah lembut untuk kulit sensitif",
+                price: "Rp 145.000",
+                image: "https://images.unsplash.com/photo-1570194065650-4222e69b28d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+                category: "Pembersih"
+            },
+            {
+                id: 4,
+                name: "Night Repair",
+                description: "Krim malam dengan Retinol untuk peremajaan kulit",
+                price: "Rp 275.000",
+                image: "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+                category: "Pelembap"
+            },
+            {
+                id: 5,
+                name: "Oil-Control Cleanser",
+                description: "Pembersih dengan formula oil-free yang mengurangi produksi minyak berlebih",
+                price: "Rp 165.000",
+                image: "https://images.unsplash.com/photo-1556228578-9f6ac5e4d0d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+                category: "Pembersih"
+            },
+            {
+                id: 6,
+                name: "Hyaluronic Acid Serum",
+                description: "Serum dengan 3 jenis hyaluronic acid untuk hidrasi maksimal",
+                price: "Rp 195.000",
+                image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+                category: "Serum"
+            }
+        ];
+
+        // JavaScript untuk interaktivitas
+        document.addEventListener('DOMContentLoaded', function() {
+            // Search functionality
+            const searchToggleMobile = document.getElementById('search-toggle-mobile');
+            const searchToggleDesktop = document.getElementById('search-toggle-desktop');
+            const closeSearch = document.getElementById('close-search');
+            const searchPopup = document.getElementById('search-popup');
+            const searchOverlay = document.getElementById('search-overlay');
+            const searchInput = document.getElementById('search-input');
+            const searchResults = document.getElementById('search-results');
+            const searchEmpty = document.getElementById('search-empty');
+            const searchLoading = document.getElementById('search-loading');
+            const searchNoResults = document.getElementById('search-no-results');
+            const searchResultsContainer = document.getElementById('search-results-container');
+            const productTemplate = document.getElementById('product-template');
+
+            function openSearch() {
+                searchPopup.classList.add('open');
+                searchOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                // Focus pada input search
+                setTimeout(() => {
+                    searchInput.focus();
+                }, 300);
+            }
+
+            function closeSearchFunc() {
+                searchPopup.classList.remove('open');
+                searchOverlay.classList.remove('open');
+                document.body.style.overflow = 'auto';
+                // Reset pencarian
+                searchInput.value = '';
+                showEmptyState();
+            }
+
+            // Event listeners untuk search
+            if (searchToggleMobile) {
+                searchToggleMobile.addEventListener('click', openSearch);
+            }
+            if (searchToggleDesktop) {
+                searchToggleDesktop.addEventListener('click', openSearch);
+            }
+            if (closeSearch) {
+                closeSearch.addEventListener('click', closeSearchFunc);
+            }
+            if (searchOverlay) {
+                searchOverlay.addEventListener('click', closeSearchFunc);
+            }
+
+            // Fungsi untuk menampilkan state kosong
+            function showEmptyState() {
+                searchEmpty.classList.remove('hidden');
+                searchLoading.classList.add('hidden');
+                searchNoResults.classList.add('hidden');
+                searchResultsContainer.classList.add('hidden');
+            }
+
+            // Fungsi untuk menampilkan loading
+            function showLoading() {
+                searchEmpty.classList.add('hidden');
+                searchLoading.classList.remove('hidden');
+                searchNoResults.classList.add('hidden');
+                searchResultsContainer.classList.add('hidden');
+            }
+
+            // Fungsi untuk menampilkan hasil
+            function showResults(filteredProducts) {
+                searchEmpty.classList.add('hidden');
+                searchLoading.classList.add('hidden');
+                
+                if (filteredProducts.length === 0) {
+                    searchNoResults.classList.remove('hidden');
+                    searchResultsContainer.classList.add('hidden');
+                } else {
+                    searchNoResults.classList.add('hidden');
+                    searchResultsContainer.classList.remove('hidden');
+                    
+                    // Clear previous results
+                    searchResultsContainer.innerHTML = '';
+                    
+                    // Add new results
+                    filteredProducts.forEach(product => {
+                        const productElement = productTemplate.content.cloneNode(true);
+                        
+                        // Set product data
+                        productElement.querySelector('img').src = product.image;
+                        productElement.querySelector('img').alt = product.name;
+                        productElement.querySelector('h3').textContent = product.name;
+                        productElement.querySelector('p').textContent = product.description;
+                        productElement.querySelector('.font-bold').textContent = product.price;
+                        
+                        // Add to cart functionality
+                        const addToCartBtn = productElement.querySelector('button');
+                        addToCartBtn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            
+                            const icon = this.querySelector('i');
+                            const originalClass = icon.className;
+                            
+                            icon.className = 'fas fa-check';
+                            this.style.backgroundColor = '#10B981';
+                            
+                            setTimeout(() => {
+                                icon.className = originalClass;
+                                this.style.backgroundColor = '#FA812F';
+                            }, 1500);
+                            
+                            alert(`Produk ${product.name} berhasil ditambahkan ke keranjang!`);
+                        });
+                        
+                        searchResultsContainer.appendChild(productElement);
+                    });
+                }
+            }
+
+            // Fungsi untuk melakukan pencarian
+            function performSearch(query) {
+                if (query.length < 2) {
+                    showEmptyState();
+                    return;
+                }
+
+                showLoading();
+
+                // Simulasi delay pencarian
+                setTimeout(() => {
+                    const filteredProducts = products.filter(product => 
+                        product.name.toLowerCase().includes(query.toLowerCase()) ||
+                        product.description.toLowerCase().includes(query.toLowerCase()) ||
+                        product.category.toLowerCase().includes(query.toLowerCase())
+                    );
+                    
+                    showResults(filteredProducts);
+                }, 500);
+            }
+
+            // Event listener untuk input search
+            if (searchInput) {
+                let searchTimeout;
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    const query = this.value.trim();
+                    
+                    searchTimeout = setTimeout(() => {
+                        performSearch(query);
+                    }, 300);
+                });
+            }
+
+            // Sidebar toggle functionality
+            const menuToggle = document.getElementById('menu-toggle');
+            const closeSidebar = document.getElementById('close-sidebar');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            
+            function openSidebar() {
+                sidebar.classList.add('open');
+                sidebarOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeSidebarFunc() {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('open');
+                document.body.style.overflow = 'auto';
+            }
+            
+            if (menuToggle) {
+                menuToggle.addEventListener('click', openSidebar);
+            }
+            if (closeSidebar) {
+                closeSidebar.addEventListener('click', closeSidebarFunc);
+            }
+            if (sidebarOverlay) {
+                sidebarOverlay.addEventListener('click', closeSidebarFunc);
+            }
+            
+            // Product image gallery functionality
+            const mainProductImage = document.getElementById('main-product-image');
+            const productThumbnails = document.querySelectorAll('.product-thumbnail');
+            
+            productThumbnails.forEach(thumbnail => {
+                thumbnail.addEventListener('click', function() {
+                    // Remove active class from all thumbnails
+                    productThumbnails.forEach(t => {
+                        t.classList.remove('active');
+                        t.classList.remove('border-primary-orange');
+                        t.classList.add('border-transparent');
+                    });
+                    
+                    // Add active class to clicked thumbnail
+                    this.classList.add('active');
+                    this.classList.add('border-primary-orange');
+                    this.classList.remove('border-transparent');
+                    
+                    // Change main image
+                    const imgSrc = this.querySelector('img').src;
+                    mainProductImage.src = imgSrc;
+                });
+            });
+            
+            // Quantity selector functionality
+            const decreaseQty = document.getElementById('decrease-qty');
+            const increaseQty = document.getElementById('increase-qty');
+            const quantityInput = document.getElementById('quantity');
+            
+            decreaseQty.addEventListener('click', function() {
+                let currentValue = parseInt(quantityInput.value);
+                if (currentValue > 1) {
+                    quantityInput.value = currentValue - 1;
+                }
+            });
+            
+            increaseQty.addEventListener('click', function() {
+                let currentValue = parseInt(quantityInput.value);
+                if (currentValue < 10) { // Assuming max 10 items
+                    quantityInput.value = currentValue + 1;
+                }
+            });
+            
+            // Tab functionality
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.classList.remove('text-primary-orange');
+                        btn.classList.remove('border-primary-orange');
+                    });
+                    
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button and corresponding content
+                    this.classList.add('active');
+                    this.classList.add('text-primary-orange');
+                    this.classList.add('border-primary-orange');
+                    
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Add to cart functionality
+            const addToCartButtons = document.querySelectorAll('.btn-block');
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const icon = this.querySelector('i');
+                    const originalClass = icon ? icon.className : '';
+                    const originalText = this.querySelector('span').textContent;
+                    
+                    // Ubah icon dan teks
+                    if (icon) {
+                        icon.className = 'fas fa-check';
+                    }
+                    this.querySelector('span').textContent = 'Ditambahkan!';
+                    this.style.backgroundColor = '#10B981';
+                    
+                    // Reset setelah 1.5 detik
+                    setTimeout(() => {
+                        if (icon) {
+                            icon.className = originalClass;
+                        }
+                        this.querySelector('span').textContent = originalText;
+                        this.style.backgroundColor = '#FA812F';
+                    }, 1500);
+                    
+                    alert('Produk berhasil ditambahkan ke keranjang!');
+                });
+            });
+
+            // Wishlist functionality
+            const wishlistButtons = document.querySelectorAll('.fa-heart');
+            wishlistButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    if (this.classList.contains('far')) {
+                        this.classList.remove('far');
+                        this.classList.add('fas', 'text-primary-red');
+                        alert('Produk ditambahkan ke wishlist!');
+                    } else {
+                        this.classList.remove('fas', 'text-primary-red');
+                        this.classList.add('far');
+                        alert('Produk dihapus dari wishlist!');
+                    }
+                });
+            });
+
+            // Simulasi login/logout untuk demo
+            const loginButton = document.querySelector('.bottom-nav a:nth-child(4)');
+            let isLoggedIn = false;
+            
+            if (loginButton) {
+                loginButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    isLoggedIn = !isLoggedIn;
+                    
+                    if (isLoggedIn) {
+                        this.innerHTML = '<i class="fas fa-user text-2xl mb-1"></i><span class="text-xs font-medium">Profil</span>';
+                        this.classList.add('logged-in');
+                    } else {
+                        this.innerHTML = '<i class="fas fa-user text-2xl mb-1"></i><span class="text-xs font-medium">Masuk</span>';
+                        this.classList.remove('logged-in');
+                    }
+                });
+            }
+
+            // Cart functionality (basic)
+            const cartButton = document.querySelector('button .fa-shopping-cart').closest('button');
+            if (cartButton) {
+                cartButton.addEventListener('click', function() {
+                    alert('Menuju ke keranjang belanja...');
+                });
+            }
+
+            // Smooth scroll untuk anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Newsletter form submission
+            const newsletterForm = document.querySelector('section.bg-primary-orange form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const emailInput = this.querySelector('input[type="email"]');
+                    if (emailInput && emailInput.value) {
+                        alert('Terima kasih! Anda telah berlangganan newsletter kami.');
+                        emailInput.value = '';
+                    } else {
+                        alert('Silakan masukkan alamat email yang valid.');
+                    }
+                });
+            }
+
+            // Intersection Observer untuk animasi scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Terapkan animasi pada elemen yang diinginkan
+            document.querySelectorAll('.product-card').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+
+            // Handle window resize
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                document.body.classList.add('resize-animation-stopper');
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    document.body.classList.remove('resize-animation-stopper');
+                }, 400);
+            });
+
+            // Tambahkan style untuk resize animation stopper
+            const style = document.createElement('style');
+            style.textContent = `
+                .resize-animation-stopper * {
+                    animation: none !important;
+                    transition: none !important;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+
+</body>
+</html>
