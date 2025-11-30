@@ -22,6 +22,7 @@
 - [Changelog](#changelog)
 - [License](#license)
 - [Support](#support)
+- [Credits](#credits)
 
 ## Deskripsi Proyek
 
