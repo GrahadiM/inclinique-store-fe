@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .hero-gradient {
-            background: linear-gradient(135deg, #FEF3E2 0%, #f8e1c0 100%);
+            background: linear-gradient(135deg, #FEF3E2 0%, #FA812F 100%);
         }
         .product-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -67,7 +67,7 @@
         
         /* Custom colors */
         .bg-primary-light {
-            background-color: #FEF3E2;
+            background-color: #FFECC0;
         }
         .bg-primary-yellow {
             background-color: #FAB12F;
@@ -96,6 +96,13 @@
         .hover\:text-primary-orange:hover {
             color: #FA812F;
         }
+
+        /* Custom button styles */
+        .btn-block {
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
     </style>
 </head>
 <body class="font-sans">
@@ -108,11 +115,11 @@
             
             <!-- Desktop Navigation (hanya untuk layar besar) -->
             <nav class="hidden lg:flex space-x-8">
-                <a href="#" class="text-gray-700 hover:text-primary-orange font-medium">Beranda</a>
-                <a href="#" class="text-gray-700 hover:text-primary-orange font-medium">Produk</a>
-                <a href="#" class="text-gray-700 hover:text-primary-orange font-medium">Tentang Kami</a>
-                <a href="#" class="text-gray-700 hover:text-primary-orange font-medium">Blog</a>
-                <a href="#" class="text-gray-700 hover:text-primary-orange font-medium">Kontak</a>
+                <a href="#" class="text-gray-700 hover:text-primary-orange font-medium">HOME</a>
+                <a href="#" class="text-gray-700 hover:text-primary-orange font-medium">SHOP ALL</a>
+                <a href="#" class="text-gray-700 hover:text-primary-orange font-medium">BEAUTY INSIDER</a>
+                <a href="#" class="text-gray-700 hover:text-primary-orange font-medium">ABOUT US</a>
+                <a href="#" class="text-gray-700 hover:text-primary-orange font-medium">CAREER</a>
             </nav>
             
             <!-- Mobile & Tablet Header Icons (untuk layar di bawah lg) -->
@@ -196,10 +203,11 @@
                                 <div class="flex-1">
                                     <h3 class="font-semibold text-gray-800 mb-1"></h3>
                                     <p class="text-sm text-gray-600 mb-2"></p>
-                                    <div class="flex justify-between items-center">
-                                        <span class="font-bold text-primary-orange"></span>
-                                        <button class="bg-primary-orange text-white p-2 rounded-full hover:bg-primary-red transition duration-300">
-                                            <i class="fas fa-shopping-cart"></i>
+                                    <div class="space-y-2">
+                                        <span class="font-bold text-primary-orange text-lg block"></span>
+                                        <button class="btn-block bg-primary-orange text-white py-2 px-4 rounded-lg font-medium hover:bg-primary-red transition duration-300 flex items-center justify-center space-x-2">
+                                            <!-- <i class="fas fa-shopping-cart"></i> -->
+                                            <span>+ Keranjang</span>
                                         </button>
                                     </div>
                                 </div>
@@ -223,19 +231,19 @@
         
         <nav class="space-y-6">
             <a href="#" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
-                <i class="fas fa-home mr-3"></i>Beranda
+                <i class="fas fa-home mr-3"></i>HOME
             </a>
             <a href="#" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
-                <i class="fas fa-shopping-bag mr-3"></i>Produk
+                <i class="fas fa-shopping-bag mr-3"></i>SHOP ALL
             </a>
             <a href="#" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
-                <i class="fas fa-info-circle mr-3"></i>Tentang Kami
+                <i class="fas fa-blog mr-3"></i>BEAUTY INSIDER
             </a>
             <a href="#" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
-                <i class="fas fa-blog mr-3"></i>Blog
+                <i class="fas fa-info-circle mr-3"></i>ABOUT US
             </a>
             <a href="#" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
-                <i class="fas fa-envelope mr-3"></i>Kontak
+                <i class="fas fa-envelope mr-3"></i>CAREER
             </a>
             <a href="#" class="block text-gray-700 hover:text-primary-orange font-medium py-2 border-b border-gray-100">
                 <i class="fas fa-search mr-3"></i>Pencarian
@@ -297,7 +305,7 @@
             
             <!-- Content for Normal Skin (Default) -->
             <div id="skin-normal" class="skin-content grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="bg-primary-light p-6 rounded-lg product-card">
+                <div class="bg-primary-light p-6 rounded-tl-[32px] rounded-br-[32px] product-card">
                     <div class="bg-orange-100 w-16 h-16 rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-pump-soap text-primary-orange text-2xl"></i>
                     </div>
@@ -306,7 +314,7 @@
                     <a href="#" class="text-primary-orange font-medium flex items-center">Lihat Produk <i class="fas fa-arrow-right ml-2"></i></a>
                 </div>
                 
-                <div class="bg-primary-light p-6 rounded-lg product-card">
+                <div class="bg-primary-light p-6 rounded-bl-[32px] rounded-tr-[32px] product-card">
                     <div class="bg-yellow-100 w-16 h-16 rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-tint text-primary-yellow text-2xl"></i>
                     </div>
@@ -315,7 +323,7 @@
                     <a href="#" class="text-primary-orange font-medium flex items-center">Lihat Produk <i class="fas fa-arrow-right ml-2"></i></a>
                 </div>
                 
-                <div class="bg-primary-light p-6 rounded-lg product-card">
+                <div class="bg-primary-light p-6 rounded-tl-[32px] rounded-br-[32px] product-card">
                     <div class="bg-red-100 w-16 h-16 rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-shield-alt text-primary-red text-2xl"></i>
                     </div>
@@ -327,7 +335,7 @@
 
             <!-- Content for Oily Skin -->
             <div id="skin-oily" class="skin-content hidden grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="bg-primary-light p-6 rounded-lg product-card">
+                <div class="bg-primary-light p-6 rounded-tl-[32px] rounded-br-[32px] product-card">
                     <div class="bg-green-100 w-16 h-16 rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-wind text-green-600 text-2xl"></i>
                     </div>
@@ -336,7 +344,7 @@
                     <a href="#" class="text-primary-orange font-medium flex items-center">Lihat Produk <i class="fas fa-arrow-right ml-2"></i></a>
                 </div>
                 
-                <div class="bg-primary-light p-6 rounded-lg product-card">
+                <div class="bg-primary-light p-6 rounded-bl-[32px] rounded-tr-[32px] product-card">
                     <div class="bg-blue-100 w-16 h-16 rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-leaf text-blue-600 text-2xl"></i>
                     </div>
@@ -345,7 +353,7 @@
                     <a href="#" class="text-primary-orange font-medium flex items-center">Lihat Produk <i class="fas fa-arrow-right ml-2"></i></a>
                 </div>
                 
-                <div class="bg-primary-light p-6 rounded-lg product-card">
+                <div class="bg-primary-light p-6 rounded-tl-[32px] rounded-br-[32px] product-card">
                     <div class="bg-purple-100 w-16 h-16 rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-magic text-purple-600 text-2xl"></i>
                     </div>
@@ -357,7 +365,7 @@
 
             <!-- Content for Dry Skin -->
             <div id="skin-dry" class="skin-content hidden grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="bg-primary-light p-6 rounded-lg product-card">
+                <div class="bg-primary-light p-6 rounded-tl-[32px] rounded-br-[32px] product-card">
                     <div class="bg-yellow-100 w-16 h-16 rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-cloud-rain text-yellow-600 text-2xl"></i>
                     </div>
@@ -366,7 +374,7 @@
                     <a href="#" class="text-primary-orange font-medium flex items-center">Lihat Produk <i class="fas fa-arrow-right ml-2"></i></a>
                 </div>
                 
-                <div class="bg-primary-light p-6 rounded-lg product-card">
+                <div class="bg-primary-light p-6 rounded-bl-[32px] rounded-tr-[32px] product-card">
                     <div class="bg-pink-100 w-16 h-16 rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-tint text-pink-600 text-2xl"></i>
                     </div>
@@ -375,7 +383,7 @@
                     <a href="#" class="text-primary-orange font-medium flex items-center">Lihat Produk <i class="fas fa-arrow-right ml-2"></i></a>
                 </div>
                 
-                <div class="bg-primary-light p-6 rounded-lg product-card">
+                <div class="bg-primary-light p-6 rounded-tl-[32px] rounded-br-[32px] product-card">
                     <div class="bg-indigo-100 w-16 h-16 rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-water text-indigo-600 text-2xl"></i>
                     </div>
@@ -387,7 +395,7 @@
 
             <!-- Content for Sensitive Skin -->
             <div id="skin-sensitive" class="skin-content hidden grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="bg-primary-light p-6 rounded-lg product-card">
+                <div class="bg-primary-light p-6 rounded-tl-[32px] rounded-br-[32px] product-card">
                     <div class="bg-green-100 w-16 h-16 rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-heart text-green-600 text-2xl"></i>
                     </div>
@@ -396,7 +404,7 @@
                     <a href="#" class="text-primary-orange font-medium flex items-center">Lihat Produk <i class="fas fa-arrow-right ml-2"></i></a>
                 </div>
                 
-                <div class="bg-primary-light p-6 rounded-lg product-card">
+                <div class="bg-primary-light p-6 rounded-bl-[32px] rounded-tr-[32px] product-card">
                     <div class="bg-blue-100 w-16 h-16 rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-shield-virus text-blue-600 text-2xl"></i>
                     </div>
@@ -405,7 +413,7 @@
                     <a href="#" class="text-primary-orange font-medium flex items-center">Lihat Produk <i class="fas fa-arrow-right ml-2"></i></a>
                 </div>
                 
-                <div class="bg-primary-light p-6 rounded-lg product-card">
+                <div class="bg-primary-light p-6 rounded-tl-[32px] rounded-br-[32px] product-card">
                     <div class="bg-purple-100 w-16 h-16 rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-spa text-purple-600 text-2xl"></i>
                     </div>
@@ -417,7 +425,7 @@
 
             <!-- Content for Combination Skin -->
             <div id="skin-combination" class="skin-content hidden grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="bg-primary-light p-6 rounded-lg product-card">
+                <div class="bg-primary-light p-6 rounded-tl-[32px] rounded-br-[32px] product-card">
                     <div class="bg-orange-100 w-16 h-16 rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-balance-scale text-orange-600 text-2xl"></i>
                     </div>
@@ -426,7 +434,7 @@
                     <a href="#" class="text-primary-orange font-medium flex items-center">Lihat Produk <i class="fas fa-arrow-right ml-2"></i></a>
                 </div>
                 
-                <div class="bg-primary-light p-6 rounded-lg product-card">
+                <div class="bg-primary-light p-6 rounded-bl-[32px] rounded-tr-[32px] product-card">
                     <div class="bg-teal-100 w-16 h-16 rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-adjust text-teal-600 text-2xl"></i>
                     </div>
@@ -435,7 +443,7 @@
                     <a href="#" class="text-primary-orange font-medium flex items-center">Lihat Produk <i class="fas fa-arrow-right ml-2"></i></a>
                 </div>
                 
-                <div class="bg-primary-light p-6 rounded-lg product-card">
+                <div class="bg-primary-light p-6 rounded-tl-[32px] rounded-br-[32px] product-card">
                     <div class="bg-cyan-100 w-16 h-16 rounded-lg flex items-center justify-center mb-4">
                         <i class="fas fa-sync-alt text-cyan-600 text-2xl"></i>
                     </div>
@@ -451,118 +459,113 @@
     <section class="py-16 bg-primary-light">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-800">Produk Unggulan</h2>
+                <h2 class="text-3xl font-bold text-gray-800">BEST SELLER</h2>
                 <a href="#" class="text-primary-orange font-medium flex items-center hidden lg:flex">Lihat Semua <i class="fas fa-arrow-right ml-2"></i></a>
             </div>
             
-            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-8">
                 <!-- Product 1 -->
                 <div class="bg-white rounded-lg overflow-hidden shadow-md product-card">
                     <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1556228578-9f6ac5e4d0d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Hydrating Serum" class="w-full h-48 object-cover">
+                        <img src="https://cdn.scarlett.id/product/b940e111-cd95-4e6c-b83c-83e38b060def_SLIDE_4.jpg" alt="Hydrating Serum" class="w-full aspect-square object-cover">
                         <span class="absolute top-3 left-3 bg-primary-orange text-white text-xs px-2 py-1 rounded">BESTSELLER</span>
                     </div>
                     <div class="p-4">
-                        <h3 class="font-semibold text-lg text-gray-800 mb-1">Hydrating Serum</h3>
-                        <p class="text-gray-600 text-sm mb-2">Serum dengan Hyaluronic Acid untuk kulit lembap maksimal</p>
-                        <div class="flex items-center mb-2">
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
+                        <h3 class="font-semibold text-sm text-gray-800 mb-1">Scarlett 4in1 Bodycare Daily Routine Barrier Shield & Glow</h3>
+                        <div class="space-y-0 mb-1">
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-primary-red text-lg">Rp 213.000</span>
+                                <span class="text-gray-500 text-sm line-through">Rp 294.500</span>
                             </div>
-                            <span class="text-gray-500 text-sm ml-2">(128)</span>
+                            <span class="text-xs text-green-600 font-medium">Hemat 27%</span>
                         </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-gray-800">Rp 189.000</span>
-                            <button class="bg-primary-orange text-white p-2 rounded-full hover:bg-primary-red transition duration-300">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
-                        </div>
+                        <button class="btn-block bg-primary-orange text-white py-2 px-4 rounded-lg font-medium hover:bg-primary-red transition duration-300 flex items-center justify-center space-x-2">
+                            <span>+ Keranjang</span>
+                        </button>
                     </div>
                 </div>
                 
                 <!-- Product 2 -->
                 <div class="bg-white rounded-lg overflow-hidden shadow-md product-card">
                     <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Vitamin C Cream" class="w-full h-48 object-cover">
+                        <img src="https://cdn.scarlett.id/product/b940e111-cd95-4e6c-b83c-83e38b060def_SLIDE_4.jpg" alt="Hydrating Serum" class="w-full aspect-square object-cover">
+                        <span class="absolute top-3 left-3 bg-primary-orange text-white text-xs px-2 py-1 rounded">BESTSELLER</span>
                     </div>
                     <div class="p-4">
-                        <h3 class="font-semibold text-lg text-gray-800 mb-1">Vitamin C Cream</h3>
-                        <p class="text-gray-600 text-sm mb-2">Krim pagi dengan Vitamin C untuk kulit cerah dan terlindungi</p>
-                        <div class="flex items-center mb-2">
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i>
+                        <h3 class="font-semibold text-sm text-gray-800 mb-1">Scarlett 4in1 Bodycare Daily Routine Barrier Shield & Glow</h3>
+                        <div class="space-y-0 mb-1">
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-primary-red text-lg">Rp 213.000</span>
+                                <span class="text-gray-500 text-sm line-through">Rp 294.500</span>
                             </div>
-                            <span class="text-gray-500 text-sm ml-2">(95)</span>
+                            <span class="text-xs text-green-600 font-medium">Hemat 27%</span>
                         </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-gray-800">Rp 225.000</span>
-                            <button class="bg-primary-orange text-white p-2 rounded-full hover:bg-primary-red transition duration-300">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
-                        </div>
+                        <button class="btn-block bg-primary-orange text-white py-2 px-4 rounded-lg font-medium hover:bg-primary-red transition duration-300 flex items-center justify-center space-x-2">
+                            <span>+ Keranjang</span>
+                        </button>
                     </div>
                 </div>
                 
                 <!-- Product 3 -->
                 <div class="bg-white rounded-lg overflow-hidden shadow-md product-card">
                     <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1570194065650-4222e69b28d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Gentle Cleanser" class="w-full h-48 object-cover">
-                        <span class="absolute top-3 left-3 bg-green-600 text-white text-xs px-2 py-1 rounded">BARU</span>
+                        <img src="https://cdn.scarlett.id/product/b940e111-cd95-4e6c-b83c-83e38b060def_SLIDE_4.jpg" alt="Hydrating Serum" class="w-full aspect-square object-cover">
+                        <span class="absolute top-3 left-3 bg-primary-orange text-white text-xs px-2 py-1 rounded">BESTSELLER</span>
                     </div>
                     <div class="p-4">
-                        <h3 class="font-semibold text-lg text-gray-800 mb-1">Gentle Cleanser</h3>
-                        <p class="text-gray-600 text-sm mb-2">Pembersih wajah lembut untuk kulit sensitif</p>
-                        <div class="flex items-center mb-2">
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
+                        <h3 class="font-semibold text-sm text-gray-800 mb-1">Scarlett 4in1 Bodycare Daily Routine Barrier Shield & Glow</h3>
+                        <div class="space-y-0 mb-1">
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-primary-red text-lg">Rp 213.000</span>
+                                <span class="text-gray-500 text-sm line-through">Rp 294.500</span>
                             </div>
-                            <span class="text-gray-500 text-sm ml-2">(64)</span>
+                            <span class="text-xs text-green-600 font-medium">Hemat 27%</span>
                         </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-gray-800">Rp 145.000</span>
-                            <button class="bg-primary-orange text-white p-2 rounded-full hover:bg-primary-red transition duration-300">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
-                        </div>
+                        <button class="btn-block bg-primary-orange text-white py-2 px-4 rounded-lg font-medium hover:bg-primary-red transition duration-300 flex items-center justify-center space-x-2">
+                            <span>+ Keranjang</span>
+                        </button>
                     </div>
                 </div>
                 
                 <!-- Product 4 -->
                 <div class="bg-white rounded-lg overflow-hidden shadow-md product-card">
                     <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Night Repair" class="w-full h-48 object-cover">
+                        <img src="https://cdn.scarlett.id/product/b940e111-cd95-4e6c-b83c-83e38b060def_SLIDE_4.jpg" alt="Hydrating Serum" class="w-full aspect-square object-cover">
+                        <span class="absolute top-3 left-3 bg-primary-orange text-white text-xs px-2 py-1 rounded">BESTSELLER</span>
                     </div>
                     <div class="p-4">
-                        <h3 class="font-semibold text-lg text-gray-800 mb-1">Night Repair</h3>
-                        <p class="text-gray-600 text-sm mb-2">Krim malam dengan Retinol untuk peremajaan kulit</p>
-                        <div class="flex items-center mb-2">
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
+                        <h3 class="font-semibold text-sm text-gray-800 mb-1">Scarlett 4in1 Bodycare Daily Routine Barrier Shield & Glow</h3>
+                        <div class="space-y-0 mb-1">
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-primary-red text-lg">Rp 213.000</span>
+                                <span class="text-gray-500 text-sm line-through">Rp 294.500</span>
                             </div>
-                            <span class="text-gray-500 text-sm ml-2">(112)</span>
+                            <span class="text-xs text-green-600 font-medium">Hemat 27%</span>
                         </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-gray-800">Rp 275.000</span>
-                            <button class="bg-primary-orange text-white p-2 rounded-full hover:bg-primary-red transition duration-300">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
+                        <button class="btn-block bg-primary-orange text-white py-2 px-4 rounded-lg font-medium hover:bg-primary-red transition duration-300 flex items-center justify-center space-x-2">
+                            <span>+ Keranjang</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-md product-card">
+                    <div class="relative">
+                        <img src="https://cdn.scarlett.id/product/b940e111-cd95-4e6c-b83c-83e38b060def_SLIDE_4.jpg" alt="Hydrating Serum" class="w-full aspect-square object-cover">
+                        <span class="absolute top-3 left-3 bg-primary-orange text-white text-xs px-2 py-1 rounded">BESTSELLER</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-sm text-gray-800 mb-1">Scarlett 4in1 Bodycare Daily Routine Barrier Shield & Glow</h3>
+                        <div class="space-y-0 mb-1">
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-primary-red text-lg">Rp 213.000</span>
+                                <span class="text-gray-500 text-sm line-through">Rp 294.500</span>
+                            </div>
+                            <span class="text-xs text-green-600 font-medium">Hemat 27%</span>
                         </div>
+                        <button class="btn-block bg-primary-orange text-white py-2 px-4 rounded-lg font-medium hover:bg-primary-red transition duration-300 flex items-center justify-center space-x-2">
+                            <span>+ Keranjang</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -651,7 +654,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-12">
+    <footer class="bg-gray-800 text-white py-12 lg:pb-12 pb-[120px]">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
                 <div>
@@ -707,7 +710,7 @@
             </div>
             
             <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2023 Inclinique Store. All rights reserved.</p>
+                <p>&copy; <script>document.write(new Date().getFullYear())</script> Inclinique Store. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -1020,6 +1023,33 @@
                 });
             });
             
+            // Add to cart functionality untuk semua tombol keranjang
+            const addToCartButtons = document.querySelectorAll('.btn-block');
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const icon = this.querySelector('i');
+                    const originalClass = icon.className;
+                    const originalText = this.querySelector('span').textContent;
+                    
+                    // Ubah icon dan teks
+                    icon.className = 'fas fa-check';
+                    this.querySelector('span').textContent = 'Ditambahkan!';
+                    this.style.backgroundColor = '#10B981';
+                    
+                    // Reset setelah 1.5 detik
+                    setTimeout(() => {
+                        icon.className = originalClass;
+                        this.querySelector('span').textContent = originalText;
+                        this.style.backgroundColor = '#FA812F';
+                    }, 1500);
+                    
+                    alert('Produk berhasil ditambahkan ke keranjang!');
+                });
+            });
+
             // Simulasi login/logout untuk demo
             const loginButton = document.querySelector('.bottom-nav a:nth-child(4)');
             let isLoggedIn = false;
@@ -1046,28 +1076,6 @@
                     alert('Menuju ke keranjang belanja...');
                 });
             }
-
-            // Add to cart buttons in product cards
-            const addToCartButtons = document.querySelectorAll('.product-card button');
-            addToCartButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const icon = this.querySelector('i');
-                    const originalClass = icon.className;
-                    
-                    icon.className = 'fas fa-check';
-                    this.style.backgroundColor = '#10B981';
-                    
-                    setTimeout(() => {
-                        icon.className = originalClass;
-                        this.style.backgroundColor = '#FA812F';
-                    }, 1500);
-                    
-                    alert('Produk berhasil ditambahkan ke keranjang!');
-                });
-            });
 
             // Smooth scroll untuk anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
