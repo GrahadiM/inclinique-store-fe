@@ -716,22 +716,22 @@
     </footer>
 
     <!-- Bottom Navigation for Mobile & Tablet -->
-    <nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white py-3 px-4 flex justify-between items-center lg:hidden z-40">
-        <a href="#" class="flex flex-col items-center text-gray-700 hover:text-primary-orange">
-            <i class="fas fa-home text-lg mb-1"></i>
-            <span class="text-xs">Beranda</span>
+    <nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white py-3 px-6 flex justify-between items-center lg:hidden z-40">
+        <a href="#" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-home text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Beranda</span>
         </a>
-        <a href="#" class="flex flex-col items-center text-gray-700 hover:text-primary-orange">
-            <i class="fas fa-shopping-cart text-lg mb-1"></i>
-            <span class="text-xs">Pesanan</span>
+        <a href="#" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-shopping-cart text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Pesanan</span>
         </a>
-        <a href="#" class="flex flex-col items-center text-gray-700 hover:text-primary-orange">
-            <i class="fas fa-heart text-lg mb-1"></i>
-            <span class="text-xs">Favorit</span>
+        <a href="#" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-heart text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Favorit</span>
         </a>
-        <a href="#" class="flex flex-col items-center text-gray-700 hover:text-primary-orange">
-            <i class="fas fa-user text-lg mb-1"></i>
-            <span class="text-xs">Masuk</span>
+        <a href="#" class="flex flex-col items-center text-gray-700 hover:text-primary-orange transition-colors duration-300 w-full">
+            <i class="fas fa-user text-2xl mb-1"></i>
+            <span class="text-xs font-medium">Masuk</span>
         </a>
     </nav>
 
@@ -1060,10 +1060,10 @@
                     isLoggedIn = !isLoggedIn;
                     
                     if (isLoggedIn) {
-                        this.innerHTML = '<i class="fas fa-user text-lg mb-1"></i><span class="text-xs">Profil</span>';
+                        this.innerHTML = '<i class="fas fa-user text-2xl mb-1"></i><span class="text-xs font-medium">Profil</span>';
                         this.classList.add('logged-in');
                     } else {
-                        this.innerHTML = '<i class="fas fa-user text-lg mb-1"></i><span class="text-xs">Masuk</span>';
+                        this.innerHTML = '<i class="fas fa-user text-2xl mb-1"></i><span class="text-xs font-medium">Masuk</span>';
                         this.classList.remove('logged-in');
                     }
                 });
